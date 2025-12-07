@@ -445,17 +445,20 @@ export interface ActivityDetail extends MailActivity {
   activity_status?: 'overdue' | 'today' | 'upcoming' | 'done';
 }
 
-// Export Result - File-based export (writes to filesystem)
+// Export Result - Returns base64-encoded data for Claude to save
 export interface ExportResult {
   [key: string]: unknown;
   success: boolean;
-  filepath: string;
   filename: string;
   record_count: number;
-  file_size_bytes: number;
+  size_bytes: number;
   format: 'csv' | 'json';
-  message: string;
-  warning?: string; // Size warning if file exceeds threshold
+  mime_type: string;
+  encoding: 'base64';
+  content: string; // Base64-encoded CSV/JSON data
+  truncated?: boolean; // True if data was truncated due to size
+  warning?: string; // Size warning if content exceeds safe limit
+  instructions: string; // How Claude should save the file
 }
 
 // Pipeline Summary with weighted revenue

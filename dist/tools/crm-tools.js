@@ -1,10 +1,7 @@
 import { getOdooClient } from '../services/odoo-client.js';
 import { formatLeadList, formatLeadDetail, formatPipelineSummary, formatSalesAnalytics, formatContactList, formatActivitySummary, getRelationName, formatLostReasonsList, formatLostAnalysis, formatLostOpportunitiesList, formatLostTrends, formatDate, formatWonOpportunitiesList, formatWonAnalysis, formatWonTrends, formatSalespeopleList, formatTeamsList, formatPerformanceComparison, formatActivityList, formatExportResult } from '../services/formatters.js';
 import { LeadSearchSchema, LeadDetailSchema, PipelineSummarySchema, SalesAnalyticsSchema, ContactSearchSchema, ActivitySummarySchema, StageListSchema, LostReasonsListSchema, LostAnalysisSchema, LostOpportunitiesSearchSchema, LostTrendsSchema, WonOpportunitiesSearchSchema, WonAnalysisSchema, WonTrendsSchema, SalespeopleListSchema, TeamsListSchema, ComparePerformanceSchema, ActivitySearchSchema, ExportDataSchema } from '../schemas/index.js';
-import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG } from '../constants.js';
-import * as fs from 'fs';
-import * as path from 'path';
-import { randomUUID } from 'crypto';
+import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat } from '../constants.js';
 // Register all CRM tools
 export function registerCrmTools(server) {
     // ============================================
@@ -1948,32 +1945,26 @@ Returns a paginated list of activities with details including type, due date, st
         }
     });
     // ============================================
-    // TOOL: Export Data
+    // TOOL: Export Data (returns base64 for Claude to save)
     // ============================================
     server.registerTool('odoo_crm_export_data', {
         title: 'Export CRM Data',
-        description: `Generate CSV/JSON export of CRM data and save to filesystem.
+        description: `Export CRM data as base64-encoded CSV/JSON. Returns encoded content for Claude to decode and save.
 
-Creates an export file of the requested data type with optional filters. Files are written directly to the filesystem to handle large datasets without payload truncation.
-
-**Output Location:**
-- Default: /mnt/user-data/outputs (Claude.ai compatible)
-- Override via output_dir parameter or MCP_EXPORT_DIR env var
-
-**File Naming:** {export_type}_{YYYYMMDD}_{HHMMSS}_{uuid}.{format}
-Example: leads_20251207_143052_a1b2c3.csv
+**Important:** This tool returns base64-encoded data in the response. Claude will decode it and save to the filesystem.
 
 **When to use:**
 - Exporting leads for external analysis
 - Creating reports for stakeholders
 - Backing up CRM data
 - Integrating with other systems
-- Large dataset exports (400+ records)`,
+
+**Size limits:** Keep max_records low (100-200) to avoid response truncation. Use filters for large datasets.`,
         inputSchema: ExportDataSchema,
         annotations: {
-            readOnlyHint: false, // Creates files on filesystem
+            readOnlyHint: true,
             destructiveHint: false,
-            idempotentHint: false, // Creates new file each time
+            idempotentHint: true,
             openWorldHint: true
         }
     }, async (params) => {
@@ -2037,36 +2028,21 @@ Example: leads_20251207_143052_a1b2c3.csv
             }
             // Fetch data
             const records = await client.searchRead(model, domain, fields, { limit: params.max_records, order: 'id desc' });
-            // Determine output directory (priority: param > env var > default)
-            const outputDir = params.output_dir
-                || process.env[EXPORT_CONFIG.OUTPUT_DIR_ENV_VAR]
-                || EXPORT_CONFIG.DEFAULT_OUTPUT_DIR;
-            // Create output directory if it doesn't exist
-            try {
-                fs.mkdirSync(outputDir, { recursive: true });
-            }
-            catch (mkdirError) {
-                const errMsg = mkdirError instanceof Error ? mkdirError.message : 'Unknown error';
-                return {
-                    isError: true,
-                    content: [{ type: 'text', text: `Failed to create output directory "${outputDir}": ${errMsg}` }]
-                };
-            }
-            // Generate unique filename
+            // Generate filename
             const now = new Date();
-            const timestamp = now.toISOString().replace(/[-:]/g, '').replace('T', '_').substring(0, 15);
-            const uniqueId = randomUUID().substring(0, 6);
-            const filename = `${params.export_type}_${timestamp}_${uniqueId}.${params.format}`;
-            const filepath = path.join(outputDir, filename);
-            // Prepare export data
-            let exportData;
+            const timestamp = now.toISOString().replace(/[-:T]/g, '').substring(0, 14);
+            const filename = `${params.export_type}_${timestamp}.${params.format}`;
+            // Prepare export content
+            let exportContent;
+            let mimeType;
             if (params.format === 'json') {
-                exportData = JSON.stringify(records, null, 2);
+                exportContent = JSON.stringify(records, null, 2);
+                mimeType = 'application/json';
             }
             else {
                 // CSV format
                 if (records.length === 0) {
-                    exportData = fields.join(',') + '\n';
+                    exportContent = fields.join(',') + '\n';
                 }
                 else {
                     const headers = fields.join(',');
@@ -2082,43 +2058,40 @@ Example: leads_20251207_143052_a1b2c3.csv
                             return String(value);
                         }).join(',');
                     });
-                    exportData = headers + '\n' + rows.join('\n');
+                    exportContent = headers + '\n' + rows.join('\n');
                 }
+                mimeType = 'text/csv';
             }
-            // Write file to filesystem
-            try {
-                fs.writeFileSync(filepath, exportData, 'utf-8');
-            }
-            catch (writeError) {
-                const errMsg = writeError instanceof Error ? writeError.message : 'Unknown error';
-                return {
-                    isError: true,
-                    content: [{ type: 'text', text: `Failed to write export file "${filepath}": ${errMsg}` }]
-                };
-            }
-            // Get file size
-            const stats = fs.statSync(filepath);
-            const fileSizeBytes = stats.size;
-            // Check for size warning
-            const maxSizeEnv = process.env[EXPORT_CONFIG.MAX_SIZE_ENV_VAR];
-            const maxSizeBytes = maxSizeEnv
-                ? parseInt(maxSizeEnv, 10) * 1024 * 1024
-                : EXPORT_CONFIG.MAX_SIZE_WARNING_BYTES;
+            // Encode to base64
+            const contentBytes = Buffer.from(exportContent, 'utf-8');
+            const sizeBytes = contentBytes.length;
+            // Check if content is too large (50KB threshold for safe base64 transfer)
+            const MAX_SAFE_SIZE = 50000;
+            let truncated = false;
             let warning;
-            if (fileSizeBytes > maxSizeBytes) {
-                const sizeMB = (fileSizeBytes / (1024 * 1024)).toFixed(2);
-                const thresholdMB = (maxSizeBytes / (1024 * 1024)).toFixed(0);
-                warning = `File size (${sizeMB} MB) exceeds ${thresholdMB} MB threshold. Consider using filters to reduce data size.`;
+            let base64Content;
+            if (sizeBytes > MAX_SAFE_SIZE) {
+                // Truncate content
+                const truncatedContent = exportContent.substring(0, MAX_SAFE_SIZE);
+                base64Content = Buffer.from(truncatedContent, 'utf-8').toString('base64');
+                truncated = true;
+                warning = `Content size (${(sizeBytes / 1024).toFixed(1)} KB) exceeds safe limit (${(MAX_SAFE_SIZE / 1024).toFixed(0)} KB). Data was truncated. Use smaller max_records or add filters.`;
+            }
+            else {
+                base64Content = contentBytes.toString('base64');
             }
             const result = {
                 success: true,
-                filepath,
                 filename,
                 record_count: records.length,
-                file_size_bytes: fileSizeBytes,
+                size_bytes: sizeBytes,
                 format: params.format,
-                message: `Export complete. File saved to ${filepath}`,
-                warning
+                mime_type: mimeType,
+                encoding: 'base64',
+                content: base64Content,
+                truncated,
+                warning,
+                instructions: `To save this file, decode the base64 content and write to disk:\necho '${base64Content.substring(0, 50)}...' | base64 -d > /mnt/user-data/outputs/${filename}`
             };
             const output = formatExportResult(result, ResponseFormat.MARKDOWN);
             return {

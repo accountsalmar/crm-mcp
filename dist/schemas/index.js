@@ -522,7 +522,7 @@ export const ActivitySearchSchema = PaginationSchema.extend({
         .optional()
         .describe('Activity due date to (YYYY-MM-DD)')
 }).strict();
-// Export data schema
+// Export data schema - returns base64 encoded data for Claude to save
 export const ExportDataSchema = z.object({
     export_type: z.enum(['leads', 'won', 'lost', 'contacts', 'activities'])
         .describe("Type of data to export: 'leads', 'won', 'lost', 'contacts', or 'activities'"),
@@ -546,11 +546,8 @@ export const ExportDataSchema = z.object({
     max_records: z.number()
         .int()
         .min(1)
-        .max(5000)
-        .default(1000)
-        .describe('Maximum records to export (1-5000)'),
-    output_dir: z.string()
-        .optional()
-        .describe('Override output directory (default: /mnt/user-data/outputs or MCP_EXPORT_DIR env var)')
+        .max(500)
+        .default(100)
+        .describe('Maximum records to export (1-500). Use smaller values to avoid truncation.')
 }).strict();
 //# sourceMappingURL=index.js.map

@@ -395,13 +395,16 @@ export interface ActivityDetail extends MailActivity {
 export interface ExportResult {
     [key: string]: unknown;
     success: boolean;
-    filepath: string;
     filename: string;
     record_count: number;
-    file_size_bytes: number;
+    size_bytes: number;
     format: 'csv' | 'json';
-    message: string;
+    mime_type: string;
+    encoding: 'base64';
+    content: string;
+    truncated?: boolean;
     warning?: string;
+    instructions: string;
 }
 export interface PipelineSummaryWithWeighted extends PipelineSummary {
     weighted_revenue: number;

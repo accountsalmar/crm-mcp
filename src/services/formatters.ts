@@ -752,21 +752,20 @@ export function formatActivityList(data: PaginatedResponse<ActivityDetail>, form
   return output;
 }
 
-// Format export result (file-based export)
+// Format export result (base64 encoded data for Claude to save)
 export function formatExportResult(result: ExportResult, format: ResponseFormat): string {
   if (format === ResponseFormat.JSON) {
     return JSON.stringify(result, null, 2);
   }
 
-  let output = `## Export Complete\n\n`;
+  let output = `## Export Ready\n\n`;
   output += `- **Status:** ${result.success ? '✓ Success' : '✗ Failed'}\n`;
-  output += `- **Filepath:** \`${result.filepath}\`\n`;
-  output += `- **Filename:** ${result.filename}\n`;
+  output += `- **Filename:** \`${result.filename}\`\n`;
   output += `- **Records:** ${result.record_count.toLocaleString()}\n`;
   output += `- **Format:** ${result.format.toUpperCase()}\n`;
 
   // Format file size in human-readable format
-  const bytes = result.file_size_bytes;
+  const bytes = result.size_bytes;
   let sizeStr: string;
   if (bytes < 1024) {
     sizeStr = `${bytes} B`;
@@ -776,12 +775,20 @@ export function formatExportResult(result: ExportResult, format: ResponseFormat)
     sizeStr = `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
   }
   output += `- **Size:** ${sizeStr}\n`;
+  output += `- **Encoding:** ${result.encoding}\n`;
+
+  if (result.truncated) {
+    output += `\n**⚠️ Data Truncated:** Content was truncated to avoid response size limits. Use smaller max_records or add filters.\n`;
+  }
 
   if (result.warning) {
     output += `\n**⚠️ Warning:** ${result.warning}\n`;
   }
 
-  output += `\n${result.message}\n`;
+  output += `\n### Instructions\n${result.instructions}\n`;
+
+  // Include the base64 content in a code block for easy copying
+  output += `\n### Base64 Content\n\`\`\`\n${result.content}\n\`\`\`\n`;
 
   return output;
 }

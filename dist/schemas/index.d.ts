@@ -513,7 +513,6 @@ export declare const ExportDataSchema: z.ZodObject<{
     }>>;
     fields: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     max_records: z.ZodDefault<z.ZodNumber>;
-    output_dir: z.ZodOptional<z.ZodString>;
 }, "strict", z.ZodTypeAny, {
     format: "json" | "csv";
     export_type: "leads" | "won" | "lost" | "contacts" | "activities";
@@ -529,7 +528,6 @@ export declare const ExportDataSchema: z.ZodObject<{
         date_from?: string | undefined;
         date_to?: string | undefined;
     } | undefined;
-    output_dir?: string | undefined;
 }, {
     export_type: "leads" | "won" | "lost" | "contacts" | "activities";
     format?: "json" | "csv" | undefined;
@@ -545,7 +543,6 @@ export declare const ExportDataSchema: z.ZodObject<{
         date_to?: string | undefined;
     } | undefined;
     max_records?: number | undefined;
-    output_dir?: string | undefined;
 }>;
 export type LeadSearchInput = z.infer<typeof LeadSearchSchema>;
 export type LeadDetailInput = z.infer<typeof LeadDetailSchema>;
