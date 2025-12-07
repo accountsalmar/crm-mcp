@@ -6,7 +6,9 @@ export declare class OdooClient {
     private objectClient;
     constructor(config: OdooConfig);
     authenticate(): Promise<number>;
+    private _doAuthenticate;
     private execute;
+    private _doExecute;
     searchRead<T extends OdooRecord>(model: string, domain?: unknown[], fields?: string[], options?: {
         offset?: number;
         limit?: number;

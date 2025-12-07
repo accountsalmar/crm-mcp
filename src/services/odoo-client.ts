@@ -2,8 +2,9 @@ import xmlrpc from 'xmlrpc';
 const { createClient, createSecureClient } = xmlrpc;
 type Client = ReturnType<typeof createClient>;
 import type { OdooConfig, OdooRecord } from '../types.js';
+import { withTimeout, TIMEOUTS, TimeoutError } from '../utils/timeout.js';
 
-// Odoo XML-RPC API client
+// Odoo XML-RPC API client with timeout protection
 export class OdooClient {
   private config: OdooConfig;
   private uid: number | null = null;
@@ -36,12 +37,29 @@ export class OdooClient {
     });
   }
 
-  // Authenticate and get user ID
+  // Authenticate and get user ID with timeout protection
   async authenticate(): Promise<number> {
     if (this.uid !== null) {
       return this.uid;
     }
 
+    try {
+      const uid = await withTimeout(
+        this._doAuthenticate(),
+        TIMEOUTS.AUTH,
+        'Odoo authentication timed out'
+      );
+      this.uid = uid;
+      return uid;
+    } catch (error) {
+      if (error instanceof TimeoutError) {
+        console.error('Authentication timeout:', error.message);
+      }
+      throw error;
+    }
+  }
+
+  private _doAuthenticate(): Promise<number> {
     return new Promise((resolve, reject) => {
       this.commonClient.methodCall(
         'authenticate',
@@ -53,15 +71,14 @@ export class OdooClient {
           } else if (value === false) {
             reject(new Error('Authentication failed: Invalid credentials'));
           } else {
-            this.uid = value as number;
-            resolve(this.uid);
+            resolve(value as number);
           }
         }
       );
     });
   }
 
-  // Execute Odoo model method
+  // Execute Odoo model method with timeout protection
   private async execute<T>(
     model: string,
     method: string,
@@ -69,7 +86,28 @@ export class OdooClient {
     kwargs: Record<string, unknown> = {}
   ): Promise<T> {
     const uid = await this.authenticate();
-    
+
+    try {
+      return await withTimeout(
+        this._doExecute<T>(uid, model, method, args, kwargs),
+        TIMEOUTS.API,
+        `Odoo API call timed out (${model}.${method})`
+      );
+    } catch (error) {
+      if (error instanceof TimeoutError) {
+        console.error('API timeout:', error.message);
+      }
+      throw error;
+    }
+  }
+
+  private _doExecute<T>(
+    uid: number,
+    model: string,
+    method: string,
+    args: unknown[],
+    kwargs: Record<string, unknown>
+  ): Promise<T> {
     return new Promise((resolve, reject) => {
       this.objectClient.methodCall(
         'execute_kw',
