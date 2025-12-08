@@ -70,6 +70,7 @@ import {
 import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG } from '../constants.js';
 import type { CrmLead, CrmStage, ResPartner, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, CrmLostReason, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, CrmTeam, ResUsers, OdooRecord, ExportFormat } from '../types.js';
 import { ExportWriter, generateExportFilename, getOutputDirectory, getMimeType } from '../utils/export-writer.js';
+import { convertDateToUtc, getDaysAgoUtc } from '../utils/timezone.js';
 
 // Register all CRM tools
 export function registerCrmTools(server: McpServer): void {
@@ -154,23 +155,23 @@ Returns paginated list with: name, contact, email, stage, revenue, probability`,
           domain.push(['probability', '>=', params.min_probability]);
         }
         
-        // Date filters based on date_field
+        // Date filters based on date_field (convert Sydney time to UTC)
         const dateField = params.date_field || 'create_date';
         if (params.date_from) {
-          domain.push([dateField, '>=', params.date_from]);
+          domain.push([dateField, '>=', convertDateToUtc(params.date_from, false)]);
         }
 
         if (params.date_to) {
-          domain.push([dateField, '<=', params.date_to]);
+          domain.push([dateField, '<=', convertDateToUtc(params.date_to, true)]);
         }
 
-        // Explicit date_closed filters
+        // Explicit date_closed filters (convert Sydney time to UTC)
         if (params.date_closed_from) {
-          domain.push(['date_closed', '>=', params.date_closed_from]);
+          domain.push(['date_closed', '>=', convertDateToUtc(params.date_closed_from, false)]);
         }
 
         if (params.date_closed_to) {
-          domain.push(['date_closed', '<=', params.date_closed_to]);
+          domain.push(['date_closed', '<=', convertDateToUtc(params.date_closed_to, true)]);
         }
 
         // Team filter
@@ -444,13 +445,13 @@ Returns aggregated metrics including conversion rates, revenue analysis, and per
         }
         
         if (params.date_from) {
-          domain.push(['create_date', '>=', params.date_from]);
+          domain.push(['create_date', '>=', convertDateToUtc(params.date_from, false)]);
         }
-        
+
         if (params.date_to) {
-          domain.push(['create_date', '<=', params.date_to]);
+          domain.push(['create_date', '<=', convertDateToUtc(params.date_to, true)]);
         }
-        
+
         // Get counts
         const totalLeads = await client.searchCount('crm.lead', [...domain, ['type', '=', 'lead']]);
         const totalOpps = await client.searchCount('crm.lead', [...domain, ['type', '=', 'opportunity']]);
@@ -1014,12 +1015,12 @@ Returns summary statistics including total lost count and revenue, breakdown by 
           ['lost_reason_id', '!=', false]
         ];
 
-        // Apply filters
+        // Apply filters (convert Sydney time to UTC)
         if (params.date_from) {
-          domain.push(['date_closed', '>=', params.date_from]);
+          domain.push(['date_closed', '>=', convertDateToUtc(params.date_from, false)]);
         }
         if (params.date_to) {
-          domain.push(['date_closed', '<=', params.date_to]);
+          domain.push(['date_closed', '<=', convertDateToUtc(params.date_to, true)]);
         }
         if (params.user_id) {
           domain.push(['user_id', '=', params.user_id]);
@@ -1058,13 +1059,13 @@ Returns summary statistics including total lost count and revenue, breakdown by 
           avg_deal_size: totalLost > 0 ? totalLostRevenue / totalLost : 0
         };
 
-        // Get won data for context
+        // Get won data for context (convert Sydney time to UTC)
         const wonDomain: unknown[] = [
           ['type', '=', 'opportunity'],
           ['probability', '=', 100]
         ];
-        if (params.date_from) wonDomain.push(['date_closed', '>=', params.date_from]);
-        if (params.date_to) wonDomain.push(['date_closed', '<=', params.date_to]);
+        if (params.date_from) wonDomain.push(['date_closed', '>=', convertDateToUtc(params.date_from, false)]);
+        if (params.date_to) wonDomain.push(['date_closed', '<=', convertDateToUtc(params.date_to, true)]);
         if (params.user_id) wonDomain.push(['user_id', '=', params.user_id]);
         if (params.team_id) wonDomain.push(['team_id', '=', params.team_id]);
 
@@ -1242,10 +1243,9 @@ Returns a paginated list of lost opportunities with details including the lost r
         ];
 
         // Default to last 90 days if no date filter specified (prevents timeout on large datasets)
+        // Use getDaysAgoUtc to get Sydney-timezone-aware 90 days ago converted to UTC
         if (!params.date_from && !params.date_to) {
-          const ninetyDaysAgo = new Date();
-          ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
-          domain.push(['date_closed', '>=', ninetyDaysAgo.toISOString().split('T')[0]]);
+          domain.push(['date_closed', '>=', getDaysAgoUtc(90, false)]);
         }
 
         // Apply search filters
@@ -1279,12 +1279,13 @@ Returns a paginated list of lost opportunities with details including the lost r
           domain.push(['stage_id', '=', params.stage_id]);
         }
 
+        // Convert Sydney time to UTC for date filters
         if (params.date_from) {
-          domain.push(['date_closed', '>=', params.date_from]);
+          domain.push(['date_closed', '>=', convertDateToUtc(params.date_from, false)]);
         }
 
         if (params.date_to) {
-          domain.push(['date_closed', '<=', params.date_to]);
+          domain.push(['date_closed', '<=', convertDateToUtc(params.date_to, true)]);
         }
 
         if (params.min_revenue !== undefined) {
@@ -1380,12 +1381,12 @@ Returns time-series data showing lost opportunities grouped by week, month, or q
           ['lost_reason_id', '!=', false]
         ];
 
-        // Apply filters
+        // Apply filters (convert Sydney time to UTC)
         if (params.date_from) {
-          lostDomain.push(['date_closed', '>=', params.date_from]);
+          lostDomain.push(['date_closed', '>=', convertDateToUtc(params.date_from, false)]);
         }
         if (params.date_to) {
-          lostDomain.push(['date_closed', '<=', params.date_to]);
+          lostDomain.push(['date_closed', '<=', convertDateToUtc(params.date_to, true)]);
         }
         if (params.user_id) {
           lostDomain.push(['user_id', '=', params.user_id]);
@@ -1454,15 +1455,15 @@ Returns time-series data showing lost opportunities grouped by week, month, or q
           }
         }
 
-        // Fetch won opportunities if comparison requested
+        // Fetch won opportunities if comparison requested (convert Sydney time to UTC)
         const wonByPeriodMap = new Map<string, { count: number; revenue: number }>();
         if (params.compare_to_won) {
           const wonDomain: unknown[] = [
             ['type', '=', 'opportunity'],
             ['probability', '=', 100]
           ];
-          if (params.date_from) wonDomain.push(['date_closed', '>=', params.date_from]);
-          if (params.date_to) wonDomain.push(['date_closed', '<=', params.date_to]);
+          if (params.date_from) wonDomain.push(['date_closed', '>=', convertDateToUtc(params.date_from, false)]);
+          if (params.date_to) wonDomain.push(['date_closed', '<=', convertDateToUtc(params.date_to, true)]);
           if (params.user_id) wonDomain.push(['user_id', '=', params.user_id]);
           if (params.team_id) wonDomain.push(['team_id', '=', params.team_id]);
 
@@ -1653,12 +1654,13 @@ Returns a paginated list of won opportunities with details including revenue, sa
           domain.push(['stage_id', '=', params.stage_id]);
         }
 
+        // Convert Sydney time to UTC for date filters
         if (params.date_from) {
-          domain.push(['date_closed', '>=', params.date_from]);
+          domain.push(['date_closed', '>=', convertDateToUtc(params.date_from, false)]);
         }
 
         if (params.date_to) {
-          domain.push(['date_closed', '<=', params.date_to]);
+          domain.push(['date_closed', '<=', convertDateToUtc(params.date_to, true)]);
         }
 
         if (params.min_revenue !== undefined) {
@@ -1746,12 +1748,12 @@ Returns summary statistics including total won count and revenue, breakdown by t
           ['probability', '=', 100]
         ];
 
-        // Apply filters
+        // Apply filters (convert Sydney time to UTC)
         if (params.date_from) {
-          domain.push(['date_closed', '>=', params.date_from]);
+          domain.push(['date_closed', '>=', convertDateToUtc(params.date_from, false)]);
         }
         if (params.date_to) {
-          domain.push(['date_closed', '<=', params.date_to]);
+          domain.push(['date_closed', '<=', convertDateToUtc(params.date_to, true)]);
         }
         if (params.user_id) {
           domain.push(['user_id', '=', params.user_id]);
@@ -1999,14 +2001,14 @@ Returns time-series data showing won opportunities grouped by week, month, or qu
           }
         };
 
-        // Build domain for won opportunities
+        // Build domain for won opportunities (convert Sydney time to UTC)
         const wonDomain: unknown[] = [
           ['type', '=', 'opportunity'],
           ['probability', '=', 100]
         ];
 
-        if (params.date_from) wonDomain.push(['date_closed', '>=', params.date_from]);
-        if (params.date_to) wonDomain.push(['date_closed', '<=', params.date_to]);
+        if (params.date_from) wonDomain.push(['date_closed', '>=', convertDateToUtc(params.date_from, false)]);
+        if (params.date_to) wonDomain.push(['date_closed', '<=', convertDateToUtc(params.date_to, true)]);
         if (params.user_id) wonDomain.push(['user_id', '=', params.user_id]);
         if (params.team_id) wonDomain.push(['team_id', '=', params.team_id]);
 
@@ -2033,7 +2035,7 @@ Returns time-series data showing won opportunities grouped by week, month, or qu
           periodData.revenue += (opp.expected_revenue as number) || 0;
         }
 
-        // Fetch lost opportunities if comparison requested
+        // Fetch lost opportunities if comparison requested (convert Sydney time to UTC)
         const lostByPeriodMap = new Map<string, { count: number; revenue: number }>();
         if (params.compare_to_lost) {
           const lostDomain: unknown[] = [
@@ -2042,8 +2044,8 @@ Returns time-series data showing won opportunities grouped by week, month, or qu
             '&', ['active', '=', false], ['probability', '=', 0],
             ['lost_reason_id', '!=', false]
           ];
-          if (params.date_from) lostDomain.push(['date_closed', '>=', params.date_from]);
-          if (params.date_to) lostDomain.push(['date_closed', '<=', params.date_to]);
+          if (params.date_from) lostDomain.push(['date_closed', '>=', convertDateToUtc(params.date_from, false)]);
+          if (params.date_to) lostDomain.push(['date_closed', '<=', convertDateToUtc(params.date_to, true)]);
           if (params.user_id) lostDomain.push(['user_id', '=', params.user_id]);
           if (params.team_id) lostDomain.push(['team_id', '=', params.team_id]);
 
@@ -2438,8 +2440,15 @@ Returns side-by-side comparison of key metrics including won count, revenue, win
             };
           };
 
-          const p1Metrics = await getMetricsForPeriod(params.period1_start, params.period1_end);
-          const p2Metrics = await getMetricsForPeriod(params.period2_start, params.period2_end);
+          // Convert Sydney time to UTC for date filters
+          const p1Metrics = await getMetricsForPeriod(
+            convertDateToUtc(params.period1_start, false),
+            convertDateToUtc(params.period1_end, true)
+          );
+          const p2Metrics = await getMetricsForPeriod(
+            convertDateToUtc(params.period2_start, false),
+            convertDateToUtc(params.period2_end, true)
+          );
 
           comparison.periods = [
             { label: `${params.period1_start} to ${params.period1_end}`, start: params.period1_start, end: params.period1_end, ...p1Metrics },
@@ -2585,12 +2594,13 @@ Returns a paginated list of activities with details including type, due date, st
           domain.push(['res_id', '=', params.lead_id]);
         }
 
+        // Convert Sydney time to UTC for date filters (applies to date_deadline for consistency)
         if (params.date_from) {
-          domain.push(['date_deadline', '>=', params.date_from]);
+          domain.push(['date_deadline', '>=', convertDateToUtc(params.date_from, false)]);
         }
 
         if (params.date_to) {
-          domain.push(['date_deadline', '<=', params.date_to]);
+          domain.push(['date_deadline', '<=', convertDateToUtc(params.date_to, true)]);
         }
 
         // Activity type filter
@@ -2745,13 +2755,13 @@ Returns a paginated list of activities with details including type, due date, st
             };
         }
 
-        // Apply filters
+        // Apply filters (convert Sydney time to UTC for date filters)
         if (params.filters) {
           if (params.filters.user_id) domain.push(['user_id', '=', params.filters.user_id]);
           if (params.filters.team_id) domain.push(['team_id', '=', params.filters.team_id]);
           if (params.filters.stage_id) domain.push(['stage_id', '=', params.filters.stage_id]);
-          if (params.filters.date_from) domain.push(['create_date', '>=', params.filters.date_from]);
-          if (params.filters.date_to) domain.push(['create_date', '<=', params.filters.date_to]);
+          if (params.filters.date_from) domain.push(['create_date', '>=', convertDateToUtc(params.filters.date_from, false)]);
+          if (params.filters.date_to) domain.push(['create_date', '<=', convertDateToUtc(params.filters.date_to, true)]);
           if (params.filters.min_revenue !== undefined) domain.push(['expected_revenue', '>=', params.filters.min_revenue]);
           if (params.filters.max_revenue !== undefined) domain.push(['expected_revenue', '<=', params.filters.max_revenue]);
           if (params.filters.query) {
