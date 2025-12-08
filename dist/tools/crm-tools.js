@@ -683,12 +683,11 @@ Returns summary statistics including total lost count and revenue, breakdown by 
         try {
             const client = getOdooClient();
             // Build domain for lost opportunities
-            // Lost = active=False AND probability=0 OR lost_reason_id is set
+            // Lost = active=False AND probability=0 (archived opportunities with 0% probability)
             const domain = [
                 ['type', '=', 'opportunity'],
-                '|',
-                '&', ['active', '=', false], ['probability', '=', 0],
-                ['lost_reason_id', '!=', false]
+                ['active', '=', false],
+                ['probability', '=', 0]
             ];
             // Apply filters (convert Sydney time to UTC)
             if (params.date_from) {
@@ -848,11 +847,11 @@ Returns a paginated list of lost opportunities with details including the lost r
         try {
             const client = getOdooClient();
             // Build domain for lost opportunities
+            // Lost = active=False AND probability=0 (archived opportunities with 0% probability)
             const domain = [
                 ['type', '=', 'opportunity'],
-                '|',
-                '&', ['active', '=', false], ['probability', '=', 0],
-                ['lost_reason_id', '!=', false]
+                ['active', '=', false],
+                ['probability', '=', 0]
             ];
             // Default to last 90 days if no date filter specified (prevents timeout on large datasets)
             // Use getDaysAgoUtc to get Sydney-timezone-aware 90 days ago converted to UTC
@@ -954,11 +953,11 @@ Returns time-series data showing lost opportunities grouped by week, month, or q
         try {
             const client = getOdooClient();
             // Build domain for lost opportunities
+            // Lost = active=False AND probability=0 (archived opportunities with 0% probability)
             const lostDomain = [
                 ['type', '=', 'opportunity'],
-                '|',
-                '&', ['active', '=', false], ['probability', '=', 0],
-                ['lost_reason_id', '!=', false]
+                ['active', '=', false],
+                ['probability', '=', 0]
             ];
             // Apply filters (convert Sydney time to UTC)
             if (params.date_from) {
@@ -1466,13 +1465,13 @@ Returns time-series data showing won opportunities grouped by week, month, or qu
                 periodData.revenue += opp.expected_revenue || 0;
             }
             // Fetch lost opportunities if comparison requested (convert Sydney time to UTC)
+            // Lost = active=False AND probability=0 (archived opportunities with 0% probability)
             const lostByPeriodMap = new Map();
             if (params.compare_to_lost) {
                 const lostDomain = [
                     ['type', '=', 'opportunity'],
-                    '|',
-                    '&', ['active', '=', false], ['probability', '=', 0],
-                    ['lost_reason_id', '!=', false]
+                    ['active', '=', false],
+                    ['probability', '=', 0]
                 ];
                 if (params.date_from)
                     lostDomain.push(['date_closed', '>=', convertDateToUtc(params.date_from, false)]);
@@ -1747,10 +1746,10 @@ Returns side-by-side comparison of key metrics including won count, revenue, win
                         ['date_closed', '>=', start],
                         ['date_closed', '<=', end]
                     ];
+                    // Lost = active=False AND probability=0 (archived opportunities with 0% probability)
                     const lostDomain = [
-                        '|',
-                        '&', ['active', '=', false], ['probability', '=', 0],
-                        ['lost_reason_id', '!=', false],
+                        ['active', '=', false],
+                        ['probability', '=', 0],
                         ['date_closed', '>=', start],
                         ['date_closed', '<=', end]
                     ];
@@ -1801,8 +1800,8 @@ Returns side-by-side comparison of key metrics including won count, revenue, win
                 const groupField = params.compare_type === 'salespeople' ? 'user_id' : 'team_id';
                 // Get won stats
                 const wonStats = await client.readGroup('crm.lead', [[groupField, '!=', false], ['probability', '=', 100]], [groupField, 'expected_revenue:sum', 'id:count'], [groupField]);
-                // Get lost stats
-                const lostStats = await client.readGroup('crm.lead', [[groupField, '!=', false], '|', '&', ['active', '=', false], ['probability', '=', 0], ['lost_reason_id', '!=', false]], [groupField, 'id:count'], [groupField]);
+                // Get lost stats (active=False AND probability=0)
+                const lostStats = await client.readGroup('crm.lead', [[groupField, '!=', false], ['active', '=', false], ['probability', '=', 0]], [groupField, 'id:count'], [groupField]);
                 const entities = [];
                 for (const stat of wonStats) {
                     const fieldValue = stat[groupField];
@@ -2009,8 +2008,9 @@ Returns a paginated list of activities with details including type, due date, st
                     fields = params.fields || CRM_FIELDS.WON_OPPORTUNITY_DETAIL;
                     break;
                 case 'lost':
+                    // Lost = active=False AND probability=0 (archived opportunities with 0% probability)
                     model = 'crm.lead';
-                    domain = ['|', '&', ['active', '=', false], ['probability', '=', 0], ['lost_reason_id', '!=', false]];
+                    domain = [['active', '=', false], ['probability', '=', 0]];
                     fields = params.fields || CRM_FIELDS.LOST_OPPORTUNITY_DETAIL;
                     break;
                 case 'contacts':
