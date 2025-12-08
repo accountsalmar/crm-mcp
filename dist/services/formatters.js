@@ -1,4 +1,5 @@
 import { CONTEXT_LIMITS, ResponseFormat } from '../constants.js';
+import { stripHtml, getContactName } from '../utils/html-utils.js';
 // Format currency value
 export function formatCurrency(value) {
     if (value === undefined || value === null)
@@ -44,7 +45,7 @@ export function truncateText(text, maxLength = 200) {
 // Format lead for list view (minimal fields)
 export function formatLeadListItem(lead) {
     return `- **${lead.name}** (ID: ${lead.id})
-  Contact: ${lead.contact_name || '-'} | ${lead.email_from || '-'}
+  Contact: ${getContactName(lead)} | ${lead.email_from || '-'}
   Stage: ${getRelationName(lead.stage_id)} | Revenue: ${formatCurrency(lead.expected_revenue)} | Prob: ${formatPercent(lead.probability)}`;
 }
 // Format lead detail view
@@ -53,7 +54,7 @@ export function formatLeadDetail(lead) {
 **ID:** ${lead.id} | **Type:** ${lead.type || 'opportunity'}
 
 ### Contact Information
-- **Contact:** ${lead.contact_name || '-'}
+- **Contact:** ${getContactName(lead)}
 - **Email:** ${lead.email_from || '-'}
 - **Phone:** ${lead.phone || '-'} | **Mobile:** ${lead.mobile || '-'}
 - **Address:** ${[lead.street, lead.city, getRelationName(lead.country_id)].filter(Boolean).join(', ') || '-'}
@@ -80,7 +81,7 @@ export function formatLeadDetail(lead) {
 - **Medium:** ${getRelationName(lead.medium_id)}
 - **Campaign:** ${getRelationName(lead.campaign_id)}
 
-${lead.description ? `### Notes\n${truncateText(lead.description, 500)}` : ''}`;
+${lead.description ? `### Notes\n${truncateText(stripHtml(lead.description), 500)}` : ''}`;
 }
 // Format paginated leads response
 export function formatLeadList(data, format) {
@@ -323,12 +324,12 @@ export function formatLostOpportunitiesList(data, format) {
         for (let i = 0; i < data.items.length; i++) {
             const opp = data.items[i];
             output += `${data.offset + i + 1}. **${opp.name}** (ID: ${opp.id})\n`;
-            output += `   - Contact: ${opp.contact_name || '-'} | ${opp.email_from || '-'}\n`;
+            output += `   - Contact: ${getContactName(opp)} | ${opp.email_from || '-'}\n`;
             output += `   - Lost Reason: ${getRelationName(opp.lost_reason_id)}\n`;
             output += `   - Revenue: ${formatCurrency(opp.expected_revenue)} | Stage: ${getRelationName(opp.stage_id)}\n`;
             output += `   - Salesperson: ${getRelationName(opp.user_id)} | Lost: ${formatDate(opp.date_closed)}\n`;
             if (opp.description) {
-                output += `   - Notes: ${truncateText(opp.description, 100)}\n`;
+                output += `   - Notes: ${truncateText(stripHtml(opp.description), 100)}\n`;
             }
             output += '\n';
         }
@@ -397,7 +398,7 @@ export function formatWonOpportunitiesList(data, format) {
         for (let i = 0; i < data.items.length; i++) {
             const opp = data.items[i];
             output += `${data.offset + i + 1}. **${opp.name}** (ID: ${opp.id})\n`;
-            output += `   - Contact: ${opp.contact_name || '-'} | ${opp.email_from || '-'}\n`;
+            output += `   - Contact: ${getContactName(opp)} | ${opp.email_from || '-'}\n`;
             output += `   - Revenue: ${formatCurrency(opp.expected_revenue)} | Stage: ${getRelationName(opp.stage_id)}\n`;
             output += `   - Salesperson: ${getRelationName(opp.user_id)} | Won: ${formatDate(opp.date_closed)}\n\n`;
         }
@@ -719,7 +720,7 @@ export function formatPipelineSummaryWithWeighted(stages, format) {
 // Format extended lead list item (with additional fields)
 export function formatLeadListItemExtended(lead) {
     let output = `- **${lead.name}** (ID: ${lead.id})\n`;
-    output += `  Contact: ${lead.contact_name || '-'} | ${lead.email_from || '-'}\n`;
+    output += `  Contact: ${getContactName(lead)} | ${lead.email_from || '-'}\n`;
     output += `  Stage: ${getRelationName(lead.stage_id)} | Revenue: ${formatCurrency(lead.expected_revenue)} | Prob: ${formatPercent(lead.probability)}\n`;
     output += `  Salesperson: ${getRelationName(lead.user_id)} | Team: ${getRelationName(lead.team_id)}\n`;
     // Address
@@ -743,9 +744,9 @@ export function formatLeadListItemExtended(lead) {
     if (partner !== '-') {
         output += `  Partner: ${partner}\n`;
     }
-    // Description (truncated)
+    // Description (truncated, HTML stripped)
     if (lead.description) {
-        output += `  Notes: ${truncateText(lead.description, 150)}\n`;
+        output += `  Notes: ${truncateText(stripHtml(lead.description), 150)}\n`;
     }
     return output;
 }
