@@ -67,8 +67,9 @@ import {
   type ActivitySearchInput,
   type ExportDataInput
 } from '../schemas/index.js';
-import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat } from '../constants.js';
-import type { CrmLead, CrmStage, ResPartner, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, CrmLostReason, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, CrmTeam, ResUsers, OdooRecord } from '../types.js';
+import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG } from '../constants.js';
+import type { CrmLead, CrmStage, ResPartner, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, CrmLostReason, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, CrmTeam, ResUsers, OdooRecord, ExportFormat } from '../types.js';
+import { ExportWriter, generateExportFilename, getOutputDirectory, getMimeType } from '../utils/export-writer.js';
 
 // Register all CRM tools
 export function registerCrmTools(server: McpServer): void {
@@ -2657,32 +2658,44 @@ Returns a paginated list of activities with details including type, due date, st
   );
 
   // ============================================
-  // TOOL: Export Data (returns base64 for Claude to save)
+  // TOOL: Export Data (file-based, supports XLSX/CSV/JSON)
   // ============================================
   server.registerTool(
     'odoo_crm_export_data',
     {
       title: 'Export CRM Data',
-      description: `Export CRM data as base64-encoded CSV/JSON. Returns encoded content for Claude to decode and save.
+      description: `Export CRM data to Excel (XLSX), CSV, or JSON files.
 
-**Important:** This tool returns base64-encoded data in the response. Claude will decode it and save to the filesystem.
+**Formats:**
+- **xlsx** (default): Excel format - compressed, opens directly in Excel/Power BI
+- **csv**: Comma-separated values - universal compatibility
+- **json**: Structured data for programmatic use
+
+**Features:**
+- Exports up to ${EXPORT_CONFIG.MAX_EXPORT_RECORDS.toLocaleString()} records
+- Large exports are fetched in batches (no timeout issues)
+- Files written directly to disk (fast, no size limits)
 
 **When to use:**
-- Exporting leads for external analysis
+- Exporting leads/contacts for external analysis
 - Creating reports for stakeholders
 - Backing up CRM data
-- Integrating with other systems
+- Integrating with other systems like Power BI
 
-**Size limits:** Keep max_records low (100-200) to avoid response truncation. Use filters for large datasets.`,
+**Best Practices:**
+- Use filters to focus on relevant data
+- XLSX format is recommended for Excel users (smaller files)`,
       inputSchema: ExportDataSchema,
       annotations: {
-        readOnlyHint: true,
+        readOnlyHint: false,  // Creates files
         destructiveHint: false,
-        idempotentHint: true,
+        idempotentHint: false,  // Creates new file each time
         openWorldHint: true
       }
     },
     async (params: ExportDataInput) => {
+      const startTime = Date.now();
+
       try {
         const client = getOdooClient();
 
@@ -2738,86 +2751,75 @@ Returns a paginated list of activities with details including type, due date, st
           }
         }
 
-        // Fetch data
-        const records = await client.searchRead<OdooRecord>(
-          model,
-          domain,
-          fields,
-          { limit: params.max_records, order: 'id desc' }
-        );
+        // Setup export
+        const format = params.format as ExportFormat;
+        const outputDir = getOutputDirectory(params.output_directory);
+        const filename = generateExportFilename(params.export_type, params.filename);
 
-        // Generate filename
-        const now = new Date();
-        const timestamp = now.toISOString().replace(/[-:T]/g, '').substring(0, 14);
-        const filename = `${params.export_type}_${timestamp}.${params.format}`;
-
-        // Prepare export content
-        let exportContent: string;
-        let mimeType: string;
-
-        if (params.format === 'json') {
-          exportContent = JSON.stringify(records, null, 2);
-          mimeType = 'application/json';
-        } else {
-          // CSV format
-          if (records.length === 0) {
-            exportContent = fields.join(',') + '\n';
-          } else {
-            const headers = fields.join(',');
-            const rows = records.map(record => {
-              return fields.map(field => {
-                const value = record[field];
-                if (value === null || value === undefined) return '';
-                if (Array.isArray(value)) return `"${String(value[1] || value[0]).replace(/"/g, '""')}"`;
-                if (typeof value === 'string') return `"${value.replace(/"/g, '""')}"`;
-                return String(value);
-              }).join(',');
-            });
-            exportContent = headers + '\n' + rows.join('\n');
-          }
-          mimeType = 'text/csv';
-        }
-
-        // Encode to base64
-        const contentBytes = Buffer.from(exportContent, 'utf-8');
-        const sizeBytes = contentBytes.length;
-
-        // Check if content is too large (50KB threshold for safe base64 transfer)
-        const MAX_SAFE_SIZE = 50000;
-        let truncated = false;
-        let warning: string | undefined;
-        let base64Content: string;
-
-        if (sizeBytes > MAX_SAFE_SIZE) {
-          // Truncate content
-          const truncatedContent = exportContent.substring(0, MAX_SAFE_SIZE);
-          base64Content = Buffer.from(truncatedContent, 'utf-8').toString('base64');
-          truncated = true;
-          warning = `Content size (${(sizeBytes / 1024).toFixed(1)} KB) exceeds safe limit (${(MAX_SAFE_SIZE / 1024).toFixed(0)} KB). Data was truncated. Use smaller max_records or add filters.`;
-        } else {
-          base64Content = contentBytes.toString('base64');
-        }
-
-        const result: ExportResult = {
-          success: true,
+        // Initialize the export writer
+        const writer = new ExportWriter({
+          format,
+          outputDir,
           filename,
-          record_count: records.length,
-          size_bytes: sizeBytes,
-          format: params.format,
-          mime_type: mimeType,
-          encoding: 'base64',
-          content: base64Content,
-          truncated,
-          warning,
-          instructions: `To save this file, decode the base64 content and write to disk:\necho '${base64Content.substring(0, 50)}...' | base64 -d > /mnt/user-data/outputs/${filename}`
-        };
+          fields,
+        });
 
-        const output = formatExportResult(result, ResponseFormat.MARKDOWN);
+        try {
+          await writer.initialize();
 
-        return {
-          content: [{ type: 'text', text: output }],
-          structuredContent: result
-        };
+          // Fetch records in batches with progress tracking
+          const { records, totalFetched, totalAvailable } = await client.searchReadPaginated<OdooRecord>(
+            model,
+            domain,
+            fields,
+            {
+              maxRecords: params.max_records,
+              batchSize: EXPORT_CONFIG.BATCH_SIZE,
+              order: 'id desc',
+              onProgress: (progress) => {
+                // Log progress to stderr (doesn't interfere with MCP protocol)
+                console.error(`Export progress: ${progress.percent_complete}% (${progress.records_exported}/${progress.total_records})`);
+              },
+            }
+          );
+
+          // Write all records
+          await writer.writeBatch(records);
+
+          // Finalize and get file info
+          const { filePath, sizeBytes } = await writer.finalize();
+
+          const duration = Date.now() - startTime;
+
+          // Build result
+          const result: ExportResult = {
+            success: true,
+            filename: `${filename}.${format}`,
+            file_path: filePath,
+            record_count: totalFetched,
+            total_available: totalAvailable,
+            size_bytes: sizeBytes,
+            format,
+            mime_type: getMimeType(format),
+            export_duration_ms: duration,
+            warning: totalFetched < totalAvailable
+              ? `Exported ${totalFetched.toLocaleString()} of ${totalAvailable.toLocaleString()} available records. Increase max_records or add filters to export more.`
+              : undefined,
+            instructions: `File exported successfully to: ${filePath}`,
+          };
+
+          const output = formatExportResult(result, ResponseFormat.MARKDOWN);
+
+          return {
+            content: [{ type: 'text', text: output }],
+            structuredContent: result
+          };
+
+        } catch (error) {
+          // Clean up partial file on error
+          await writer.cleanup();
+          throw error;
+        }
 
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error';

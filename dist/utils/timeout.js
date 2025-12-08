@@ -29,5 +29,6 @@ export const TIMEOUTS = {
     API: 30000,
     LARGE_OPERATION: 60000,
     HEALTH_CHECK: 5000,
+    EXPORT_BATCH: 45000, // 45 seconds per export batch
 };
 //# sourceMappingURL=timeout.js.map

@@ -18,5 +18,6 @@ export declare const TIMEOUTS: {
     readonly API: 30000;
     readonly LARGE_OPERATION: 60000;
     readonly HEALTH_CHECK: 5000;
+    readonly EXPORT_BATCH: 45000;
 };
 //# sourceMappingURL=timeout.d.ts.map

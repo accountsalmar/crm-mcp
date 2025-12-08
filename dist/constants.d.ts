@@ -11,6 +11,9 @@ export declare const EXPORT_CONFIG: {
     readonly OUTPUT_DIR_ENV_VAR: "MCP_EXPORT_DIR";
     readonly MAX_SIZE_WARNING_BYTES: number;
     readonly MAX_SIZE_ENV_VAR: "MCP_EXPORT_MAX_SIZE_MB";
+    readonly BATCH_SIZE: 500;
+    readonly MAX_EXPORT_RECORDS: 10000;
+    readonly DEFAULT_EXPORT_RECORDS: 1000;
 };
 export declare const CRM_FIELDS: {
     LEAD_LIST: string[];

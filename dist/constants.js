@@ -21,6 +21,12 @@ export const EXPORT_CONFIG = {
     MAX_SIZE_WARNING_BYTES: 50 * 1024 * 1024,
     // Environment variable name for max size threshold (in MB)
     MAX_SIZE_ENV_VAR: 'MCP_EXPORT_MAX_SIZE_MB',
+    // Batch size for paginated exports (records per API call)
+    BATCH_SIZE: 500,
+    // Maximum records allowed in a single export
+    MAX_EXPORT_RECORDS: 10000,
+    // Default max records for export
+    DEFAULT_EXPORT_RECORDS: 1000,
 };
 // Odoo CRM field mappings for context efficiency
 export const CRM_FIELDS = {

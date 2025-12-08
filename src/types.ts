@@ -445,20 +445,33 @@ export interface ActivityDetail extends MailActivity {
   activity_status?: 'overdue' | 'today' | 'upcoming' | 'done';
 }
 
-// Export Result - Returns base64-encoded data for Claude to save
+// Export format type
+export type ExportFormat = 'csv' | 'json' | 'xlsx';
+
+// Export Result - File-based export (no base64)
 export interface ExportResult {
   [key: string]: unknown;
   success: boolean;
   filename: string;
+  file_path: string;           // Path to exported file
   record_count: number;
+  total_available: number;     // Total records matching filter
   size_bytes: number;
-  format: 'csv' | 'json';
+  format: ExportFormat;
   mime_type: string;
-  encoding: 'base64';
-  content: string; // Base64-encoded CSV/JSON data
-  truncated?: boolean; // True if data was truncated due to size
-  warning?: string; // Size warning if content exceeds safe limit
-  instructions: string; // How Claude should save the file
+  export_duration_ms: number;  // How long the export took
+  warning?: string;            // Warning if not all records exported
+  instructions: string;        // Next steps for the user
+}
+
+// Export progress tracking
+export interface ExportProgress {
+  current_batch: number;
+  total_batches: number;
+  records_exported: number;
+  total_records: number;
+  percent_complete: number;
+  elapsed_ms: number;
 }
 
 // Pipeline Summary with weighted revenue

@@ -752,17 +752,13 @@ export function formatActivityList(data: PaginatedResponse<ActivityDetail>, form
   return output;
 }
 
-// Format export result (base64 encoded data for Claude to save)
+// Format export result (file-based export)
 export function formatExportResult(result: ExportResult, format: ResponseFormat): string {
   if (format === ResponseFormat.JSON) {
     return JSON.stringify(result, null, 2);
   }
 
-  let output = `## Export Ready\n\n`;
-  output += `- **Status:** ${result.success ? '✓ Success' : '✗ Failed'}\n`;
-  output += `- **Filename:** \`${result.filename}\`\n`;
-  output += `- **Records:** ${result.record_count.toLocaleString()}\n`;
-  output += `- **Format:** ${result.format.toUpperCase()}\n`;
+  let output = `## Export Complete\n\n`;
 
   // Format file size in human-readable format
   const bytes = result.size_bytes;
@@ -774,21 +770,40 @@ export function formatExportResult(result: ExportResult, format: ResponseFormat)
   } else {
     sizeStr = `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
   }
-  output += `- **Size:** ${sizeStr}\n`;
-  output += `- **Encoding:** ${result.encoding}\n`;
 
-  if (result.truncated) {
-    output += `\n**⚠️ Data Truncated:** Content was truncated to avoid response size limits. Use smaller max_records or add filters.\n`;
+  // Format duration
+  const durationSec = (result.export_duration_ms / 1000).toFixed(1);
+
+  output += `| Property | Value |\n`;
+  output += `|----------|-------|\n`;
+  output += `| Status | ${result.success ? 'Success' : 'Failed'} |\n`;
+  output += `| Filename | \`${result.filename}\` |\n`;
+  output += `| Records | ${result.record_count.toLocaleString()} |\n`;
+  if (result.total_available > result.record_count) {
+    output += `| Available | ${result.total_available.toLocaleString()} |\n`;
   }
+  output += `| Format | ${result.format.toUpperCase()} |\n`;
+  output += `| Size | ${sizeStr} |\n`;
+  output += `| Duration | ${durationSec}s |\n`;
+  output += `| Location | \`${result.file_path}\` |\n`;
+
+  output += '\n';
 
   if (result.warning) {
-    output += `\n**⚠️ Warning:** ${result.warning}\n`;
+    output += `> **Note:** ${result.warning}\n\n`;
   }
 
-  output += `\n### Instructions\n${result.instructions}\n`;
+  output += `### Next Steps\n`;
+  output += `${result.instructions}\n\n`;
 
-  // Include the base64 content in a code block for easy copying
-  output += `\n### Base64 Content\n\`\`\`\n${result.content}\n\`\`\`\n`;
+  // Format-specific tips
+  if (result.format === 'xlsx') {
+    output += `**To open:** Double-click the file or import into Excel/Power BI\n`;
+  } else if (result.format === 'csv') {
+    output += `**To open:** Import into Excel, Google Sheets, or any spreadsheet application\n`;
+  } else if (result.format === 'json') {
+    output += `**To use:** Parse with any JSON-compatible tool or programming language\n`;
+  }
 
   return output;
 }

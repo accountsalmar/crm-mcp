@@ -392,19 +392,28 @@ export interface ActivityDetail extends MailActivity {
     res_name?: string;
     activity_status?: 'overdue' | 'today' | 'upcoming' | 'done';
 }
+export type ExportFormat = 'csv' | 'json' | 'xlsx';
 export interface ExportResult {
     [key: string]: unknown;
     success: boolean;
     filename: string;
+    file_path: string;
     record_count: number;
+    total_available: number;
     size_bytes: number;
-    format: 'csv' | 'json';
+    format: ExportFormat;
     mime_type: string;
-    encoding: 'base64';
-    content: string;
-    truncated?: boolean;
+    export_duration_ms: number;
     warning?: string;
     instructions: string;
+}
+export interface ExportProgress {
+    current_batch: number;
+    total_batches: number;
+    records_exported: number;
+    total_records: number;
+    percent_complete: number;
+    elapsed_ms: number;
 }
 export interface PipelineSummaryWithWeighted extends PipelineSummary {
     weighted_revenue: number;

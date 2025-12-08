@@ -482,7 +482,7 @@ export declare const ActivitySearchSchema: z.ZodObject<{
 }>;
 export declare const ExportDataSchema: z.ZodObject<{
     export_type: z.ZodEnum<["leads", "won", "lost", "contacts", "activities"]>;
-    format: z.ZodDefault<z.ZodEnum<["csv", "json"]>>;
+    format: z.ZodDefault<z.ZodEnum<["csv", "json", "xlsx"]>>;
     filters: z.ZodOptional<z.ZodObject<{
         user_id: z.ZodOptional<z.ZodNumber>;
         team_id: z.ZodOptional<z.ZodNumber>;
@@ -513,10 +513,13 @@ export declare const ExportDataSchema: z.ZodObject<{
     }>>;
     fields: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     max_records: z.ZodDefault<z.ZodNumber>;
+    output_directory: z.ZodOptional<z.ZodString>;
+    filename: z.ZodOptional<z.ZodString>;
 }, "strict", z.ZodTypeAny, {
-    format: "json" | "csv";
+    format: "json" | "csv" | "xlsx";
     export_type: "leads" | "won" | "lost" | "contacts" | "activities";
     max_records: number;
+    filename?: string | undefined;
     fields?: string[] | undefined;
     filters?: {
         stage_id?: number | undefined;
@@ -528,9 +531,11 @@ export declare const ExportDataSchema: z.ZodObject<{
         date_from?: string | undefined;
         date_to?: string | undefined;
     } | undefined;
+    output_directory?: string | undefined;
 }, {
     export_type: "leads" | "won" | "lost" | "contacts" | "activities";
-    format?: "json" | "csv" | undefined;
+    filename?: string | undefined;
+    format?: "json" | "csv" | "xlsx" | undefined;
     fields?: string[] | undefined;
     filters?: {
         stage_id?: number | undefined;
@@ -543,6 +548,7 @@ export declare const ExportDataSchema: z.ZodObject<{
         date_to?: string | undefined;
     } | undefined;
     max_records?: number | undefined;
+    output_directory?: string | undefined;
 }>;
 export type LeadSearchInput = z.infer<typeof LeadSearchSchema>;
 export type LeadDetailInput = z.infer<typeof LeadDetailSchema>;

@@ -522,13 +522,13 @@ export const ActivitySearchSchema = PaginationSchema.extend({
         .optional()
         .describe('Activity due date to (YYYY-MM-DD)')
 }).strict();
-// Export data schema - returns base64 encoded data for Claude to save
+// Export data schema - writes directly to filesystem (no base64)
 export const ExportDataSchema = z.object({
     export_type: z.enum(['leads', 'won', 'lost', 'contacts', 'activities'])
         .describe("Type of data to export: 'leads', 'won', 'lost', 'contacts', or 'activities'"),
-    format: z.enum(['csv', 'json'])
-        .default('csv')
-        .describe("Export format: 'csv' or 'json'"),
+    format: z.enum(['csv', 'json', 'xlsx'])
+        .default('xlsx')
+        .describe("Export format: 'xlsx' (Excel, recommended), 'csv', or 'json'"),
     filters: z.object({
         user_id: z.number().int().positive().optional(),
         team_id: z.number().int().positive().optional(),
@@ -542,12 +542,20 @@ export const ExportDataSchema = z.object({
         .describe('Filters to apply (same as respective search tools)'),
     fields: z.array(z.string())
         .optional()
-        .describe('Specific fields to include (default: all available)'),
+        .describe('Specific fields to include (default: all available for export type)'),
     max_records: z.number()
         .int()
         .min(1)
-        .max(500)
-        .default(100)
-        .describe('Maximum records to export (1-500). Use smaller values to avoid truncation.')
+        .max(10000)
+        .default(1000)
+        .describe('Maximum records to export (1-10000). Large exports are fetched in batches.'),
+    output_directory: z.string()
+        .optional()
+        .describe('Directory to write export file. Defaults to /mnt/user-data/outputs or MCP_EXPORT_DIR env var'),
+    filename: z.string()
+        .regex(/^[a-zA-Z0-9_-]+$/)
+        .max(50)
+        .optional()
+        .describe('Custom filename (without extension). Default: auto-generated with timestamp')
 }).strict();
 //# sourceMappingURL=index.js.map

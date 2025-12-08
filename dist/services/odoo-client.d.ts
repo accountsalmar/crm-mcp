@@ -1,4 +1,5 @@
-import type { OdooConfig, OdooRecord } from '../types.js';
+import type { OdooConfig, OdooRecord, ExportProgress } from '../types.js';
+export type ExportProgressCallback = (progress: ExportProgress) => void;
 export declare class OdooClient {
     private config;
     private uid;
@@ -23,6 +24,24 @@ export declare class OdooClient {
         lazy?: boolean;
     }): Promise<Array<Record<string, unknown>>>;
     fieldsGet(model: string, attributes?: string[]): Promise<Record<string, unknown>>;
+    /**
+     * Fetch records in batches with progress tracking
+     * Designed for large exports to avoid timeout issues
+     */
+    searchReadPaginated<T extends OdooRecord>(model: string, domain: unknown[] | undefined, fields: string[] | undefined, options: {
+        maxRecords: number;
+        batchSize?: number;
+        order?: string;
+        onProgress?: ExportProgressCallback;
+    }): Promise<{
+        records: T[];
+        totalFetched: number;
+        totalAvailable: number;
+    }>;
+    /**
+     * Search and read with export batch timeout (longer than regular API timeout)
+     */
+    private searchReadWithTimeout;
 }
 export declare function getOdooClient(): OdooClient;
 export declare function resetOdooClient(): void;
