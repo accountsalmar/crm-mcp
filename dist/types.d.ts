@@ -114,6 +114,7 @@ export interface SalesAnalytics {
         won: number;
     }>;
     top_opportunities: Array<{
+        id: number;
         name: string;
         revenue: number;
         probability: number;

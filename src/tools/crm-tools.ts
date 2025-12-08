@@ -532,11 +532,12 @@ Returns aggregated metrics including conversion rates, revenue analysis, and per
           const topOpps = await client.searchRead<CrmLead>(
             'crm.lead',
             [...domain, ['active', '=', true], ['probability', '<', 100]],
-            ['name', 'expected_revenue', 'probability', 'stage_id'],
+            ['id', 'name', 'expected_revenue', 'probability', 'stage_id'],
             { limit: params.top_opportunities_count, order: 'expected_revenue desc' }
           );
-          
+
           analytics.top_opportunities = topOpps.map(o => ({
+            id: o.id,
             name: o.name,
             revenue: o.expected_revenue || 0,
             probability: o.probability || 0,

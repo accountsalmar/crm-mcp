@@ -1,0 +1,1 @@
+{"version":3,"file":"odoo-urls.d.ts","sourceRoot":"","sources":["../../src/utils/odoo-urls.ts"],"names":[],"mappings":"AAAA;;GAEG;AAIH;;GAEG;AACH,wBAAgB,UAAU,CAAC,EAAE,EAAE,MAAM,EAAE,KAAK,EAAE,UAAU,GAAG,aAAa,GAAG,MAAM,CAQhF;AAED;;;GAGG;AACH,wBAAgB,gBAAgB,CAAC,EAAE,EAAE,MAAM,GAAG,SAAS,EAAE,IAAI,EAAE,MAAM,EAAE,KAAK,EAAE,UAAU,GAAG,aAAa,GAAG,MAAM,CAOhH"}

@@ -1,5 +1,6 @@
 import { CONTEXT_LIMITS, ResponseFormat } from '../constants.js';
 import { stripHtml, getContactName } from '../utils/html-utils.js';
+import { formatLinkedName } from '../utils/odoo-urls.js';
 // Format currency value
 export function formatCurrency(value) {
     if (value === undefined || value === null)
@@ -44,13 +45,13 @@ export function truncateText(text, maxLength = 200) {
 }
 // Format lead for list view (minimal fields)
 export function formatLeadListItem(lead) {
-    return `- **${lead.name}** (ID: ${lead.id})
+    return `- **${formatLinkedName(lead.id, lead.name, 'crm.lead')}** (ID: ${lead.id})
   Contact: ${getContactName(lead)} | ${lead.email_from || '-'}
   Stage: ${getRelationName(lead.stage_id)} | Revenue: ${formatCurrency(lead.expected_revenue)} | Prob: ${formatPercent(lead.probability)}`;
 }
 // Format lead detail view
 export function formatLeadDetail(lead) {
-    return `## ${lead.name}
+    return `## ${formatLinkedName(lead.id, lead.name, 'crm.lead')}
 **ID:** ${lead.id} | **Type:** ${lead.type || 'opportunity'}
 
 ### Contact Information
@@ -120,7 +121,7 @@ export function formatPipelineSummary(stages, format) {
         if (stage.opportunities.length > 0) {
             output += '- **Top opportunities:**\n';
             for (const opp of stage.opportunities) {
-                output += `  - ${opp.name}: ${formatCurrency(opp.expected_revenue)} (${formatPercent(opp.probability)})\n`;
+                output += `  - ${formatLinkedName(opp.id, opp.name, 'crm.lead')}: ${formatCurrency(opp.expected_revenue)} (${formatPercent(opp.probability)})\n`;
             }
         }
         output += '\n';
@@ -157,7 +158,7 @@ export function formatSalesAnalytics(analytics, format) {
     if (analytics.top_opportunities.length > 0) {
         output += '\n### Top Opportunities\n';
         for (const opp of analytics.top_opportunities) {
-            output += `- ${opp.name}: ${formatCurrency(opp.revenue)} (${formatPercent(opp.probability)}) - ${opp.stage}\n`;
+            output += `- ${formatLinkedName(opp.id, opp.name, 'crm.lead')}: ${formatCurrency(opp.revenue)} (${formatPercent(opp.probability)}) - ${opp.stage}\n`;
         }
     }
     return output;
@@ -197,7 +198,7 @@ export function formatContactList(data, format) {
     }
     else {
         for (const contact of data.items) {
-            output += `- **${contact.name}** (ID: ${contact.id})${contact.is_company ? ' 🏢' : ''}\n`;
+            output += `- **${formatLinkedName(contact.id, contact.name, 'res.partner')}** (ID: ${contact.id})${contact.is_company ? ' 🏢' : ''}\n`;
             output += `  ${contact.email || '-'} | ${contact.phone || contact.mobile || '-'}\n`;
             output += `  ${[contact.city, getRelationName(contact.country_id)].filter(x => x && x !== '-').join(', ') || '-'}\n\n`;
         }
@@ -306,7 +307,7 @@ export function formatLostAnalysis(analysis, groupBy, format) {
         output += `### Top ${analysis.top_lost.length} Largest Lost Opportunities\n`;
         for (let i = 0; i < analysis.top_lost.length; i++) {
             const opp = analysis.top_lost[i];
-            output += `${i + 1}. **${opp.name}** - ${formatCurrency(opp.revenue)} - ${opp.reason || 'No reason'} - ${opp.salesperson || 'Unassigned'}\n`;
+            output += `${i + 1}. **${formatLinkedName(opp.id, opp.name, 'crm.lead')}** - ${formatCurrency(opp.revenue)} - ${opp.reason || 'No reason'} - ${opp.salesperson || 'Unassigned'}\n`;
         }
     }
     return output;
@@ -323,7 +324,7 @@ export function formatLostOpportunitiesList(data, format) {
     else {
         for (let i = 0; i < data.items.length; i++) {
             const opp = data.items[i];
-            output += `${data.offset + i + 1}. **${opp.name}** (ID: ${opp.id})\n`;
+            output += `${data.offset + i + 1}. **${formatLinkedName(opp.id, opp.name, 'crm.lead')}** (ID: ${opp.id})\n`;
             output += `   - Contact: ${getContactName(opp)} | ${opp.email_from || '-'}\n`;
             output += `   - Lost Reason: ${getRelationName(opp.lost_reason_id)}\n`;
             output += `   - Revenue: ${formatCurrency(opp.expected_revenue)} | Stage: ${getRelationName(opp.stage_id)}\n`;
@@ -397,7 +398,7 @@ export function formatWonOpportunitiesList(data, format) {
     else {
         for (let i = 0; i < data.items.length; i++) {
             const opp = data.items[i];
-            output += `${data.offset + i + 1}. **${opp.name}** (ID: ${opp.id})\n`;
+            output += `${data.offset + i + 1}. **${formatLinkedName(opp.id, opp.name, 'crm.lead')}** (ID: ${opp.id})\n`;
             output += `   - Contact: ${getContactName(opp)} | ${opp.email_from || '-'}\n`;
             output += `   - Revenue: ${formatCurrency(opp.expected_revenue)} | Stage: ${getRelationName(opp.stage_id)}\n`;
             output += `   - Salesperson: ${getRelationName(opp.user_id)} | Won: ${formatDate(opp.date_closed)}\n\n`;
@@ -476,7 +477,7 @@ export function formatWonAnalysis(analysis, groupBy, format) {
         output += `### Top ${analysis.top_won.length} Largest Won Opportunities\n`;
         for (let i = 0; i < analysis.top_won.length; i++) {
             const opp = analysis.top_won[i];
-            output += `${i + 1}. **${opp.name}** - ${formatCurrency(opp.revenue)} - ${opp.salesperson || 'Unassigned'} - Won: ${opp.date_closed}`;
+            output += `${i + 1}. **${formatLinkedName(opp.id, opp.name, 'crm.lead')}** - ${formatCurrency(opp.revenue)} - ${opp.salesperson || 'Unassigned'} - Won: ${opp.date_closed}`;
             if (opp.sales_cycle_days !== undefined) {
                 output += ` (${opp.sales_cycle_days} days)`;
             }
@@ -625,7 +626,7 @@ export function formatActivityList(data, format) {
             output += `   - Type: ${getRelationName(activity.activity_type_id)} | Due: ${formatDate(activity.date_deadline)}\n`;
             output += `   - Assigned: ${getRelationName(activity.user_id)} | Status: ${activity.activity_status || '-'}\n`;
             if (activity.res_name) {
-                output += `   - Linked to: ${activity.res_name} (ID: ${activity.res_id})\n`;
+                output += `   - Linked to: ${formatLinkedName(activity.res_id, activity.res_name, 'crm.lead')} (ID: ${activity.res_id})\n`;
             }
             output += '\n';
         }
@@ -710,7 +711,7 @@ export function formatPipelineSummaryWithWeighted(stages, format) {
             if (stage.opportunities && stage.opportunities.length > 0) {
                 output += `\n**${stage.stage_name}:**\n`;
                 for (const opp of stage.opportunities) {
-                    output += `- ${opp.name}: ${formatCurrency(opp.expected_revenue)} (${formatPercent(opp.probability)})\n`;
+                    output += `- ${formatLinkedName(opp.id, opp.name, 'crm.lead')}: ${formatCurrency(opp.expected_revenue)} (${formatPercent(opp.probability)})\n`;
                 }
             }
         }
@@ -719,7 +720,7 @@ export function formatPipelineSummaryWithWeighted(stages, format) {
 }
 // Format extended lead list item (with additional fields)
 export function formatLeadListItemExtended(lead) {
-    let output = `- **${lead.name}** (ID: ${lead.id})\n`;
+    let output = `- **${formatLinkedName(lead.id, lead.name, 'crm.lead')}** (ID: ${lead.id})\n`;
     output += `  Contact: ${getContactName(lead)} | ${lead.email_from || '-'}\n`;
     output += `  Stage: ${getRelationName(lead.stage_id)} | Revenue: ${formatCurrency(lead.expected_revenue)} | Prob: ${formatPercent(lead.probability)}\n`;
     output += `  Salesperson: ${getRelationName(lead.user_id)} | Team: ${getRelationName(lead.team_id)}\n`;
