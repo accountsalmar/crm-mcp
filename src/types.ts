@@ -43,6 +43,10 @@ export interface CrmLead extends OdooRecord {
   city?: string;
   country_id?: [number, string];
   street?: string;
+  // Classification fields
+  lead_source_id?: [number, string];
+  sector?: string;
+  specification_id?: [number, string];
 }
 
 // CRM Stage

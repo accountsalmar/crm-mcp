@@ -179,6 +179,19 @@ Returns paginated list with: name, contact, email, stage, revenue, probability`,
           domain.push(['team_id', '=', params.team_id]);
         }
 
+        // Classification filters
+        if (params.lead_source_id) {
+          domain.push(['lead_source_id', '=', params.lead_source_id]);
+        }
+
+        if (params.sector) {
+          domain.push(['sector', 'ilike', params.sector]);
+        }
+
+        if (params.specification_id) {
+          domain.push(['specification_id', '=', params.specification_id]);
+        }
+
         // Get total count
         const total = await client.searchCount('crm.lead', domain);
         
@@ -1295,6 +1308,19 @@ Returns a paginated list of lost opportunities with details including the lost r
           domain.push(['expected_revenue', '<=', params.max_revenue]);
         }
 
+        // Classification filters
+        if (params.lead_source_id) {
+          domain.push(['lead_source_id', '=', params.lead_source_id]);
+        }
+
+        if (params.sector) {
+          domain.push(['sector', 'ilike', params.sector]);
+        }
+
+        if (params.specification_id) {
+          domain.push(['specification_id', '=', params.specification_id]);
+        }
+
         // Get total count
         const total = await client.searchCount('crm.lead', domain);
 
@@ -1668,6 +1694,19 @@ Returns a paginated list of won opportunities with details including revenue, sa
 
         if (params.max_revenue !== undefined) {
           domain.push(['expected_revenue', '<=', params.max_revenue]);
+        }
+
+        // Classification filters
+        if (params.lead_source_id) {
+          domain.push(['lead_source_id', '=', params.lead_source_id]);
+        }
+
+        if (params.sector) {
+          domain.push(['sector', 'ilike', params.sector]);
+        }
+
+        if (params.specification_id) {
+          domain.push(['specification_id', '=', params.specification_id]);
         }
 
         // Get total count

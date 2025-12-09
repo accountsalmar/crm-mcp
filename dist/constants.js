@@ -34,7 +34,8 @@ export const CRM_FIELDS = {
     LEAD_LIST: [
         'id', 'name', 'contact_name', 'email_from', 'phone',
         'expected_revenue', 'probability', 'stage_id', 'create_date',
-        'user_id', 'team_id'
+        'user_id', 'team_id',
+        'lead_source_id', 'sector', 'specification_id'
     ],
     // Extended fields for lead list (includes address, source, tags)
     LEAD_LIST_EXTENDED: [
@@ -42,7 +43,8 @@ export const CRM_FIELDS = {
         'expected_revenue', 'probability', 'stage_id', 'create_date',
         'user_id', 'team_id', 'street', 'city', 'country_id',
         'source_id', 'medium_id', 'campaign_id', 'tag_ids',
-        'date_deadline', 'partner_id', 'description'
+        'date_deadline', 'partner_id', 'description',
+        'lead_source_id', 'sector', 'specification_id'
     ],
     // Detailed fields for single record views
     LEAD_DETAIL: [
@@ -51,7 +53,8 @@ export const CRM_FIELDS = {
         'stage_id', 'user_id', 'team_id', 'source_id', 'medium_id',
         'campaign_id', 'description', 'create_date', 'write_date',
         'date_deadline', 'date_closed', 'lost_reason_id', 'tag_ids',
-        'partner_id', 'company_id', 'priority', 'type', 'active'
+        'partner_id', 'company_id', 'priority', 'type', 'active',
+        'lead_source_id', 'sector', 'specification_id'
     ],
     // Fields for pipeline analysis
     PIPELINE_SUMMARY: [
@@ -68,13 +71,15 @@ export const CRM_FIELDS = {
     // Lost opportunity fields
     LOST_OPPORTUNITY_LIST: [
         'id', 'name', 'contact_name', 'email_from', 'expected_revenue',
-        'stage_id', 'user_id', 'lost_reason_id', 'date_closed', 'create_date'
+        'stage_id', 'user_id', 'lost_reason_id', 'date_closed', 'create_date',
+        'lead_source_id', 'sector', 'specification_id'
     ],
     // Lost opportunity detail fields (includes feedback if available)
     LOST_OPPORTUNITY_DETAIL: [
         'id', 'name', 'contact_name', 'email_from', 'phone', 'expected_revenue',
         'stage_id', 'user_id', 'team_id', 'partner_id', 'lost_reason_id',
-        'date_closed', 'create_date', 'description'
+        'date_closed', 'create_date', 'description',
+        'lead_source_id', 'sector', 'specification_id'
     ],
     // Lost reason fields
     LOST_REASON: [
@@ -83,13 +88,15 @@ export const CRM_FIELDS = {
     // Won opportunity fields
     WON_OPPORTUNITY_LIST: [
         'id', 'name', 'contact_name', 'email_from', 'expected_revenue',
-        'stage_id', 'user_id', 'team_id', 'date_closed', 'create_date'
+        'stage_id', 'user_id', 'team_id', 'date_closed', 'create_date',
+        'lead_source_id', 'sector', 'specification_id'
     ],
     // Won opportunity detail fields
     WON_OPPORTUNITY_DETAIL: [
         'id', 'name', 'contact_name', 'email_from', 'phone', 'expected_revenue',
         'stage_id', 'user_id', 'team_id', 'partner_id', 'source_id',
-        'date_closed', 'create_date', 'description'
+        'date_closed', 'create_date', 'description',
+        'lead_source_id', 'sector', 'specification_id'
     ],
     // Activity detail fields
     ACTIVITY_DETAIL: [

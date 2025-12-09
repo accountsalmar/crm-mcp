@@ -81,6 +81,19 @@ export const LeadSearchSchema = PaginationSchema.extend({
     .positive()
     .optional()
     .describe('Filter by sales team ID'),
+  lead_source_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by lead source ID'),
+  sector: z.string()
+    .optional()
+    .describe('Filter by sector (partial match)'),
+  specification_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by specification ID'),
   order_by: z.enum(['create_date', 'expected_revenue', 'probability', 'name', 'date_closed'])
     .default('create_date')
     .describe('Field to sort by'),
@@ -306,6 +319,19 @@ export const LostOpportunitiesSearchSchema = PaginationSchema.extend({
     .min(0)
     .optional()
     .describe('Maximum expected revenue'),
+  lead_source_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by lead source ID'),
+  sector: z.string()
+    .optional()
+    .describe('Filter by sector (partial match)'),
+  specification_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by specification ID'),
   order_by: z.enum(['date_closed', 'expected_revenue', 'name', 'create_date'])
     .default('date_closed')
     .describe('Field to sort by'),
@@ -382,6 +408,19 @@ export const WonOpportunitiesSearchSchema = PaginationSchema.extend({
     .positive()
     .optional()
     .describe('Filter by final stage when won'),
+  lead_source_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by lead source ID'),
+  sector: z.string()
+    .optional()
+    .describe('Filter by sector (partial match)'),
+  specification_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by specification ID'),
   order_by: z.enum(['date_closed', 'expected_revenue', 'name', 'create_date'])
     .default('date_closed')
     .describe('Field to sort by'),

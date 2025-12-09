@@ -33,6 +33,9 @@ export declare const LeadSearchSchema: z.ZodObject<{
     date_closed_to: z.ZodOptional<z.ZodString>;
     date_field: z.ZodDefault<z.ZodEnum<["create_date", "date_closed"]>>;
     team_id: z.ZodOptional<z.ZodNumber>;
+    lead_source_id: z.ZodOptional<z.ZodNumber>;
+    sector: z.ZodOptional<z.ZodString>;
+    specification_id: z.ZodOptional<z.ZodNumber>;
     order_by: z.ZodDefault<z.ZodEnum<["create_date", "expected_revenue", "probability", "name", "date_closed"]>>;
     order_dir: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
 }, "strict", z.ZodTypeAny, {
@@ -46,6 +49,9 @@ export declare const LeadSearchSchema: z.ZodObject<{
     stage_id?: number | undefined;
     user_id?: number | undefined;
     team_id?: number | undefined;
+    lead_source_id?: number | undefined;
+    sector?: string | undefined;
+    specification_id?: number | undefined;
     type?: "lead" | "opportunity" | undefined;
     stage_name?: string | undefined;
     query?: string | undefined;
@@ -60,6 +66,9 @@ export declare const LeadSearchSchema: z.ZodObject<{
     stage_id?: number | undefined;
     user_id?: number | undefined;
     team_id?: number | undefined;
+    lead_source_id?: number | undefined;
+    sector?: string | undefined;
+    specification_id?: number | undefined;
     type?: "lead" | "opportunity" | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
@@ -240,6 +249,9 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     date_to: z.ZodOptional<z.ZodString>;
     min_revenue: z.ZodOptional<z.ZodNumber>;
     max_revenue: z.ZodOptional<z.ZodNumber>;
+    lead_source_id: z.ZodOptional<z.ZodNumber>;
+    sector: z.ZodOptional<z.ZodString>;
+    specification_id: z.ZodOptional<z.ZodNumber>;
     order_by: z.ZodDefault<z.ZodEnum<["date_closed", "expected_revenue", "name", "create_date"]>>;
     order_dir: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
 }, "strict", z.ZodTypeAny, {
@@ -251,6 +263,9 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     stage_id?: number | undefined;
     user_id?: number | undefined;
     team_id?: number | undefined;
+    lead_source_id?: number | undefined;
+    sector?: string | undefined;
+    specification_id?: number | undefined;
     lost_reason_id?: number | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
@@ -262,6 +277,9 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     stage_id?: number | undefined;
     user_id?: number | undefined;
     team_id?: number | undefined;
+    lead_source_id?: number | undefined;
+    sector?: string | undefined;
+    specification_id?: number | undefined;
     lost_reason_id?: number | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
@@ -313,6 +331,9 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     min_revenue: z.ZodOptional<z.ZodNumber>;
     max_revenue: z.ZodOptional<z.ZodNumber>;
     stage_id: z.ZodOptional<z.ZodNumber>;
+    lead_source_id: z.ZodOptional<z.ZodNumber>;
+    sector: z.ZodOptional<z.ZodString>;
+    specification_id: z.ZodOptional<z.ZodNumber>;
     order_by: z.ZodDefault<z.ZodEnum<["date_closed", "expected_revenue", "name", "create_date"]>>;
     order_dir: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
 }, "strict", z.ZodTypeAny, {
@@ -324,6 +345,9 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     stage_id?: number | undefined;
     user_id?: number | undefined;
     team_id?: number | undefined;
+    lead_source_id?: number | undefined;
+    sector?: string | undefined;
+    specification_id?: number | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
@@ -333,6 +357,9 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     stage_id?: number | undefined;
     user_id?: number | undefined;
     team_id?: number | undefined;
+    lead_source_id?: number | undefined;
+    sector?: string | undefined;
+    specification_id?: number | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
     response_format?: ResponseFormat | undefined;

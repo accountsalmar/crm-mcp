@@ -47,7 +47,8 @@ export function truncateText(text, maxLength = 200) {
 export function formatLeadListItem(lead) {
     return `- **${formatLinkedName(lead.id, lead.name, 'crm.lead')}** (ID: ${lead.id})
   Contact: ${getContactName(lead)} | ${lead.email_from || '-'}
-  Stage: ${getRelationName(lead.stage_id)} | Revenue: ${formatCurrency(lead.expected_revenue)} | Prob: ${formatPercent(lead.probability)}`;
+  Stage: ${getRelationName(lead.stage_id)} | Revenue: ${formatCurrency(lead.expected_revenue)} | Prob: ${formatPercent(lead.probability)}
+  Sector: ${lead.sector || '-'} | Lead Source: ${getRelationName(lead.lead_source_id)} | Spec: ${getRelationName(lead.specification_id)}`;
 }
 // Format lead detail view
 export function formatLeadDetail(lead) {
@@ -81,6 +82,11 @@ export function formatLeadDetail(lead) {
 - **Source:** ${getRelationName(lead.source_id)}
 - **Medium:** ${getRelationName(lead.medium_id)}
 - **Campaign:** ${getRelationName(lead.campaign_id)}
+
+### Classification
+- **Sector:** ${lead.sector || '-'}
+- **Lead Source:** ${getRelationName(lead.lead_source_id)}
+- **Specification:** ${getRelationName(lead.specification_id)}
 
 ${lead.description ? `### Notes\n${truncateText(stripHtml(lead.description), 500)}` : ''}`;
 }
@@ -329,6 +335,7 @@ export function formatLostOpportunitiesList(data, format) {
             output += `   - Lost Reason: ${getRelationName(opp.lost_reason_id)}\n`;
             output += `   - Revenue: ${formatCurrency(opp.expected_revenue)} | Stage: ${getRelationName(opp.stage_id)}\n`;
             output += `   - Salesperson: ${getRelationName(opp.user_id)} | Lost: ${formatDate(opp.date_closed)}\n`;
+            output += `   - Sector: ${opp.sector || '-'} | Lead Source: ${getRelationName(opp.lead_source_id)} | Spec: ${getRelationName(opp.specification_id)}\n`;
             if (opp.description) {
                 output += `   - Notes: ${truncateText(stripHtml(opp.description), 100)}\n`;
             }
@@ -401,7 +408,8 @@ export function formatWonOpportunitiesList(data, format) {
             output += `${data.offset + i + 1}. **${formatLinkedName(opp.id, opp.name, 'crm.lead')}** (ID: ${opp.id})\n`;
             output += `   - Contact: ${getContactName(opp)} | ${opp.email_from || '-'}\n`;
             output += `   - Revenue: ${formatCurrency(opp.expected_revenue)} | Stage: ${getRelationName(opp.stage_id)}\n`;
-            output += `   - Salesperson: ${getRelationName(opp.user_id)} | Won: ${formatDate(opp.date_closed)}\n\n`;
+            output += `   - Salesperson: ${getRelationName(opp.user_id)} | Won: ${formatDate(opp.date_closed)}\n`;
+            output += `   - Sector: ${opp.sector || '-'} | Lead Source: ${getRelationName(opp.lead_source_id)} | Spec: ${getRelationName(opp.specification_id)}\n\n`;
         }
     }
     output += '---\n';
