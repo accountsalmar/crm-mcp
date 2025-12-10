@@ -84,7 +84,16 @@ export declare class OdooClient {
      * Used by health check to verify current connectivity.
      */
     resetAuthCache(): void;
+    /**
+     * Pre-populate cache with frequently accessed data.
+     * Called on startup to eliminate cold-start latency.
+     */
+    warmCache(): Promise<{
+        success: string[];
+        failed: string[];
+    }>;
 }
 export declare function getOdooClient(): OdooClient;
 export declare function resetOdooClient(): void;
+export declare function warmCache(): Promise<void>;
 //# sourceMappingURL=odoo-client.d.ts.map

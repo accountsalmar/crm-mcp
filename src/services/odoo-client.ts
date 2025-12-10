@@ -458,6 +458,38 @@ export class OdooClient {
   resetAuthCache(): void {
     this.uid = null;
   }
+
+  /**
+   * Pre-populate cache with frequently accessed data.
+   * Called on startup to eliminate cold-start latency.
+   */
+  async warmCache(): Promise<{ success: string[]; failed: string[] }> {
+    const startTime = Date.now();
+    const success: string[] = [];
+    const failed: string[] = [];
+
+    const results = await Promise.allSettled([
+      this.getStagesCached(),
+      this.getTeamsCached(),
+      this.getLostReasonsCached(false)
+    ]);
+
+    const names = ['stages', 'teams', 'lost_reasons'];
+    results.forEach((result, i) => {
+      if (result.status === 'fulfilled') {
+        success.push(`${names[i]}(${result.value.length})`);
+      } else {
+        failed.push(names[i]);
+      }
+    });
+
+    const elapsed = Date.now() - startTime;
+    console.error(`Cache warmup: ${success.length}/3 loaded in ${elapsed}ms`);
+    if (success.length > 0) console.error(`  Loaded: ${success.join(', ')}`);
+    if (failed.length > 0) console.error(`  Failed: ${failed.join(', ')}`);
+
+    return { success, failed };
+  }
 }
 
 // Singleton instance - created from environment variables
@@ -488,4 +520,14 @@ export function getOdooClient(): OdooClient {
 // Reset client (useful for testing or reconnection)
 export function resetOdooClient(): void {
   clientInstance = null;
+}
+
+// Warm cache on startup (non-blocking, graceful failure handling)
+export async function warmCache(): Promise<void> {
+  try {
+    const client = getOdooClient();
+    await client.warmCache();
+  } catch (error) {
+    console.error('Cache warmup failed:', error instanceof Error ? error.message : error);
+  }
 }

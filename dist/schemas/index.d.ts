@@ -582,10 +582,10 @@ export declare const CacheStatusSchema: z.ZodObject<{
     cache_type: z.ZodDefault<z.ZodEnum<["all", "stages", "lost_reasons", "teams", "salespeople"]>>;
 }, "strict", z.ZodTypeAny, {
     action: "status" | "clear";
-    cache_type: "salespeople" | "teams" | "all" | "stages" | "lost_reasons";
+    cache_type: "salespeople" | "teams" | "stages" | "lost_reasons" | "all";
 }, {
     action?: "status" | "clear" | undefined;
-    cache_type?: "salespeople" | "teams" | "all" | "stages" | "lost_reasons" | undefined;
+    cache_type?: "salespeople" | "teams" | "stages" | "lost_reasons" | "all" | undefined;
 }>;
 export declare const HealthCheckSchema: z.ZodObject<{
     response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
