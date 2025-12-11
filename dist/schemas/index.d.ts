@@ -1,5 +1,51 @@
 import { z } from 'zod';
 import { ResponseFormat } from '../constants.js';
+/**
+ * Field preset names that users can specify instead of listing individual fields.
+ * These map to FIELD_PRESETS in constants.ts.
+ */
+export declare const FieldPresetEnum: z.ZodEnum<["basic", "extended", "full"]>;
+/**
+ * Flexible fields parameter schema.
+ * Accepts either:
+ *   - A preset name: "basic", "extended", "full"
+ *   - A custom array: ["name", "email", "phone"]
+ *
+ * This allows users to choose between convenience (presets) and flexibility (custom).
+ *
+ * @example
+ * // Using preset
+ * { fields: "extended" }
+ *
+ * @example
+ * // Using custom array
+ * { fields: ["name", "email_from", "expected_revenue", "stage_id"] }
+ */
+export declare const FieldsParam: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
+/**
+ * Schema for the field discovery tool (odoo_crm_list_fields).
+ * Lets users explore what fields are available on each Odoo model.
+ */
+export declare const ListFieldsSchema: z.ZodObject<{
+    model: z.ZodDefault<z.ZodEnum<["crm.lead", "res.partner", "mail.activity", "crm.stage", "crm.lost.reason"]>>;
+    include_types: z.ZodDefault<z.ZodBoolean>;
+    include_descriptions: z.ZodDefault<z.ZodBoolean>;
+    filter: z.ZodDefault<z.ZodEnum<["all", "basic", "relational", "required"]>>;
+    response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
+}, "strict", z.ZodTypeAny, {
+    filter: "basic" | "required" | "all" | "relational";
+    model: "crm.stage" | "crm.lost.reason" | "crm.lead" | "res.partner" | "mail.activity";
+    include_types: boolean;
+    include_descriptions: boolean;
+    response_format: ResponseFormat;
+}, {
+    filter?: "basic" | "required" | "all" | "relational" | undefined;
+    model?: "crm.stage" | "crm.lost.reason" | "crm.lead" | "res.partner" | "mail.activity" | undefined;
+    include_types?: boolean | undefined;
+    include_descriptions?: boolean | undefined;
+    response_format?: ResponseFormat | undefined;
+}>;
+export type ListFieldsInput = z.infer<typeof ListFieldsSchema>;
 export declare const PaginationSchema: z.ZodObject<{
     limit: z.ZodDefault<z.ZodNumber>;
     offset: z.ZodDefault<z.ZodNumber>;
@@ -41,6 +87,7 @@ export declare const LeadSearchSchema: z.ZodObject<{
     city: z.ZodOptional<z.ZodString>;
     order_by: z.ZodDefault<z.ZodEnum<["create_date", "expected_revenue", "probability", "name", "date_closed"]>>;
     order_dir: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
+    fields: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
 }, "strict", z.ZodTypeAny, {
     offset: number;
     limit: number;
@@ -59,6 +106,7 @@ export declare const LeadSearchSchema: z.ZodObject<{
     state_id?: number | undefined;
     type?: "lead" | "opportunity" | undefined;
     stage_name?: string | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
@@ -81,6 +129,7 @@ export declare const LeadSearchSchema: z.ZodObject<{
     offset?: number | undefined;
     limit?: number | undefined;
     stage_name?: string | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     response_format?: ResponseFormat | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
@@ -99,11 +148,14 @@ export declare const LeadSearchSchema: z.ZodObject<{
 export declare const LeadDetailSchema: z.ZodObject<{
     lead_id: z.ZodNumber;
     response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
+    fields: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
 }, "strict", z.ZodTypeAny, {
     response_format: ResponseFormat;
     lead_id: number;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
 }, {
     lead_id: number;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     response_format?: ResponseFormat | undefined;
 }>;
 export declare const PipelineSummarySchema: z.ZodObject<{
@@ -159,6 +211,7 @@ export declare const ContactSearchSchema: z.ZodObject<{
     state_id: z.ZodOptional<z.ZodNumber>;
     state_name: z.ZodOptional<z.ZodString>;
     city: z.ZodOptional<z.ZodString>;
+    fields: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
 }, "strict", z.ZodTypeAny, {
     offset: number;
     limit: number;
@@ -166,6 +219,7 @@ export declare const ContactSearchSchema: z.ZodObject<{
     city?: string | undefined;
     state_id?: number | undefined;
     is_company?: boolean | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     query?: string | undefined;
     state_name?: string | undefined;
     has_opportunities?: boolean | undefined;
@@ -176,6 +230,7 @@ export declare const ContactSearchSchema: z.ZodObject<{
     is_company?: boolean | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     response_format?: ResponseFormat | undefined;
     query?: string | undefined;
     state_name?: string | undefined;
@@ -272,6 +327,7 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     city: z.ZodOptional<z.ZodString>;
     order_by: z.ZodDefault<z.ZodEnum<["date_closed", "expected_revenue", "name", "create_date"]>>;
     order_dir: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
+    fields: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
 }, "strict", z.ZodTypeAny, {
     offset: number;
     limit: number;
@@ -287,6 +343,7 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     city?: string | undefined;
     state_id?: number | undefined;
     lost_reason_id?: number | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
@@ -306,6 +363,7 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     lost_reason_id?: number | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     response_format?: ResponseFormat | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
@@ -363,6 +421,7 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     city: z.ZodOptional<z.ZodString>;
     order_by: z.ZodDefault<z.ZodEnum<["date_closed", "expected_revenue", "name", "create_date"]>>;
     order_dir: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
+    fields: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
 }, "strict", z.ZodTypeAny, {
     offset: number;
     limit: number;
@@ -377,6 +436,7 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     specification_id?: number | undefined;
     city?: string | undefined;
     state_id?: number | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
@@ -394,6 +454,7 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     state_id?: number | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     response_format?: ResponseFormat | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
@@ -519,13 +580,15 @@ export declare const ActivitySearchSchema: z.ZodObject<{
     lead_id: z.ZodOptional<z.ZodNumber>;
     date_from: z.ZodOptional<z.ZodString>;
     date_to: z.ZodOptional<z.ZodString>;
+    fields: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
 }, "strict", z.ZodTypeAny, {
     offset: number;
     limit: number;
-    response_format: ResponseFormat;
     status: "overdue" | "today" | "upcoming" | "done" | "all";
-    activity_type: "email" | "call" | "meeting" | "task" | "all";
+    response_format: ResponseFormat;
+    activity_type: "email" | "all" | "call" | "meeting" | "task";
     user_id?: number | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
     lead_id?: number | undefined;
@@ -533,12 +596,13 @@ export declare const ActivitySearchSchema: z.ZodObject<{
     user_id?: number | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
-    response_format?: ResponseFormat | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     status?: "overdue" | "today" | "upcoming" | "done" | "all" | undefined;
+    response_format?: ResponseFormat | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
     lead_id?: number | undefined;
-    activity_type?: "email" | "call" | "meeting" | "task" | "all" | undefined;
+    activity_type?: "email" | "all" | "call" | "meeting" | "task" | undefined;
 }>;
 export declare const ExportDataSchema: z.ZodObject<{
     export_type: z.ZodEnum<["leads", "won", "lost", "contacts", "activities"]>;
@@ -586,7 +650,7 @@ export declare const ExportDataSchema: z.ZodObject<{
     filename: z.ZodOptional<z.ZodString>;
 }, "strict", z.ZodTypeAny, {
     format: "json" | "csv" | "xlsx";
-    export_type: "leads" | "won" | "lost" | "contacts" | "activities";
+    export_type: "lost" | "won" | "leads" | "contacts" | "activities";
     max_records: number;
     filename?: string | undefined;
     fields?: string[] | undefined;
@@ -605,7 +669,7 @@ export declare const ExportDataSchema: z.ZodObject<{
     } | undefined;
     output_directory?: string | undefined;
 }, {
-    export_type: "leads" | "won" | "lost" | "contacts" | "activities";
+    export_type: "lost" | "won" | "leads" | "contacts" | "activities";
     filename?: string | undefined;
     format?: "json" | "csv" | "xlsx" | undefined;
     fields?: string[] | undefined;

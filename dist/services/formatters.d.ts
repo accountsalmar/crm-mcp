@@ -32,4 +32,43 @@ export declare function formatPipelineSummaryWithWeighted(stages: PipelineSummar
 export declare function formatLeadListItemExtended(lead: CrmLead): string;
 export declare function formatStatesList(states: StateWithStats[], countryCode: string, format: ResponseFormat): string;
 export declare function formatStateComparison(comparison: StateComparison, format: ResponseFormat): string;
+/**
+ * Format any array of records as CSV.
+ * Handles special cases like Odoo relation fields [id, name] and arrays.
+ *
+ * @param records - Array of objects to format
+ * @param fields - Optional field order (uses object keys if not specified)
+ * @returns CSV string with header row
+ *
+ * @example
+ * // Basic usage
+ * formatRecordsAsCSV(leads)
+ *
+ * @example
+ * // With specific field order
+ * formatRecordsAsCSV(leads, ['id', 'name', 'email_from', 'expected_revenue'])
+ */
+export declare function formatRecordsAsCSV<T extends Record<string, unknown>>(records: T[], fields?: string[]): string;
+/**
+ * Information about a single Odoo field.
+ * Used by the list_fields discovery tool.
+ */
+export interface FieldInfo {
+    name: string;
+    label: string;
+    type: string;
+    required: boolean;
+    description?: string;
+}
+/**
+ * Format a list of fields for display.
+ * Supports markdown, JSON, and CSV output formats.
+ *
+ * @param model - The Odoo model name (e.g., 'crm.lead')
+ * @param fields - Array of field information
+ * @param format - Output format (markdown, json, csv)
+ * @param modelType - The model type for showing presets ('lead', 'contact', etc.)
+ * @returns Formatted string
+ */
+export declare function formatFieldsList(model: string, fields: FieldInfo[], format: ResponseFormat, modelType?: 'lead' | 'contact' | 'activity' | 'lost' | 'won'): string;
 //# sourceMappingURL=formatters.d.ts.map

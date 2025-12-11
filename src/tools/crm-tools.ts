@@ -1,6 +1,6 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { getOdooClient } from '../services/odoo-client.js';
-import { getPoolMetrics } from '../services/odoo-pool.js';
+import { getPoolMetrics, useClient } from '../services/odoo-pool.js';
 import {
   formatLeadList,
   formatLeadDetail,
@@ -28,7 +28,9 @@ import {
   formatLeadListItemExtended,
   truncateText,
   formatStatesList,
-  formatStateComparison
+  formatStateComparison,
+  formatFieldsList,
+  type FieldInfo
 } from '../services/formatters.js';
 import {
   LeadSearchSchema,
@@ -76,9 +78,11 @@ import {
   CacheStatusSchema,
   type CacheStatusInput,
   HealthCheckSchema,
-  type HealthCheckInput
+  type HealthCheckInput,
+  ListFieldsSchema,
+  type ListFieldsInput
 } from '../schemas/index.js';
-import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG } from '../constants.js';
+import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG, FIELD_PRESETS, resolveFields } from '../constants.js';
 import type { CrmLead, CrmStage, ResPartner, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, CrmLostReason, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, CrmTeam, ResUsers, OdooRecord, ExportFormat, ResCountryState, StateWithStats, StateComparison } from '../types.js';
 import { ExportWriter, generateExportFilename, getOutputDirectory, getMimeType } from '../utils/export-writer.js';
 import { convertDateToUtc, getDaysAgoUtc } from '../utils/timezone.js';
@@ -120,10 +124,9 @@ Returns paginated list with: name, contact, email, stage, revenue, probability`,
     },
     async (params: LeadSearchInput) => {
       try {
-        const client = getOdooClient();
-        
-        // Build domain filter
-        const domain: unknown[] = [];
+        return await useClient(async (client) => {
+          // Build domain filter
+          const domain: unknown[] = [];
         
         if (params.active_only) {
           domain.push(['active', '=', true]);
@@ -222,11 +225,14 @@ Returns paginated list with: name, contact, email, stage, revenue, probability`,
         // Get total count
         const total = await client.searchCount('crm.lead', domain);
 
+        // Resolve fields from preset or custom array
+        const fields = resolveFields(params.fields, 'lead', 'basic');
+
         // Fetch records
         const leads = await client.searchRead<CrmLead>(
           'crm.lead',
           domain,
-          CRM_FIELDS.LEAD_LIST,
+          fields,
           {
             offset: params.offset,
             limit: params.limit,
@@ -252,11 +258,11 @@ Returns paginated list with: name, contact, email, stage, revenue, probability`,
         
         const output = formatLeadList(response, params.response_format);
         
-        return {
-          content: [{ type: 'text', text: output }],
-          structuredContent: response
-        };
-        
+          return {
+            content: [{ type: 'text', text: output }],
+            structuredContent: response
+          };
+        });
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error';
         return {
@@ -294,35 +300,37 @@ Returns all available fields for the lead including description/notes.`,
     },
     async (params: LeadDetailInput) => {
       try {
-        const client = getOdooClient();
-        
-        const leads = await client.read<CrmLead>(
-          'crm.lead',
-          [params.lead_id],
-          CRM_FIELDS.LEAD_DETAIL
-        );
-        
-        if (leads.length === 0) {
+        return await useClient(async (client) => {
+          // Resolve fields from preset or custom array (default: full for detail views)
+          const fields = resolveFields(params.fields, 'lead', 'full');
+
+          const leads = await client.read<CrmLead>(
+            'crm.lead',
+            [params.lead_id],
+            fields
+          );
+
+          if (leads.length === 0) {
+            return {
+              isError: true,
+              content: [{ type: 'text', text: `Lead with ID ${params.lead_id} not found.` }]
+            };
+          }
+
+          const lead = leads[0];
+
+          if (params.response_format === ResponseFormat.JSON) {
+            return {
+              content: [{ type: 'text', text: JSON.stringify(lead, null, 2) }],
+              structuredContent: lead
+            };
+          }
+
           return {
-            isError: true,
-            content: [{ type: 'text', text: `Lead with ID ${params.lead_id} not found.` }]
-          };
-        }
-        
-        const lead = leads[0];
-        
-        if (params.response_format === ResponseFormat.JSON) {
-          return {
-            content: [{ type: 'text', text: JSON.stringify(lead, null, 2) }],
+            content: [{ type: 'text', text: formatLeadDetail(lead) }],
             structuredContent: lead
           };
-        }
-        
-        return {
-          content: [{ type: 'text', text: formatLeadDetail(lead) }],
-          structuredContent: lead
-        };
-        
+        });
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error';
         return {
@@ -623,12 +631,11 @@ Returns: name, email, phone, city, country`,
     },
     async (params: ContactSearchInput) => {
       try {
-        const client = getOdooClient();
-        
-        // Build domain
-        const domain: unknown[] = [];
-        
-        if (params.query) {
+        return await useClient(async (client) => {
+          // Build domain
+          const domain: unknown[] = [];
+
+          if (params.query) {
           // OR search across name, email, and phone using Polish notation
           domain.push(
             '|',
@@ -673,22 +680,25 @@ Returns: name, email, phone, city, country`,
             domain.push(['id', 'in', partnerIds]);
           }
         }
-        
+
         // Get total count
         const total = await client.searchCount('res.partner', domain);
-        
+
+        // Resolve fields from preset or custom array
+        const fields = resolveFields(params.fields, 'contact', 'basic');
+
         // Fetch records
         const contacts = await client.searchRead<ResPartner>(
           'res.partner',
           domain,
-          CRM_FIELDS.CONTACT_LIST,
+          fields,
           {
             offset: params.offset,
             limit: params.limit,
             order: 'name asc'
           }
         );
-        
+
         const response: PaginatedResponse<ResPartner> = {
           total,
           count: contacts.length,
@@ -699,13 +709,13 @@ Returns: name, email, phone, city, country`,
           next_offset: total > params.offset + contacts.length ? params.offset + contacts.length : undefined
         };
         
-        const output = formatContactList(response, params.response_format);
-        
-        return {
-          content: [{ type: 'text', text: output }],
-          structuredContent: response
-        };
-        
+          const output = formatContactList(response, params.response_format);
+
+          return {
+            content: [{ type: 'text', text: output }],
+            structuredContent: response
+          };
+        });
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error';
         return {
@@ -1351,25 +1361,24 @@ Returns a paginated list of lost opportunities with details including the lost r
     },
     async (params: LostOpportunitiesSearchInput) => {
       try {
-        const client = getOdooClient();
+        return await useClient(async (client) => {
+          // Build domain for lost opportunities
+          // Lost = active=False AND probability=0 (archived opportunities with 0% probability)
+          const domain: unknown[] = [
+            ['type', '=', 'opportunity'],
+            ['active', '=', false],
+            ['probability', '=', 0]
+          ];
 
-        // Build domain for lost opportunities
-        // Lost = active=False AND probability=0 (archived opportunities with 0% probability)
-        const domain: unknown[] = [
-          ['type', '=', 'opportunity'],
-          ['active', '=', false],
-          ['probability', '=', 0]
-        ];
+          // Default to last 90 days if no date filter specified (prevents timeout on large datasets)
+          // Use getDaysAgoUtc to get Sydney-timezone-aware 90 days ago converted to UTC
+          if (!params.date_from && !params.date_to) {
+            domain.push(['date_closed', '>=', getDaysAgoUtc(90, false)]);
+          }
 
-        // Default to last 90 days if no date filter specified (prevents timeout on large datasets)
-        // Use getDaysAgoUtc to get Sydney-timezone-aware 90 days ago converted to UTC
-        if (!params.date_from && !params.date_to) {
-          domain.push(['date_closed', '>=', getDaysAgoUtc(90, false)]);
-        }
-
-        // Apply search filters
-        if (params.query) {
-          domain.push(
+          // Apply search filters
+          if (params.query) {
+            domain.push(
             '|',
             '|',
             ['name', 'ilike', params.query],
@@ -1445,11 +1454,14 @@ Returns a paginated list of lost opportunities with details including the lost r
         // Get total count
         const total = await client.searchCount('crm.lead', domain);
 
+        // Resolve fields from preset or custom array
+        const fields = resolveFields(params.fields, 'lost', 'basic');
+
         // Fetch records
         const opportunities = await client.searchRead<LostOpportunity>(
           'crm.lead',
           domain,
-          CRM_FIELDS.LOST_OPPORTUNITY_DETAIL,
+          fields,
           {
             offset: params.offset,
             limit: params.limit,
@@ -1470,11 +1482,11 @@ Returns a paginated list of lost opportunities with details including the lost r
 
         const output = formatLostOpportunitiesList(response, params.response_format);
 
-        return {
-          content: [{ type: 'text', text: output }],
-          structuredContent: response
-        };
-
+          return {
+            content: [{ type: 'text', text: output }],
+            structuredContent: response
+          };
+        });
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error';
         return {
@@ -1769,15 +1781,14 @@ Returns a paginated list of won opportunities with details including revenue, sa
     },
     async (params: WonOpportunitiesSearchInput) => {
       try {
-        const client = getOdooClient();
+        return await useClient(async (client) => {
+          // Build domain for won opportunities (probability = 100 or stage is_won = true)
+          const domain: unknown[] = [
+            ['type', '=', 'opportunity'],
+            ['probability', '=', 100]
+          ];
 
-        // Build domain for won opportunities (probability = 100 or stage is_won = true)
-        const domain: unknown[] = [
-          ['type', '=', 'opportunity'],
-          ['probability', '=', 100]
-        ];
-
-        // Apply search filters
+          // Apply search filters
         if (params.query) {
           domain.push(
             '|',
@@ -1847,11 +1858,14 @@ Returns a paginated list of won opportunities with details including revenue, sa
         // Get total count
         const total = await client.searchCount('crm.lead', domain);
 
+        // Resolve fields from preset or custom array
+        const fields = resolveFields(params.fields, 'won', 'basic');
+
         // Fetch records
         const opportunities = await client.searchRead<WonOpportunity>(
           'crm.lead',
           domain,
-          CRM_FIELDS.WON_OPPORTUNITY_LIST,
+          fields,
           {
             offset: params.offset,
             limit: params.limit,
@@ -1872,11 +1886,11 @@ Returns a paginated list of won opportunities with details including revenue, sa
 
         const output = formatWonOpportunitiesList(response, params.response_format);
 
-        return {
-          content: [{ type: 'text', text: output }],
-          structuredContent: response
-        };
-
+          return {
+            content: [{ type: 'text', text: output }],
+            structuredContent: response
+          };
+        });
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error';
         return {
@@ -2835,12 +2849,11 @@ Returns a paginated list of activities with details including type, due date, st
     },
     async (params: ActivitySearchInput) => {
       try {
-        const client = getOdooClient();
+        return await useClient(async (client) => {
+          const today = new Date().toISOString().split('T')[0];
 
-        const today = new Date().toISOString().split('T')[0];
-
-        // Build domain
-        const domain: unknown[] = [['res_model', '=', 'crm.lead']];
+          // Build domain
+          const domain: unknown[] = [['res_model', '=', 'crm.lead']];
 
         if (params.user_id) {
           domain.push(['user_id', '=', params.user_id]);
@@ -2879,11 +2892,14 @@ Returns a paginated list of activities with details including type, due date, st
         // Get total count
         const total = await client.searchCount('mail.activity', domain);
 
+        // Resolve fields from preset or custom array
+        const fields = resolveFields(params.fields, 'activity', 'basic');
+
         // Fetch activities
         const activities = await client.searchRead<ActivityDetail>(
           'mail.activity',
           domain,
-          CRM_FIELDS.ACTIVITY_DETAIL,
+          fields,
           {
             offset: params.offset,
             limit: params.limit,
@@ -2916,11 +2932,11 @@ Returns a paginated list of activities with details including type, due date, st
 
         const output = formatActivityList(response, params.response_format);
 
-        return {
-          content: [{ type: 'text', text: output }],
-          structuredContent: response
-        };
-
+          return {
+            content: [{ type: 'text', text: output }],
+            structuredContent: response
+          };
+        });
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error';
         return {
@@ -3238,6 +3254,130 @@ The server caches frequently accessed, rarely-changing data to improve performan
         return {
           isError: true,
           content: [{ type: 'text', text: `Error accessing cache: ${message}` }]
+        };
+      }
+    }
+  );
+
+  // ============================================
+  // TOOL: List Available Fields (Discovery)
+  // ============================================
+  server.registerTool(
+    'odoo_crm_list_fields',
+    {
+      title: 'List Available Fields',
+      description: `Discover available fields for Odoo CRM models.
+
+Use this tool BEFORE making search requests to know what fields/columns are available for selection.
+
+**Common models:**
+- **crm.lead**: Leads and opportunities (most common)
+- **res.partner**: Contacts and companies
+- **mail.activity**: Activities (calls, meetings, tasks)
+- **crm.stage**: Pipeline stages
+- **crm.lost.reason**: Lost reasons
+
+**Field presets (use in 'fields' parameter of search tools):**
+- **basic**: Minimal fields for fast list views (default)
+- **extended**: Includes address, source, tags
+- **full**: All fields for detailed views
+
+Returns field names you can use in the 'fields' parameter of search tools.`,
+      inputSchema: ListFieldsSchema,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true
+      }
+    },
+    async (params: ListFieldsInput) => {
+      try {
+        const client = getOdooClient();
+
+        // Get field metadata from Odoo using fieldsGet
+        const fieldsInfo = await client.fieldsGet(
+          params.model,
+          ['string', 'type', 'required', 'readonly', 'relation', 'help']
+        );
+
+        // Process and filter fields
+        const fieldList: FieldInfo[] = [];
+
+        for (const [fieldName, metadata] of Object.entries(fieldsInfo)) {
+          const meta = metadata as Record<string, unknown>;
+          const fieldType = meta.type as string;
+
+          // Apply filter
+          if (params.filter !== 'all') {
+            const isRelational = ['many2one', 'many2many', 'one2many'].includes(fieldType);
+            const isRequired = meta.required === true;
+
+            if (params.filter === 'relational' && !isRelational) continue;
+            if (params.filter === 'basic' && isRelational) continue;
+            if (params.filter === 'required' && !isRequired) continue;
+          }
+
+          const fieldInfo: FieldInfo = {
+            name: fieldName,
+            label: (meta.string as string) || fieldName,
+            type: fieldType,
+            required: (meta.required as boolean) || false
+          };
+
+          // Add description if requested and available
+          if (params.include_descriptions && meta.help) {
+            fieldInfo.description = meta.help as string;
+          }
+
+          fieldList.push(fieldInfo);
+        }
+
+        // Sort alphabetically by name
+        fieldList.sort((a, b) => a.name.localeCompare(b.name));
+
+        // Determine model type for presets
+        const modelTypeMap: Record<string, 'lead' | 'contact' | 'activity'> = {
+          'crm.lead': 'lead',
+          'res.partner': 'contact',
+          'mail.activity': 'activity'
+        };
+        const modelType = modelTypeMap[params.model];
+
+        // Format output using the formatter
+        const output = formatFieldsList(
+          params.model,
+          fieldList,
+          params.response_format,
+          modelType
+        );
+
+        // Build structured content for JSON
+        const structuredContent: {
+          model: string;
+          field_count: number;
+          fields: FieldInfo[];
+          presets?: string[];
+        } = {
+          model: params.model,
+          field_count: fieldList.length,
+          fields: fieldList
+        };
+
+        if (modelType && FIELD_PRESETS[modelType]) {
+          structuredContent.presets = Object.keys(FIELD_PRESETS[modelType]);
+        }
+
+        return {
+          content: [{ type: 'text', text: output }],
+          structuredContent
+        };
+
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return {
+          isError: true,
+          content: [{ type: 'text', text: `Error listing fields: ${message}` }]
         };
       }
     }

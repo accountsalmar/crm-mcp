@@ -1,5 +1,72 @@
 import { z } from 'zod';
-import { CONTEXT_LIMITS, ResponseFormat } from '../constants.js';
+import { CONTEXT_LIMITS, ResponseFormat, CRM_FIELDS } from '../constants.js';
+
+// =============================================================================
+// FIELD SELECTION SCHEMAS - For dynamic column selection
+// =============================================================================
+
+/**
+ * Field preset names that users can specify instead of listing individual fields.
+ * These map to FIELD_PRESETS in constants.ts.
+ */
+export const FieldPresetEnum = z.enum(['basic', 'extended', 'full']);
+
+/**
+ * Flexible fields parameter schema.
+ * Accepts either:
+ *   - A preset name: "basic", "extended", "full"
+ *   - A custom array: ["name", "email", "phone"]
+ *
+ * This allows users to choose between convenience (presets) and flexibility (custom).
+ *
+ * @example
+ * // Using preset
+ * { fields: "extended" }
+ *
+ * @example
+ * // Using custom array
+ * { fields: ["name", "email_from", "expected_revenue", "stage_id"] }
+ */
+export const FieldsParam = z.union([
+  FieldPresetEnum,
+  z.array(z.string()).min(1).max(100)
+]).optional()
+  .describe(
+    "Fields to return. Use preset name ('basic', 'extended', 'full') or array of field names. " +
+    "Defaults to 'basic'. Use odoo_crm_list_fields tool to discover available fields."
+  );
+
+/**
+ * Schema for the field discovery tool (odoo_crm_list_fields).
+ * Lets users explore what fields are available on each Odoo model.
+ */
+export const ListFieldsSchema = z.object({
+  model: z.enum(['crm.lead', 'res.partner', 'mail.activity', 'crm.stage', 'crm.lost.reason'])
+    .default('crm.lead')
+    .describe("Odoo model to inspect. Common: 'crm.lead' (leads/opportunities), 'res.partner' (contacts)"),
+
+  include_types: z.boolean()
+    .default(false)
+    .describe("Include field data types (string, integer, many2one, etc.) in output"),
+
+  include_descriptions: z.boolean()
+    .default(false)
+    .describe("Include field descriptions/labels in output"),
+
+  filter: z.enum(['all', 'basic', 'relational', 'required'])
+    .default('all')
+    .describe("Filter fields: 'all', 'basic' (non-relational), 'relational' (links), 'required' (mandatory)"),
+
+  response_format: z.nativeEnum(ResponseFormat)
+    .default(ResponseFormat.MARKDOWN)
+    .describe("Output format: 'markdown', 'json', or 'csv'")
+}).strict();
+
+export type ListFieldsInput = z.infer<typeof ListFieldsSchema>;
+
+// =============================================================================
+// PAGINATION AND COMMON SCHEMAS
+// =============================================================================
 
 // Common pagination schema
 export const PaginationSchema = z.object({
@@ -112,7 +179,8 @@ export const LeadSearchSchema = PaginationSchema.extend({
     .describe('Field to sort by'),
   order_dir: z.enum(['asc', 'desc'])
     .default('desc')
-    .describe('Sort direction')
+    .describe('Sort direction'),
+  fields: FieldsParam
 }).strict();
 
 // Single lead detail schema
@@ -123,7 +191,8 @@ export const LeadDetailSchema = z.object({
     .describe('The ID of the lead/opportunity to retrieve'),
   response_format: z.nativeEnum(ResponseFormat)
     .default(ResponseFormat.MARKDOWN)
-    .describe("Output format: 'markdown' or 'json'")
+    .describe("Output format: 'markdown' or 'json'"),
+  fields: FieldsParam
 }).strict();
 
 // Pipeline summary schema
@@ -207,7 +276,8 @@ export const ContactSearchSchema = PaginationSchema.extend({
     .describe("Filter by state name (partial match). Examples: 'Victoria', 'NSW', 'Queensland'"),
   city: z.string()
     .optional()
-    .describe('Filter by city name (partial match)')
+    .describe('Filter by city name (partial match)'),
+  fields: FieldsParam
 }).strict();
 
 // Activity summary schema
@@ -372,7 +442,8 @@ export const LostOpportunitiesSearchSchema = PaginationSchema.extend({
     .describe('Field to sort by'),
   order_dir: z.enum(['asc', 'desc'])
     .default('desc')
-    .describe('Sort direction')
+    .describe('Sort direction'),
+  fields: FieldsParam
 }).strict();
 
 // Lost trends schema
@@ -474,7 +545,8 @@ export const WonOpportunitiesSearchSchema = PaginationSchema.extend({
     .describe('Field to sort by'),
   order_dir: z.enum(['asc', 'desc'])
     .default('desc')
-    .describe('Sort direction')
+    .describe('Sort direction'),
+  fields: FieldsParam
 }).strict();
 
 // Won analysis schema
@@ -626,7 +698,8 @@ export const ActivitySearchSchema = PaginationSchema.extend({
   date_to: z.string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .optional()
-    .describe('Activity due date to (YYYY-MM-DD)')
+    .describe('Activity due date to (YYYY-MM-DD)'),
+  fields: FieldsParam
 }).strict();
 
 // Export data schema - writes directly to filesystem (no base64)

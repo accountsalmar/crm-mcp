@@ -1,4 +1,4 @@
-import { CONTEXT_LIMITS, ResponseFormat } from '../constants.js';
+import { CONTEXT_LIMITS, ResponseFormat, FIELD_PRESETS } from '../constants.js';
 import { stripHtml, getContactName } from '../utils/html-utils.js';
 import { formatLinkedName } from '../utils/odoo-urls.js';
 // Format currency value
@@ -97,6 +97,9 @@ ${lead.description ? `### Notes\n${truncateText(stripHtml(lead.description), 500
 export function formatLeadList(data, format) {
     if (format === ResponseFormat.JSON) {
         return JSON.stringify(data, null, 2);
+    }
+    if (format === ResponseFormat.CSV) {
+        return formatRecordsAsCSV(data.items);
     }
     let output = `## Leads/Opportunities (${data.count} of ${data.total})\n\n`;
     if (data.items.length === 0) {
@@ -200,6 +203,9 @@ export function formatActivitySummary(summary, format) {
 export function formatContactList(data, format) {
     if (format === ResponseFormat.JSON) {
         return JSON.stringify(data, null, 2);
+    }
+    if (format === ResponseFormat.CSV) {
+        return formatRecordsAsCSV(data.items);
     }
     let output = `## Contacts (${data.count} of ${data.total})\n\n`;
     if (data.items.length === 0) {
@@ -371,6 +377,9 @@ export function formatLostOpportunitiesList(data, format) {
     if (format === ResponseFormat.JSON) {
         return JSON.stringify(data, null, 2);
     }
+    if (format === ResponseFormat.CSV) {
+        return formatRecordsAsCSV(data.items);
+    }
     let output = `## Lost Opportunities (${data.count} of ${data.total})\n\n`;
     if (data.items.length === 0) {
         output += '_No lost opportunities found matching your criteria._\n';
@@ -449,6 +458,9 @@ export function formatLostTrends(trends, format) {
 export function formatWonOpportunitiesList(data, format) {
     if (format === ResponseFormat.JSON) {
         return JSON.stringify(data, null, 2);
+    }
+    if (format === ResponseFormat.CSV) {
+        return formatRecordsAsCSV(data.items);
     }
     let output = `## Won Opportunities (${data.count} of ${data.total})\n\n`;
     if (data.items.length === 0) {
@@ -722,6 +734,9 @@ export function formatActivityList(data, format) {
     if (format === ResponseFormat.JSON) {
         return JSON.stringify(data, null, 2);
     }
+    if (format === ResponseFormat.CSV) {
+        return formatRecordsAsCSV(data.items);
+    }
     let output = `## CRM Activities (${data.count} of ${data.total})\n\n`;
     if (data.items.length === 0) {
         output += '_No activities found matching your criteria._\n';
@@ -913,6 +928,137 @@ export function formatStateComparison(comparison, format) {
         output += `- **Total Won:** ${comparison.totals.total_won.toLocaleString()} (${formatCurrency(comparison.totals.total_won_revenue)})\n`;
         output += `- **Total Lost:** ${comparison.totals.total_lost.toLocaleString()} (${formatCurrency(comparison.totals.total_lost_revenue)})\n`;
         output += `- **Overall Win Rate:** ${formatPercent(comparison.totals.overall_win_rate)}\n`;
+    }
+    return output;
+}
+// =============================================================================
+// CSV FORMATTERS - Generic CSV output for any record array
+// =============================================================================
+/**
+ * Format any array of records as CSV.
+ * Handles special cases like Odoo relation fields [id, name] and arrays.
+ *
+ * @param records - Array of objects to format
+ * @param fields - Optional field order (uses object keys if not specified)
+ * @returns CSV string with header row
+ *
+ * @example
+ * // Basic usage
+ * formatRecordsAsCSV(leads)
+ *
+ * @example
+ * // With specific field order
+ * formatRecordsAsCSV(leads, ['id', 'name', 'email_from', 'expected_revenue'])
+ */
+export function formatRecordsAsCSV(records, fields) {
+    if (records.length === 0) {
+        return fields ? fields.join(',') : '';
+    }
+    // Determine columns - use provided fields or object keys
+    const columns = fields || Object.keys(records[0]);
+    // Helper to escape CSV values
+    const escapeCSV = (value) => {
+        if (value === null || value === undefined)
+            return '';
+        // Handle Odoo relation fields: [id, name] -> name
+        if (Array.isArray(value)) {
+            if (value.length === 2 && typeof value[0] === 'number') {
+                return escapeCSV(value[1]); // Return the name part
+            }
+            // Handle other arrays (like tag_ids)
+            return value.map(v => {
+                if (Array.isArray(v) && v.length === 2 && typeof v[0] === 'number') {
+                    return String(v[1]);
+                }
+                return String(v);
+            }).join(';');
+        }
+        // Handle booleans
+        if (typeof value === 'boolean') {
+            return value ? 'Yes' : 'No';
+        }
+        // Handle dates (format nicely)
+        if (value instanceof Date) {
+            return value.toISOString().split('T')[0];
+        }
+        // Handle objects
+        if (typeof value === 'object') {
+            return JSON.stringify(value);
+        }
+        // Convert to string
+        const str = String(value);
+        // Escape if contains comma, quote, or newline
+        if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+            return `"${str.replace(/"/g, '""')}"`;
+        }
+        return str;
+    };
+    // Header row
+    const header = columns.join(',');
+    // Data rows
+    const rows = records.map(record => columns.map(col => escapeCSV(record[col])).join(','));
+    return [header, ...rows].join('\n');
+}
+/**
+ * Format a list of fields for display.
+ * Supports markdown, JSON, and CSV output formats.
+ *
+ * @param model - The Odoo model name (e.g., 'crm.lead')
+ * @param fields - Array of field information
+ * @param format - Output format (markdown, json, csv)
+ * @param modelType - The model type for showing presets ('lead', 'contact', etc.)
+ * @returns Formatted string
+ */
+export function formatFieldsList(model, fields, format, modelType) {
+    // Get presets for this model type if available
+    const presets = modelType ? FIELD_PRESETS[modelType] : undefined;
+    // JSON format - structured data
+    if (format === ResponseFormat.JSON) {
+        return JSON.stringify({
+            model,
+            field_count: fields.length,
+            fields,
+            presets: presets ? Object.keys(presets) : undefined
+        }, null, 2);
+    }
+    // CSV format - compact, token-efficient
+    if (format === ResponseFormat.CSV) {
+        const header = 'name,label,type,required';
+        const rows = fields.map(f => `${f.name},"${f.label.replace(/"/g, '""')}",${f.type},${f.required}`);
+        return [header, ...rows].join('\n');
+    }
+    // Markdown format - human-readable with presets shown
+    let output = `## Available Fields for \`${model}\`\n\n`;
+    output += `**Total fields:** ${fields.length}\n\n`;
+    // Show presets if available
+    if (presets && Object.keys(presets).length > 0) {
+        output += `### Field Presets\n`;
+        output += `Use these names in the \`fields\` parameter for quick selection:\n\n`;
+        for (const [presetName, presetFields] of Object.entries(presets)) {
+            const fieldCount = presetFields.length;
+            const preview = presetFields.slice(0, 4).join(', ');
+            const suffix = fieldCount > 4 ? ', ...' : '';
+            output += `- **\`${presetName}\`**: ${fieldCount} fields (${preview}${suffix})\n`;
+        }
+        output += `\n`;
+    }
+    // Show example usage
+    output += `### Usage Examples\n`;
+    output += `\`\`\`\n`;
+    output += `// Use a preset\n`;
+    output += `{ "fields": "basic" }\n\n`;
+    output += `// Use custom fields\n`;
+    output += `{ "fields": ["name", "email_from", "expected_revenue"] }\n`;
+    output += `\`\`\`\n\n`;
+    // Show all fields
+    output += `### All Fields\n\n`;
+    output += `| Field Name | Label | Type | Required |\n`;
+    output += `|------------|-------|------|----------|\n`;
+    for (const field of fields) {
+        const required = field.required ? 'Yes' : '-';
+        // Escape pipe characters in labels
+        const safeLabel = field.label.replace(/\|/g, '\\|');
+        output += `| \`${field.name}\` | ${safeLabel} | ${field.type} | ${required} |\n`;
     }
     return output;
 }
