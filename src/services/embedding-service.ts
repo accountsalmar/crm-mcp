@@ -163,6 +163,7 @@ export async function embed(
     input: text,
     model: VOYAGE_CONFIG.MODEL,
     inputType: inputType,
+    outputDimension: VOYAGE_CONFIG.DIMENSIONS,
   });
 
   // Voyage returns embeddings in response.data[0].embedding
@@ -200,6 +201,7 @@ export async function embedBatch(
       input: batch,
       model: VOYAGE_CONFIG.MODEL,
       inputType: inputType,
+      outputDimension: VOYAGE_CONFIG.DIMENSIONS,
     });
 
     if (!response.data) {

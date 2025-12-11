@@ -144,6 +144,7 @@ export async function embed(text, inputType = 'document') {
         input: text,
         model: VOYAGE_CONFIG.MODEL,
         inputType: inputType,
+        outputDimension: VOYAGE_CONFIG.DIMENSIONS,
     });
     // Voyage returns embeddings in response.data[0].embedding
     if (!response.data || !response.data[0] || !response.data[0].embedding) {
@@ -172,6 +173,7 @@ export async function embedBatch(texts, inputType = 'document', onProgress) {
             input: batch,
             model: VOYAGE_CONFIG.MODEL,
             inputType: inputType,
+            outputDimension: VOYAGE_CONFIG.DIMENSIONS,
         });
         if (!response.data) {
             throw new Error('Invalid batch embedding response from Voyage AI');
