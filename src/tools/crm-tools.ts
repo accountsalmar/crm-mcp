@@ -26,7 +26,9 @@ import {
   formatExportResult,
   formatPipelineSummaryWithWeighted,
   formatLeadListItemExtended,
-  truncateText
+  truncateText,
+  formatStatesList,
+  formatStateComparison
 } from '../services/formatters.js';
 import {
   LeadSearchSchema,
@@ -48,6 +50,8 @@ import {
   ComparePerformanceSchema,
   ActivitySearchSchema,
   ExportDataSchema,
+  StatesListSchema,
+  CompareStatesSchema,
   type LeadSearchInput,
   type LeadDetailInput,
   type PipelineSummaryInput,
@@ -67,13 +71,15 @@ import {
   type ComparePerformanceInput,
   type ActivitySearchInput,
   type ExportDataInput,
+  type StatesListInput,
+  type CompareStatesInput,
   CacheStatusSchema,
   type CacheStatusInput,
   HealthCheckSchema,
   type HealthCheckInput
 } from '../schemas/index.js';
 import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG } from '../constants.js';
-import type { CrmLead, CrmStage, ResPartner, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, CrmLostReason, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, CrmTeam, ResUsers, OdooRecord, ExportFormat } from '../types.js';
+import type { CrmLead, CrmStage, ResPartner, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, CrmLostReason, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, CrmTeam, ResUsers, OdooRecord, ExportFormat, ResCountryState, StateWithStats, StateComparison } from '../types.js';
 import { ExportWriter, generateExportFilename, getOutputDirectory, getMimeType } from '../utils/export-writer.js';
 import { convertDateToUtc, getDaysAgoUtc } from '../utils/timezone.js';
 import { cache, CACHE_KEYS } from '../utils/cache.js';
@@ -199,9 +205,23 @@ Returns paginated list with: name, contact, email, stage, revenue, probability`,
           domain.push(['specification_id', '=', params.specification_id]);
         }
 
+        // State/Territory filters (direct field on crm.lead)
+        if (params.state_id) {
+          domain.push(['state_id', '=', params.state_id]);
+        }
+
+        if (params.state_name) {
+          domain.push(['state_id.name', 'ilike', params.state_name]);
+        }
+
+        // City filter
+        if (params.city) {
+          domain.push(['city', 'ilike', params.city]);
+        }
+
         // Get total count
         const total = await client.searchCount('crm.lead', domain);
-        
+
         // Fetch records
         const leads = await client.searchRead<CrmLead>(
           'crm.lead',
@@ -630,7 +650,16 @@ Returns: name, email, phone, city, country`,
         if (params.city) {
           domain.push(['city', 'ilike', params.city]);
         }
-        
+
+        // State/Territory filters
+        if (params.state_id) {
+          domain.push(['state_id', '=', params.state_id]);
+        }
+
+        if (params.state_name) {
+          domain.push(['state_id.name', 'ilike', params.state_name]);
+        }
+
         if (params.has_opportunities) {
           // Get partner IDs with opportunities
           const opps = await client.searchRead<CrmLead>(
@@ -1225,6 +1254,41 @@ Returns summary statistics including total lost count and revenue, breakdown by 
           })).sort((a, b) => b.count - a.count);
         }
 
+        if (params.group_by === 'state') {
+          const byState = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['state_id', 'expected_revenue:sum', 'id:count'],
+            ['state_id']
+          );
+
+          analysis.by_state = byState.map(s => ({
+            state_id: Array.isArray(s.state_id) ? s.state_id[0] : 0,
+            state_name: Array.isArray(s.state_id) ? s.state_id[1] as string : 'Not Specified',
+            count: (s.id as number) || 0,
+            percentage: totalLost > 0 ? ((s.id as number) / totalLost) * 100 : 0,
+            lost_revenue: (s.expected_revenue as number) || 0,
+            avg_deal: (s.id as number) > 0 ? ((s.expected_revenue as number) || 0) / (s.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'city') {
+          const byCity = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['city', 'expected_revenue:sum', 'id:count'],
+            ['city']
+          );
+
+          analysis.by_city = byCity.map(c => ({
+            city: (c.city as string) || 'Not Specified',
+            count: (c.id as number) || 0,
+            percentage: totalLost > 0 ? ((c.id as number) / totalLost) * 100 : 0,
+            lost_revenue: (c.expected_revenue as number) || 0,
+            avg_deal: (c.id as number) > 0 ? ((c.expected_revenue as number) || 0) / (c.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
         // Get top lost opportunities
         if (params.include_top_lost > 0) {
           const topLost = await client.searchRead<LostOpportunity>(
@@ -1362,6 +1426,20 @@ Returns a paginated list of lost opportunities with details including the lost r
 
         if (params.specification_id) {
           domain.push(['specification_id', '=', params.specification_id]);
+        }
+
+        // State/Territory filters (direct field on crm.lead)
+        if (params.state_id) {
+          domain.push(['state_id', '=', params.state_id]);
+        }
+
+        if (params.state_name) {
+          domain.push(['state_id.name', 'ilike', params.state_name]);
+        }
+
+        // City filter
+        if (params.city) {
+          domain.push(['city', 'ilike', params.city]);
         }
 
         // Get total count
@@ -1752,6 +1830,20 @@ Returns a paginated list of won opportunities with details including revenue, sa
           domain.push(['specification_id', '=', params.specification_id]);
         }
 
+        // State/Territory filters (direct field on crm.lead)
+        if (params.state_id) {
+          domain.push(['state_id', '=', params.state_id]);
+        }
+
+        if (params.state_name) {
+          domain.push(['state_id.name', 'ilike', params.state_name]);
+        }
+
+        // City filter
+        if (params.city) {
+          domain.push(['city', 'ilike', params.city]);
+        }
+
         // Get total count
         const total = await client.searchCount('crm.lead', domain);
 
@@ -2030,6 +2122,41 @@ Returns summary statistics including total won count and revenue, breakdown by t
             percentage: totalWon > 0 ? ((s.id as number) / totalWon) * 100 : 0,
             won_revenue: (s.expected_revenue as number) || 0,
             avg_deal: (s.id as number) > 0 ? ((s.expected_revenue as number) || 0) / (s.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'state') {
+          const byState = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['state_id', 'expected_revenue:sum', 'id:count'],
+            ['state_id']
+          );
+
+          analysis.by_state = byState.map(s => ({
+            state_id: Array.isArray(s.state_id) ? s.state_id[0] : 0,
+            state_name: Array.isArray(s.state_id) ? s.state_id[1] as string : 'Not Specified',
+            count: (s.id as number) || 0,
+            percentage: totalWon > 0 ? ((s.id as number) / totalWon) * 100 : 0,
+            won_revenue: (s.expected_revenue as number) || 0,
+            avg_deal: (s.id as number) > 0 ? ((s.expected_revenue as number) || 0) / (s.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'city') {
+          const byCity = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['city', 'expected_revenue:sum', 'id:count'],
+            ['city']
+          );
+
+          analysis.by_city = byCity.map(c => ({
+            city: (c.city as string) || 'Not Specified',
+            count: (c.id as number) || 0,
+            percentage: totalWon > 0 ? ((c.id as number) / totalWon) * 100 : 0,
+            won_revenue: (c.expected_revenue as number) || 0,
+            avg_deal: (c.id as number) > 0 ? ((c.expected_revenue as number) || 0) / (c.id as number) : 0
           })).sort((a, b) => b.count - a.count);
         }
 
@@ -2897,6 +3024,11 @@ Returns a paginated list of activities with details including type, due date, st
           if (params.filters.query) {
             domain.push('|', '|', ['name', 'ilike', params.filters.query], ['contact_name', 'ilike', params.filters.query], ['email_from', 'ilike', params.filters.query]);
           }
+          // State/Territory filters
+          if (params.filters.state_id) domain.push(['state_id', '=', params.filters.state_id]);
+          if (params.filters.state_name) domain.push(['state_id.name', 'ilike', params.filters.state_name]);
+          // City filter
+          if (params.filters.city) domain.push(['city', 'ilike', params.filters.city]);
         }
 
         // Setup export
@@ -3313,6 +3445,261 @@ Returns: status (healthy/unhealthy), odoo_connected, latency_ms, cache_entries, 
         content: [{ type: 'text', text: output }],
         structuredContent: result
       };
+    }
+  );
+
+  // ============================================
+  // TOOL: List States/Territories
+  // ============================================
+  server.registerTool(
+    'odoo_crm_list_states',
+    {
+      title: 'List States/Territories',
+      description: `Get a list of Australian states/territories with optional CRM statistics.
+
+Returns all states for the specified country (default: Australia) with opportunity counts, won/lost counts, and revenue.
+
+**When to use:**
+- See which states/territories have the most opportunities
+- Get state IDs for filtering other tools
+- Geographic overview of CRM data`,
+      inputSchema: StatesListSchema,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true
+      }
+    },
+    async (params: StatesListInput) => {
+      try {
+        const client = getOdooClient();
+
+        // Get states from cache
+        const states = await client.getStatesCached(params.country_code);
+
+        // Build result with or without stats
+        let statesWithStats: StateWithStats[] = states.map(s => ({
+          id: s.id,
+          name: s.name,
+          code: s.code,
+          country_id: s.country_id
+        }));
+
+        if (params.include_stats) {
+          // Get opportunity counts by state
+          const oppCounts = await client.readGroup(
+            'crm.lead',
+            [['type', '=', 'opportunity'], ['active', '=', true]],
+            ['state_id', 'expected_revenue:sum', 'id:count'],
+            ['state_id']
+          );
+
+          const wonCounts = await client.readGroup(
+            'crm.lead',
+            [['type', '=', 'opportunity'], ['probability', '=', 100]],
+            ['state_id', 'id:count'],
+            ['state_id']
+          );
+
+          const lostCounts = await client.readGroup(
+            'crm.lead',
+            [['type', '=', 'opportunity'], ['active', '=', false], ['probability', '=', 0]],
+            ['state_id', 'id:count'],
+            ['state_id']
+          );
+
+          // Map stats to states
+          const oppCountMap = new Map(oppCounts.map(o => [
+            Array.isArray(o.state_id) ? o.state_id[0] : 0,
+            { count: (o.id as number) || 0, revenue: (o.expected_revenue as number) || 0 }
+          ]));
+          const wonCountMap = new Map(wonCounts.map(w => [
+            Array.isArray(w.state_id) ? w.state_id[0] : 0,
+            (w.id as number) || 0
+          ]));
+          const lostCountMap = new Map(lostCounts.map(l => [
+            Array.isArray(l.state_id) ? l.state_id[0] : 0,
+            (l.id as number) || 0
+          ]));
+
+          statesWithStats = states.map(s => ({
+            id: s.id,
+            name: s.name,
+            code: s.code,
+            country_id: s.country_id,
+            opportunity_count: oppCountMap.get(s.id)?.count || 0,
+            won_count: wonCountMap.get(s.id) || 0,
+            lost_count: lostCountMap.get(s.id) || 0,
+            total_revenue: oppCountMap.get(s.id)?.revenue || 0
+          }));
+
+          // Sort by opportunity count descending
+          statesWithStats.sort((a, b) => (b.opportunity_count || 0) - (a.opportunity_count || 0));
+        }
+
+        const output = formatStatesList(statesWithStats, params.country_code, params.response_format);
+
+        return {
+          content: [{ type: 'text', text: output }],
+          structuredContent: { states: statesWithStats, country_code: params.country_code }
+        };
+
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return {
+          isError: true,
+          content: [{ type: 'text', text: `Error listing states: ${message}` }]
+        };
+      }
+    }
+  );
+
+  // ============================================
+  // TOOL: Compare States
+  // ============================================
+  server.registerTool(
+    'odoo_crm_compare_states',
+    {
+      title: 'Compare State Performance',
+      description: `Compare CRM performance across Australian states/territories.
+
+Returns win/loss metrics, revenue, and win rates for each state, allowing geographic analysis of sales performance.
+
+**When to use:**
+- Identify top performing states/territories
+- Compare win rates across geographic regions
+- Analyze revenue distribution by state`,
+      inputSchema: CompareStatesSchema,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true
+      }
+    },
+    async (params: CompareStatesInput) => {
+      try {
+        const client = getOdooClient();
+
+        // Build base domain with optional state filter
+        const baseDomain: unknown[] = [['type', '=', 'opportunity']];
+
+        if (params.state_ids && params.state_ids.length > 0) {
+          baseDomain.push(['state_id', 'in', params.state_ids]);
+        }
+
+        // Build date-filtered domain
+        const wonDomain = [...baseDomain, ['probability', '=', 100]];
+        const lostDomain = [...baseDomain, ['active', '=', false], ['probability', '=', 0]];
+
+        if (params.date_from) {
+          wonDomain.push(['date_closed', '>=', convertDateToUtc(params.date_from, false)]);
+          lostDomain.push(['date_closed', '>=', convertDateToUtc(params.date_from, false)]);
+        }
+        if (params.date_to) {
+          wonDomain.push(['date_closed', '<=', convertDateToUtc(params.date_to, true)]);
+          lostDomain.push(['date_closed', '<=', convertDateToUtc(params.date_to, true)]);
+        }
+
+        // Get won by state
+        const wonByState = await client.readGroup(
+          'crm.lead',
+          wonDomain,
+          ['state_id', 'expected_revenue:sum', 'id:count'],
+          ['state_id']
+        );
+
+        // Get lost by state
+        const lostByState = await client.readGroup(
+          'crm.lead',
+          lostDomain,
+          ['state_id', 'expected_revenue:sum', 'id:count'],
+          ['state_id']
+        );
+
+        // Build state maps
+        const wonMap = new Map(wonByState.map(w => [
+          Array.isArray(w.state_id) ? w.state_id[0] : 0,
+          {
+            name: Array.isArray(w.state_id) ? w.state_id[1] as string : 'Not Specified',
+            count: (w.id as number) || 0,
+            revenue: (w.expected_revenue as number) || 0
+          }
+        ]));
+
+        const lostMap = new Map(lostByState.map(l => [
+          Array.isArray(l.state_id) ? l.state_id[0] : 0,
+          {
+            name: Array.isArray(l.state_id) ? l.state_id[1] as string : 'Not Specified',
+            count: (l.id as number) || 0,
+            revenue: (l.expected_revenue as number) || 0
+          }
+        ]));
+
+        // Combine all state IDs
+        const allStateIds = new Set([...wonMap.keys(), ...lostMap.keys()]);
+
+        // Build comparison data
+        const states: StateComparison['states'] = [];
+        let totalWon = 0, totalLost = 0, totalWonRevenue = 0, totalLostRevenue = 0;
+
+        for (const stateId of allStateIds) {
+          const won = wonMap.get(stateId) || { name: 'Not Specified', count: 0, revenue: 0 };
+          const lost = lostMap.get(stateId) || { name: 'Not Specified', count: 0, revenue: 0 };
+          const total = won.count + lost.count;
+          const winRate = total > 0 ? (won.count / total) * 100 : 0;
+          const avgDealSize = won.count > 0 ? won.revenue / won.count : 0;
+
+          states.push({
+            state_id: stateId,
+            state_name: won.name || lost.name,
+            won_count: won.count,
+            lost_count: lost.count,
+            won_revenue: won.revenue,
+            lost_revenue: lost.revenue,
+            win_rate: winRate,
+            avg_deal_size: avgDealSize,
+            total_opportunities: total
+          });
+
+          totalWon += won.count;
+          totalLost += lost.count;
+          totalWonRevenue += won.revenue;
+          totalLostRevenue += lost.revenue;
+        }
+
+        // Sort by won revenue descending
+        states.sort((a, b) => b.won_revenue - a.won_revenue);
+
+        const comparison: StateComparison = {
+          period: params.date_from || params.date_to
+            ? `${params.date_from || 'Start'} to ${params.date_to || 'Now'}`
+            : undefined,
+          states,
+          totals: {
+            total_won: totalWon,
+            total_lost: totalLost,
+            total_won_revenue: totalWonRevenue,
+            total_lost_revenue: totalLostRevenue,
+            overall_win_rate: (totalWon + totalLost) > 0 ? (totalWon / (totalWon + totalLost)) * 100 : 0
+          }
+        };
+
+        const output = formatStateComparison(comparison, params.response_format);
+
+        return {
+          content: [{ type: 'text', text: output }],
+          structuredContent: comparison
+        };
+
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return {
+          isError: true,
+          content: [{ type: 'text', text: `Error comparing states: ${message}` }]
+        };
+      }
     }
   );
 }

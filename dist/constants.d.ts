@@ -30,6 +30,7 @@ export declare const CRM_FIELDS: {
     ACTIVITY_DETAIL: string[];
     USER_LIST: string[];
     TEAM_LIST: string[];
+    STATE_LIST: string[];
 };
 export declare enum ResponseFormat {
     JSON = "json",

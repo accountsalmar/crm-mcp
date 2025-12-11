@@ -81,6 +81,7 @@ export declare const CACHE_TTL: {
     readonly LOST_REASONS: number;
     readonly TEAMS: number;
     readonly SALESPEOPLE: number;
+    readonly STATES: number;
     readonly FIELD_METADATA: number;
 };
 export declare const CACHE_KEYS: {
@@ -88,6 +89,7 @@ export declare const CACHE_KEYS: {
     readonly lostReasons: (includeInactive: boolean) => string;
     readonly teams: () => string;
     readonly salespeople: (teamId?: number) => string;
+    readonly states: (countryCode?: string) => string;
     readonly fieldMetadata: (model: string) => string;
 };
 //# sourceMappingURL=cache-memory.d.ts.map

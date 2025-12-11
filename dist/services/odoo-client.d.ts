@@ -1,4 +1,4 @@
-import type { OdooConfig, OdooRecord, ExportProgress, CrmStage, CrmLostReason, CrmTeam, ResUsers } from '../types.js';
+import type { OdooConfig, OdooRecord, ExportProgress, CrmStage, CrmLostReason, CrmTeam, ResUsers, ResCountryState } from '../types.js';
 import { CircuitBreaker, CircuitState, CircuitBreakerMetrics } from '../utils/circuit-breaker.js';
 export type ExportProgressCallback = (progress: ExportProgress) => void;
 export declare class OdooClient {
@@ -71,6 +71,12 @@ export declare class OdooClient {
      * Uses stale-while-revalidate: returns stale data while refreshing in background
      */
     getSalespeopleCached(teamId?: number): Promise<ResUsers[]>;
+    /**
+     * Get states/territories with caching (1 hour TTL)
+     * Uses stale-while-revalidate: returns stale data while refreshing in background
+     * @param countryCode - Country code to filter states (default: AU for Australia)
+     */
+    getStatesCached(countryCode?: string): Promise<ResCountryState[]>;
     /**
      * Invalidate specific cache entries or all cache
      * @param keys - Specific cache keys to invalidate, or undefined to clear all

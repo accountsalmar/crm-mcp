@@ -211,6 +211,7 @@ export const CACHE_TTL = {
   LOST_REASONS: 30 * 60 * 1000,  // 30 minutes - lost reasons rarely change
   TEAMS: 15 * 60 * 1000,         // 15 minutes - teams change occasionally
   SALESPEOPLE: 15 * 60 * 1000,   // 15 minutes - salespeople change occasionally
+  STATES: 60 * 60 * 1000,        // 1 hour - states/territories rarely change
   FIELD_METADATA: 60 * 60 * 1000 // 1 hour - for future use
 } as const;
 
@@ -220,5 +221,6 @@ export const CACHE_KEYS = {
   lostReasons: (includeInactive: boolean) => `crm:lost_reasons:${includeInactive}`,
   teams: () => 'crm:teams',
   salespeople: (teamId?: number) => teamId ? `crm:salespeople:team:${teamId}` : 'crm:salespeople:all',
+  states: (countryCode: string = 'AU') => `crm:states:${countryCode}`,
   fieldMetadata: (model: string) => `fields:${model}`
 } as const;

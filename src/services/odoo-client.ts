@@ -1,7 +1,7 @@
 import xmlrpc from 'xmlrpc';
 const { createClient, createSecureClient } = xmlrpc;
 type Client = ReturnType<typeof createClient>;
-import type { OdooConfig, OdooRecord, ExportProgress, CrmStage, CrmLostReason, CrmTeam, ResUsers } from '../types.js';
+import type { OdooConfig, OdooRecord, ExportProgress, CrmStage, CrmLostReason, CrmTeam, ResUsers, ResCountryState } from '../types.js';
 import { withTimeout, TIMEOUTS, TimeoutError } from '../utils/timeout.js';
 import { executeWithRetry } from '../utils/retry.js';
 import { EXPORT_CONFIG, CIRCUIT_BREAKER_CONFIG } from '../constants.js';
@@ -415,6 +415,26 @@ export class OdooClient {
   }
 
   /**
+   * Get states/territories with caching (1 hour TTL)
+   * Uses stale-while-revalidate: returns stale data while refreshing in background
+   * @param countryCode - Country code to filter states (default: AU for Australia)
+   */
+  async getStatesCached(countryCode: string = 'AU'): Promise<ResCountryState[]> {
+    const cacheKey = CACHE_KEYS.states(countryCode);
+
+    return cache.getWithRefresh(
+      cacheKey,
+      () => this.searchRead<ResCountryState>(
+        'res.country.state',
+        [['country_id.code', '=', countryCode]],
+        ['id', 'name', 'code', 'country_id'],
+        { order: 'name asc', limit: 100 }
+      ),
+      CACHE_TTL.STATES
+    );
+  }
+
+  /**
    * Invalidate specific cache entries or all cache
    * @param keys - Specific cache keys to invalidate, or undefined to clear all
    */
@@ -489,10 +509,11 @@ export class OdooClient {
     const results = await Promise.allSettled([
       this.getStagesCached(),
       this.getTeamsCached(),
-      this.getLostReasonsCached(false)
+      this.getLostReasonsCached(false),
+      this.getStatesCached('AU')
     ]);
 
-    const names = ['stages', 'teams', 'lost_reasons'];
+    const names = ['stages', 'teams', 'lost_reasons', 'states'];
     results.forEach((result, i) => {
       if (result.status === 'fulfilled') {
         success.push(`${names[i]}(${result.value.length})`);
@@ -502,7 +523,7 @@ export class OdooClient {
     });
 
     const elapsed = Date.now() - startTime;
-    console.error(`Cache warmup: ${success.length}/3 loaded in ${elapsed}ms`);
+    console.error(`Cache warmup: ${success.length}/4 loaded in ${elapsed}ms`);
     if (success.length > 0) console.error(`  Loaded: ${success.join(', ')}`);
     if (failed.length > 0) console.error(`  Failed: ${failed.join(', ')}`);
 
