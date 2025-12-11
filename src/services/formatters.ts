@@ -1,4 +1,4 @@
-import { CONTEXT_LIMITS, ResponseFormat } from '../constants.js';
+import { CONTEXT_LIMITS, ResponseFormat, CRM_FIELDS, FIELD_PRESETS } from '../constants.js';
 import type { CrmLead, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, ResPartner, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, StateWithStats, StateComparison } from '../types.js';
 import { stripHtml, getContactName } from '../utils/html-utils.js';
 import { formatLinkedName } from '../utils/odoo-urls.js';
@@ -1071,6 +1071,102 @@ export function formatStateComparison(comparison: StateComparison, format: Respo
     output += `- **Total Won:** ${comparison.totals.total_won.toLocaleString()} (${formatCurrency(comparison.totals.total_won_revenue)})\n`;
     output += `- **Total Lost:** ${comparison.totals.total_lost.toLocaleString()} (${formatCurrency(comparison.totals.total_lost_revenue)})\n`;
     output += `- **Overall Win Rate:** ${formatPercent(comparison.totals.overall_win_rate)}\n`;
+  }
+
+  return output;
+}
+
+// =============================================================================
+// FIELD DISCOVERY FORMATTERS - For odoo_crm_list_fields tool
+// =============================================================================
+
+/**
+ * Information about a single Odoo field.
+ * Used by the list_fields discovery tool.
+ */
+export interface FieldInfo {
+  name: string;
+  label: string;
+  type: string;
+  required: boolean;
+  description?: string;
+}
+
+/**
+ * Format a list of fields for display.
+ * Supports markdown, JSON, and CSV output formats.
+ *
+ * @param model - The Odoo model name (e.g., 'crm.lead')
+ * @param fields - Array of field information
+ * @param format - Output format (markdown, json, csv)
+ * @param modelType - The model type for showing presets ('lead', 'contact', etc.)
+ * @returns Formatted string
+ */
+export function formatFieldsList(
+  model: string,
+  fields: FieldInfo[],
+  format: ResponseFormat,
+  modelType?: 'lead' | 'contact' | 'activity' | 'lost' | 'won'
+): string {
+  // Get presets for this model type if available
+  const presets = modelType ? FIELD_PRESETS[modelType] : undefined;
+
+  // JSON format - structured data
+  if (format === ResponseFormat.JSON) {
+    return JSON.stringify({
+      model,
+      field_count: fields.length,
+      fields,
+      presets: presets ? Object.keys(presets) : undefined
+    }, null, 2);
+  }
+
+  // CSV format - compact, token-efficient
+  if (format === ResponseFormat.CSV) {
+    const header = 'name,label,type,required';
+    const rows = fields.map(f =>
+      `${f.name},"${f.label.replace(/"/g, '""')}",${f.type},${f.required}`
+    );
+    return [header, ...rows].join('\n');
+  }
+
+  // Markdown format - human-readable with presets shown
+  let output = `## Available Fields for \`${model}\`\n\n`;
+  output += `**Total fields:** ${fields.length}\n\n`;
+
+  // Show presets if available
+  if (presets && Object.keys(presets).length > 0) {
+    output += `### Field Presets\n`;
+    output += `Use these names in the \`fields\` parameter for quick selection:\n\n`;
+
+    for (const [presetName, presetFields] of Object.entries(presets)) {
+      const fieldCount = presetFields.length;
+      const preview = presetFields.slice(0, 4).join(', ');
+      const suffix = fieldCount > 4 ? ', ...' : '';
+      output += `- **\`${presetName}\`**: ${fieldCount} fields (${preview}${suffix})\n`;
+    }
+    output += `\n`;
+  }
+
+  // Show example usage
+  output += `### Usage Examples\n`;
+  output += `\`\`\`\n`;
+  output += `// Use a preset\n`;
+  output += `{ "fields": "basic" }\n\n`;
+  output += `// Use custom fields\n`;
+  output += `{ "fields": ["name", "email_from", "expected_revenue"] }\n`;
+  output += `\`\`\`\n\n`;
+
+  // Show all fields
+  output += `### All Fields\n\n`;
+  output += `| Field Name | Label | Type | Required |\n`;
+  output += `|------------|-------|------|----------|\n`;
+
+  for (const field of fields) {
+    const required = field.required ? 'Yes' : '-';
+    // Escape pipe characters in labels
+    const safeLabel = field.label.replace(/\|/g, '\\|');
+    output += `| \`${field.name}\` | ${safeLabel} | ${field.type} | ${required} |\n`;
   }
 
   return output;

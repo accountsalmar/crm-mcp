@@ -28,7 +28,9 @@ import {
   formatLeadListItemExtended,
   truncateText,
   formatStatesList,
-  formatStateComparison
+  formatStateComparison,
+  formatFieldsList,
+  type FieldInfo
 } from '../services/formatters.js';
 import {
   LeadSearchSchema,
@@ -76,9 +78,11 @@ import {
   CacheStatusSchema,
   type CacheStatusInput,
   HealthCheckSchema,
-  type HealthCheckInput
+  type HealthCheckInput,
+  ListFieldsSchema,
+  type ListFieldsInput
 } from '../schemas/index.js';
-import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG } from '../constants.js';
+import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG, FIELD_PRESETS } from '../constants.js';
 import type { CrmLead, CrmStage, ResPartner, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, CrmLostReason, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, CrmTeam, ResUsers, OdooRecord, ExportFormat, ResCountryState, StateWithStats, StateComparison } from '../types.js';
 import { ExportWriter, generateExportFilename, getOutputDirectory, getMimeType } from '../utils/export-writer.js';
 import { convertDateToUtc, getDaysAgoUtc } from '../utils/timezone.js';
@@ -3238,6 +3242,130 @@ The server caches frequently accessed, rarely-changing data to improve performan
         return {
           isError: true,
           content: [{ type: 'text', text: `Error accessing cache: ${message}` }]
+        };
+      }
+    }
+  );
+
+  // ============================================
+  // TOOL: List Available Fields (Discovery)
+  // ============================================
+  server.registerTool(
+    'odoo_crm_list_fields',
+    {
+      title: 'List Available Fields',
+      description: `Discover available fields for Odoo CRM models.
+
+Use this tool BEFORE making search requests to know what fields/columns are available for selection.
+
+**Common models:**
+- **crm.lead**: Leads and opportunities (most common)
+- **res.partner**: Contacts and companies
+- **mail.activity**: Activities (calls, meetings, tasks)
+- **crm.stage**: Pipeline stages
+- **crm.lost.reason**: Lost reasons
+
+**Field presets (use in 'fields' parameter of search tools):**
+- **basic**: Minimal fields for fast list views (default)
+- **extended**: Includes address, source, tags
+- **full**: All fields for detailed views
+
+Returns field names you can use in the 'fields' parameter of search tools.`,
+      inputSchema: ListFieldsSchema,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true
+      }
+    },
+    async (params: ListFieldsInput) => {
+      try {
+        const client = getOdooClient();
+
+        // Get field metadata from Odoo using fieldsGet
+        const fieldsInfo = await client.fieldsGet(
+          params.model,
+          ['string', 'type', 'required', 'readonly', 'relation', 'help']
+        );
+
+        // Process and filter fields
+        const fieldList: FieldInfo[] = [];
+
+        for (const [fieldName, metadata] of Object.entries(fieldsInfo)) {
+          const meta = metadata as Record<string, unknown>;
+          const fieldType = meta.type as string;
+
+          // Apply filter
+          if (params.filter !== 'all') {
+            const isRelational = ['many2one', 'many2many', 'one2many'].includes(fieldType);
+            const isRequired = meta.required === true;
+
+            if (params.filter === 'relational' && !isRelational) continue;
+            if (params.filter === 'basic' && isRelational) continue;
+            if (params.filter === 'required' && !isRequired) continue;
+          }
+
+          const fieldInfo: FieldInfo = {
+            name: fieldName,
+            label: (meta.string as string) || fieldName,
+            type: fieldType,
+            required: (meta.required as boolean) || false
+          };
+
+          // Add description if requested and available
+          if (params.include_descriptions && meta.help) {
+            fieldInfo.description = meta.help as string;
+          }
+
+          fieldList.push(fieldInfo);
+        }
+
+        // Sort alphabetically by name
+        fieldList.sort((a, b) => a.name.localeCompare(b.name));
+
+        // Determine model type for presets
+        const modelTypeMap: Record<string, 'lead' | 'contact' | 'activity'> = {
+          'crm.lead': 'lead',
+          'res.partner': 'contact',
+          'mail.activity': 'activity'
+        };
+        const modelType = modelTypeMap[params.model];
+
+        // Format output using the formatter
+        const output = formatFieldsList(
+          params.model,
+          fieldList,
+          params.response_format,
+          modelType
+        );
+
+        // Build structured content for JSON
+        const structuredContent: {
+          model: string;
+          field_count: number;
+          fields: FieldInfo[];
+          presets?: string[];
+        } = {
+          model: params.model,
+          field_count: fieldList.length,
+          fields: fieldList
+        };
+
+        if (modelType && FIELD_PRESETS[modelType]) {
+          structuredContent.presets = Object.keys(FIELD_PRESETS[modelType]);
+        }
+
+        return {
+          content: [{ type: 'text', text: output }],
+          structuredContent
+        };
+
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return {
+          isError: true,
+          content: [{ type: 'text', text: `Error listing fields: ${message}` }]
         };
       }
     }

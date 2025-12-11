@@ -1,8 +1,8 @@
 import { getOdooClient } from '../services/odoo-client.js';
 import { getPoolMetrics } from '../services/odoo-pool.js';
-import { formatLeadList, formatLeadDetail, formatPipelineSummary, formatSalesAnalytics, formatContactList, formatActivitySummary, getRelationName, formatLostReasonsList, formatLostAnalysis, formatLostOpportunitiesList, formatLostTrends, formatDate, formatWonOpportunitiesList, formatWonAnalysis, formatWonTrends, formatSalespeopleList, formatTeamsList, formatPerformanceComparison, formatActivityList, formatExportResult, formatStatesList, formatStateComparison } from '../services/formatters.js';
-import { LeadSearchSchema, LeadDetailSchema, PipelineSummarySchema, SalesAnalyticsSchema, ContactSearchSchema, ActivitySummarySchema, StageListSchema, LostReasonsListSchema, LostAnalysisSchema, LostOpportunitiesSearchSchema, LostTrendsSchema, WonOpportunitiesSearchSchema, WonAnalysisSchema, WonTrendsSchema, SalespeopleListSchema, TeamsListSchema, ComparePerformanceSchema, ActivitySearchSchema, ExportDataSchema, StatesListSchema, CompareStatesSchema, CacheStatusSchema, HealthCheckSchema } from '../schemas/index.js';
-import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG } from '../constants.js';
+import { formatLeadList, formatLeadDetail, formatPipelineSummary, formatSalesAnalytics, formatContactList, formatActivitySummary, getRelationName, formatLostReasonsList, formatLostAnalysis, formatLostOpportunitiesList, formatLostTrends, formatDate, formatWonOpportunitiesList, formatWonAnalysis, formatWonTrends, formatSalespeopleList, formatTeamsList, formatPerformanceComparison, formatActivityList, formatExportResult, formatStatesList, formatStateComparison, formatFieldsList } from '../services/formatters.js';
+import { LeadSearchSchema, LeadDetailSchema, PipelineSummarySchema, SalesAnalyticsSchema, ContactSearchSchema, ActivitySummarySchema, StageListSchema, LostReasonsListSchema, LostAnalysisSchema, LostOpportunitiesSearchSchema, LostTrendsSchema, WonOpportunitiesSearchSchema, WonAnalysisSchema, WonTrendsSchema, SalespeopleListSchema, TeamsListSchema, ComparePerformanceSchema, ActivitySearchSchema, ExportDataSchema, StatesListSchema, CompareStatesSchema, CacheStatusSchema, HealthCheckSchema, ListFieldsSchema } from '../schemas/index.js';
+import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG, FIELD_PRESETS } from '../constants.js';
 import { ExportWriter, generateExportFilename, getOutputDirectory, getMimeType } from '../utils/export-writer.js';
 import { convertDateToUtc, getDaysAgoUtc } from '../utils/timezone.js';
 import { cache, CACHE_KEYS } from '../utils/cache.js';
@@ -2424,6 +2424,101 @@ The server caches frequently accessed, rarely-changing data to improve performan
             return {
                 isError: true,
                 content: [{ type: 'text', text: `Error accessing cache: ${message}` }]
+            };
+        }
+    });
+    // ============================================
+    // TOOL: List Available Fields (Discovery)
+    // ============================================
+    server.registerTool('odoo_crm_list_fields', {
+        title: 'List Available Fields',
+        description: `Discover available fields for Odoo CRM models.
+
+Use this tool BEFORE making search requests to know what fields/columns are available for selection.
+
+**Common models:**
+- **crm.lead**: Leads and opportunities (most common)
+- **res.partner**: Contacts and companies
+- **mail.activity**: Activities (calls, meetings, tasks)
+- **crm.stage**: Pipeline stages
+- **crm.lost.reason**: Lost reasons
+
+**Field presets (use in 'fields' parameter of search tools):**
+- **basic**: Minimal fields for fast list views (default)
+- **extended**: Includes address, source, tags
+- **full**: All fields for detailed views
+
+Returns field names you can use in the 'fields' parameter of search tools.`,
+        inputSchema: ListFieldsSchema,
+        annotations: {
+            readOnlyHint: true,
+            destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: true
+        }
+    }, async (params) => {
+        try {
+            const client = getOdooClient();
+            // Get field metadata from Odoo using fieldsGet
+            const fieldsInfo = await client.fieldsGet(params.model, ['string', 'type', 'required', 'readonly', 'relation', 'help']);
+            // Process and filter fields
+            const fieldList = [];
+            for (const [fieldName, metadata] of Object.entries(fieldsInfo)) {
+                const meta = metadata;
+                const fieldType = meta.type;
+                // Apply filter
+                if (params.filter !== 'all') {
+                    const isRelational = ['many2one', 'many2many', 'one2many'].includes(fieldType);
+                    const isRequired = meta.required === true;
+                    if (params.filter === 'relational' && !isRelational)
+                        continue;
+                    if (params.filter === 'basic' && isRelational)
+                        continue;
+                    if (params.filter === 'required' && !isRequired)
+                        continue;
+                }
+                const fieldInfo = {
+                    name: fieldName,
+                    label: meta.string || fieldName,
+                    type: fieldType,
+                    required: meta.required || false
+                };
+                // Add description if requested and available
+                if (params.include_descriptions && meta.help) {
+                    fieldInfo.description = meta.help;
+                }
+                fieldList.push(fieldInfo);
+            }
+            // Sort alphabetically by name
+            fieldList.sort((a, b) => a.name.localeCompare(b.name));
+            // Determine model type for presets
+            const modelTypeMap = {
+                'crm.lead': 'lead',
+                'res.partner': 'contact',
+                'mail.activity': 'activity'
+            };
+            const modelType = modelTypeMap[params.model];
+            // Format output using the formatter
+            const output = formatFieldsList(params.model, fieldList, params.response_format, modelType);
+            // Build structured content for JSON
+            const structuredContent = {
+                model: params.model,
+                field_count: fieldList.length,
+                fields: fieldList
+            };
+            if (modelType && FIELD_PRESETS[modelType]) {
+                structuredContent.presets = Object.keys(FIELD_PRESETS[modelType]);
+            }
+            return {
+                content: [{ type: 'text', text: output }],
+                structuredContent
+            };
+        }
+        catch (error) {
+            const message = error instanceof Error ? error.message : 'Unknown error';
+            return {
+                isError: true,
+                content: [{ type: 'text', text: `Error listing fields: ${message}` }]
             };
         }
     });
