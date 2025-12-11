@@ -1,5 +1,59 @@
 import { z } from 'zod';
 import { CONTEXT_LIMITS, ResponseFormat } from '../constants.js';
+// =============================================================================
+// FIELD SELECTION SCHEMAS - For dynamic column selection
+// =============================================================================
+/**
+ * Field preset names that users can specify instead of listing individual fields.
+ * These map to FIELD_PRESETS in constants.ts.
+ */
+export const FieldPresetEnum = z.enum(['basic', 'extended', 'full']);
+/**
+ * Flexible fields parameter schema.
+ * Accepts either:
+ *   - A preset name: "basic", "extended", "full"
+ *   - A custom array: ["name", "email", "phone"]
+ *
+ * This allows users to choose between convenience (presets) and flexibility (custom).
+ *
+ * @example
+ * // Using preset
+ * { fields: "extended" }
+ *
+ * @example
+ * // Using custom array
+ * { fields: ["name", "email_from", "expected_revenue", "stage_id"] }
+ */
+export const FieldsParam = z.union([
+    FieldPresetEnum,
+    z.array(z.string()).min(1).max(100)
+]).optional()
+    .describe("Fields to return. Use preset name ('basic', 'extended', 'full') or array of field names. " +
+    "Defaults to 'basic'. Use odoo_crm_list_fields tool to discover available fields.");
+/**
+ * Schema for the field discovery tool (odoo_crm_list_fields).
+ * Lets users explore what fields are available on each Odoo model.
+ */
+export const ListFieldsSchema = z.object({
+    model: z.enum(['crm.lead', 'res.partner', 'mail.activity', 'crm.stage', 'crm.lost.reason'])
+        .default('crm.lead')
+        .describe("Odoo model to inspect. Common: 'crm.lead' (leads/opportunities), 'res.partner' (contacts)"),
+    include_types: z.boolean()
+        .default(false)
+        .describe("Include field data types (string, integer, many2one, etc.) in output"),
+    include_descriptions: z.boolean()
+        .default(false)
+        .describe("Include field descriptions/labels in output"),
+    filter: z.enum(['all', 'basic', 'relational', 'required'])
+        .default('all')
+        .describe("Filter fields: 'all', 'basic' (non-relational), 'relational' (links), 'required' (mandatory)"),
+    response_format: z.nativeEnum(ResponseFormat)
+        .default(ResponseFormat.MARKDOWN)
+        .describe("Output format: 'markdown', 'json', or 'csv'")
+}).strict();
+// =============================================================================
+// PAGINATION AND COMMON SCHEMAS
+// =============================================================================
 // Common pagination schema
 export const PaginationSchema = z.object({
     limit: z.number()

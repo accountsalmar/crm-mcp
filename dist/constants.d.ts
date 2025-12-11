@@ -34,8 +34,49 @@ export declare const CRM_FIELDS: {
 };
 export declare enum ResponseFormat {
     JSON = "json",
-    MARKDOWN = "markdown"
+    MARKDOWN = "markdown",
+    CSV = "csv"
 }
+/**
+ * Map preset names to actual field arrays.
+ * Users can specify preset names instead of listing individual fields.
+ *
+ * Usage in tools:
+ *   fields: "basic"           -> Uses LEAD_LIST (14 fields)
+ *   fields: "extended"        -> Uses LEAD_LIST_EXTENDED (21 fields)
+ *   fields: "full"            -> Uses LEAD_DETAIL (all fields)
+ *   fields: ["name", "email"] -> Uses custom array
+ */
+export declare const FIELD_PRESETS: Record<string, Record<string, string[]>>;
+/**
+ * Resolve a fields parameter to an actual array of field names.
+ *
+ * This function handles three cases:
+ * 1. undefined/null -> Returns the default preset for the model type
+ * 2. string (preset name) -> Returns the preset's field array
+ * 3. string[] (custom fields) -> Returns as-is
+ *
+ * @param fieldsParam - The fields parameter from the API call
+ * @param modelType - The type of model: 'lead', 'contact', 'activity', 'lost', 'won'
+ * @param defaultPreset - Which preset to use when fieldsParam is undefined (default: 'basic')
+ * @returns Array of field names to fetch from Odoo
+ *
+ * @example
+ * // No fields specified - use default preset
+ * resolveFields(undefined, 'lead', 'basic')
+ * // Returns: ['id', 'name', 'contact_name', 'email_from', ...]
+ *
+ * @example
+ * // Preset name specified
+ * resolveFields('extended', 'lead', 'basic')
+ * // Returns: LEAD_LIST_EXTENDED fields
+ *
+ * @example
+ * // Custom array specified
+ * resolveFields(['name', 'email_from', 'expected_revenue'], 'lead')
+ * // Returns: ['name', 'email_from', 'expected_revenue']
+ */
+export declare function resolveFields(fieldsParam: string | string[] | undefined, modelType?: 'lead' | 'contact' | 'activity' | 'lost' | 'won', defaultPreset?: string): string[];
 export declare const CIRCUIT_BREAKER_CONFIG: {
     readonly FAILURE_THRESHOLD: 5;
     readonly RESET_TIMEOUT_MS: 60000;

@@ -126,7 +126,101 @@ export var ResponseFormat;
 (function (ResponseFormat) {
     ResponseFormat["JSON"] = "json";
     ResponseFormat["MARKDOWN"] = "markdown";
+    ResponseFormat["CSV"] = "csv";
 })(ResponseFormat || (ResponseFormat = {}));
+// =============================================================================
+// FIELD PRESETS - Named field sets for dynamic column selection
+// =============================================================================
+/**
+ * Map preset names to actual field arrays.
+ * Users can specify preset names instead of listing individual fields.
+ *
+ * Usage in tools:
+ *   fields: "basic"           -> Uses LEAD_LIST (14 fields)
+ *   fields: "extended"        -> Uses LEAD_LIST_EXTENDED (21 fields)
+ *   fields: "full"            -> Uses LEAD_DETAIL (all fields)
+ *   fields: ["name", "email"] -> Uses custom array
+ */
+export const FIELD_PRESETS = {
+    // Lead/Opportunity presets
+    lead: {
+        basic: CRM_FIELDS.LEAD_LIST,
+        extended: CRM_FIELDS.LEAD_LIST_EXTENDED,
+        full: CRM_FIELDS.LEAD_DETAIL,
+    },
+    // Contact presets
+    contact: {
+        basic: CRM_FIELDS.CONTACT_LIST,
+        full: CRM_FIELDS.CONTACT_LIST,
+    },
+    // Activity presets
+    activity: {
+        basic: CRM_FIELDS.ACTIVITY,
+        full: CRM_FIELDS.ACTIVITY_DETAIL,
+    },
+    // Lost opportunity presets
+    lost: {
+        basic: CRM_FIELDS.LOST_OPPORTUNITY_LIST,
+        full: CRM_FIELDS.LOST_OPPORTUNITY_DETAIL,
+    },
+    // Won opportunity presets
+    won: {
+        basic: CRM_FIELDS.WON_OPPORTUNITY_LIST,
+        full: CRM_FIELDS.WON_OPPORTUNITY_DETAIL,
+    },
+};
+/**
+ * Resolve a fields parameter to an actual array of field names.
+ *
+ * This function handles three cases:
+ * 1. undefined/null -> Returns the default preset for the model type
+ * 2. string (preset name) -> Returns the preset's field array
+ * 3. string[] (custom fields) -> Returns as-is
+ *
+ * @param fieldsParam - The fields parameter from the API call
+ * @param modelType - The type of model: 'lead', 'contact', 'activity', 'lost', 'won'
+ * @param defaultPreset - Which preset to use when fieldsParam is undefined (default: 'basic')
+ * @returns Array of field names to fetch from Odoo
+ *
+ * @example
+ * // No fields specified - use default preset
+ * resolveFields(undefined, 'lead', 'basic')
+ * // Returns: ['id', 'name', 'contact_name', 'email_from', ...]
+ *
+ * @example
+ * // Preset name specified
+ * resolveFields('extended', 'lead', 'basic')
+ * // Returns: LEAD_LIST_EXTENDED fields
+ *
+ * @example
+ * // Custom array specified
+ * resolveFields(['name', 'email_from', 'expected_revenue'], 'lead')
+ * // Returns: ['name', 'email_from', 'expected_revenue']
+ */
+export function resolveFields(fieldsParam, modelType = 'lead', defaultPreset = 'basic') {
+    // Case 1: No parameter provided - use default preset
+    if (fieldsParam === undefined || fieldsParam === null) {
+        const presets = FIELD_PRESETS[modelType];
+        return presets?.[defaultPreset] || CRM_FIELDS.LEAD_LIST;
+    }
+    // Case 2: String provided - it's a preset name
+    if (typeof fieldsParam === 'string') {
+        const presets = FIELD_PRESETS[modelType];
+        const preset = presets?.[fieldsParam];
+        if (preset) {
+            return preset;
+        }
+        // Unknown preset name - log warning and use default
+        console.error(`[resolveFields] Unknown preset "${fieldsParam}" for ${modelType}, using default`);
+        return FIELD_PRESETS[modelType]?.[defaultPreset] || CRM_FIELDS.LEAD_LIST;
+    }
+    // Case 3: Array provided - use as-is (custom fields)
+    if (Array.isArray(fieldsParam)) {
+        return fieldsParam;
+    }
+    // Fallback (shouldn't reach here, but just in case)
+    return FIELD_PRESETS[modelType]?.[defaultPreset] || CRM_FIELDS.LEAD_LIST;
+}
 // Circuit breaker configuration for graceful degradation
 export const CIRCUIT_BREAKER_CONFIG = {
     // Number of consecutive failures before circuit opens (stops trying)

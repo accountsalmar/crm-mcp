@@ -1,5 +1,51 @@
 import { z } from 'zod';
 import { ResponseFormat } from '../constants.js';
+/**
+ * Field preset names that users can specify instead of listing individual fields.
+ * These map to FIELD_PRESETS in constants.ts.
+ */
+export declare const FieldPresetEnum: z.ZodEnum<["basic", "extended", "full"]>;
+/**
+ * Flexible fields parameter schema.
+ * Accepts either:
+ *   - A preset name: "basic", "extended", "full"
+ *   - A custom array: ["name", "email", "phone"]
+ *
+ * This allows users to choose between convenience (presets) and flexibility (custom).
+ *
+ * @example
+ * // Using preset
+ * { fields: "extended" }
+ *
+ * @example
+ * // Using custom array
+ * { fields: ["name", "email_from", "expected_revenue", "stage_id"] }
+ */
+export declare const FieldsParam: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
+/**
+ * Schema for the field discovery tool (odoo_crm_list_fields).
+ * Lets users explore what fields are available on each Odoo model.
+ */
+export declare const ListFieldsSchema: z.ZodObject<{
+    model: z.ZodDefault<z.ZodEnum<["crm.lead", "res.partner", "mail.activity", "crm.stage", "crm.lost.reason"]>>;
+    include_types: z.ZodDefault<z.ZodBoolean>;
+    include_descriptions: z.ZodDefault<z.ZodBoolean>;
+    filter: z.ZodDefault<z.ZodEnum<["all", "basic", "relational", "required"]>>;
+    response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
+}, "strict", z.ZodTypeAny, {
+    filter: "basic" | "required" | "all" | "relational";
+    model: "crm.stage" | "crm.lost.reason" | "crm.lead" | "res.partner" | "mail.activity";
+    include_types: boolean;
+    include_descriptions: boolean;
+    response_format: ResponseFormat;
+}, {
+    filter?: "basic" | "required" | "all" | "relational" | undefined;
+    model?: "crm.stage" | "crm.lost.reason" | "crm.lead" | "res.partner" | "mail.activity" | undefined;
+    include_types?: boolean | undefined;
+    include_descriptions?: boolean | undefined;
+    response_format?: ResponseFormat | undefined;
+}>;
+export type ListFieldsInput = z.infer<typeof ListFieldsSchema>;
 export declare const PaginationSchema: z.ZodObject<{
     limit: z.ZodDefault<z.ZodNumber>;
     offset: z.ZodDefault<z.ZodNumber>;
@@ -522,9 +568,9 @@ export declare const ActivitySearchSchema: z.ZodObject<{
 }, "strict", z.ZodTypeAny, {
     offset: number;
     limit: number;
-    response_format: ResponseFormat;
     status: "overdue" | "today" | "upcoming" | "done" | "all";
-    activity_type: "email" | "call" | "meeting" | "task" | "all";
+    response_format: ResponseFormat;
+    activity_type: "email" | "all" | "call" | "meeting" | "task";
     user_id?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
@@ -533,12 +579,12 @@ export declare const ActivitySearchSchema: z.ZodObject<{
     user_id?: number | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
-    response_format?: ResponseFormat | undefined;
     status?: "overdue" | "today" | "upcoming" | "done" | "all" | undefined;
+    response_format?: ResponseFormat | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
     lead_id?: number | undefined;
-    activity_type?: "email" | "call" | "meeting" | "task" | "all" | undefined;
+    activity_type?: "email" | "all" | "call" | "meeting" | "task" | undefined;
 }>;
 export declare const ExportDataSchema: z.ZodObject<{
     export_type: z.ZodEnum<["leads", "won", "lost", "contacts", "activities"]>;
@@ -586,7 +632,7 @@ export declare const ExportDataSchema: z.ZodObject<{
     filename: z.ZodOptional<z.ZodString>;
 }, "strict", z.ZodTypeAny, {
     format: "json" | "csv" | "xlsx";
-    export_type: "leads" | "won" | "lost" | "contacts" | "activities";
+    export_type: "lost" | "won" | "leads" | "contacts" | "activities";
     max_records: number;
     filename?: string | undefined;
     fields?: string[] | undefined;
@@ -605,7 +651,7 @@ export declare const ExportDataSchema: z.ZodObject<{
     } | undefined;
     output_directory?: string | undefined;
 }, {
-    export_type: "leads" | "won" | "lost" | "contacts" | "activities";
+    export_type: "lost" | "won" | "leads" | "contacts" | "activities";
     filename?: string | undefined;
     format?: "json" | "csv" | "xlsx" | undefined;
     fields?: string[] | undefined;
