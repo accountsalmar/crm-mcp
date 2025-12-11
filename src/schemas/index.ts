@@ -179,7 +179,8 @@ export const LeadSearchSchema = PaginationSchema.extend({
     .describe('Field to sort by'),
   order_dir: z.enum(['asc', 'desc'])
     .default('desc')
-    .describe('Sort direction')
+    .describe('Sort direction'),
+  fields: FieldsParam
 }).strict();
 
 // Single lead detail schema
@@ -190,7 +191,8 @@ export const LeadDetailSchema = z.object({
     .describe('The ID of the lead/opportunity to retrieve'),
   response_format: z.nativeEnum(ResponseFormat)
     .default(ResponseFormat.MARKDOWN)
-    .describe("Output format: 'markdown' or 'json'")
+    .describe("Output format: 'markdown' or 'json'"),
+  fields: FieldsParam
 }).strict();
 
 // Pipeline summary schema
@@ -274,7 +276,8 @@ export const ContactSearchSchema = PaginationSchema.extend({
     .describe("Filter by state name (partial match). Examples: 'Victoria', 'NSW', 'Queensland'"),
   city: z.string()
     .optional()
-    .describe('Filter by city name (partial match)')
+    .describe('Filter by city name (partial match)'),
+  fields: FieldsParam
 }).strict();
 
 // Activity summary schema
@@ -439,7 +442,8 @@ export const LostOpportunitiesSearchSchema = PaginationSchema.extend({
     .describe('Field to sort by'),
   order_dir: z.enum(['asc', 'desc'])
     .default('desc')
-    .describe('Sort direction')
+    .describe('Sort direction'),
+  fields: FieldsParam
 }).strict();
 
 // Lost trends schema
@@ -541,7 +545,8 @@ export const WonOpportunitiesSearchSchema = PaginationSchema.extend({
     .describe('Field to sort by'),
   order_dir: z.enum(['asc', 'desc'])
     .default('desc')
-    .describe('Sort direction')
+    .describe('Sort direction'),
+  fields: FieldsParam
 }).strict();
 
 // Won analysis schema
@@ -693,7 +698,8 @@ export const ActivitySearchSchema = PaginationSchema.extend({
   date_to: z.string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .optional()
-    .describe('Activity due date to (YYYY-MM-DD)')
+    .describe('Activity due date to (YYYY-MM-DD)'),
+  fields: FieldsParam
 }).strict();
 
 // Export data schema - writes directly to filesystem (no base64)

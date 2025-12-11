@@ -2,7 +2,7 @@ import { getOdooClient } from '../services/odoo-client.js';
 import { getPoolMetrics } from '../services/odoo-pool.js';
 import { formatLeadList, formatLeadDetail, formatPipelineSummary, formatSalesAnalytics, formatContactList, formatActivitySummary, getRelationName, formatLostReasonsList, formatLostAnalysis, formatLostOpportunitiesList, formatLostTrends, formatDate, formatWonOpportunitiesList, formatWonAnalysis, formatWonTrends, formatSalespeopleList, formatTeamsList, formatPerformanceComparison, formatActivityList, formatExportResult, formatStatesList, formatStateComparison, formatFieldsList } from '../services/formatters.js';
 import { LeadSearchSchema, LeadDetailSchema, PipelineSummarySchema, SalesAnalyticsSchema, ContactSearchSchema, ActivitySummarySchema, StageListSchema, LostReasonsListSchema, LostAnalysisSchema, LostOpportunitiesSearchSchema, LostTrendsSchema, WonOpportunitiesSearchSchema, WonAnalysisSchema, WonTrendsSchema, SalespeopleListSchema, TeamsListSchema, ComparePerformanceSchema, ActivitySearchSchema, ExportDataSchema, StatesListSchema, CompareStatesSchema, CacheStatusSchema, HealthCheckSchema, ListFieldsSchema } from '../schemas/index.js';
-import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG, FIELD_PRESETS } from '../constants.js';
+import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG, FIELD_PRESETS, resolveFields } from '../constants.js';
 import { ExportWriter, generateExportFilename, getOutputDirectory, getMimeType } from '../utils/export-writer.js';
 import { convertDateToUtc, getDaysAgoUtc } from '../utils/timezone.js';
 import { cache, CACHE_KEYS } from '../utils/cache.js';
@@ -111,8 +111,10 @@ Returns paginated list with: name, contact, email, stage, revenue, probability`,
             }
             // Get total count
             const total = await client.searchCount('crm.lead', domain);
+            // Resolve fields from preset or custom array
+            const fields = resolveFields(params.fields, 'lead', 'basic');
             // Fetch records
-            const leads = await client.searchRead('crm.lead', domain, CRM_FIELDS.LEAD_LIST, {
+            const leads = await client.searchRead('crm.lead', domain, fields, {
                 offset: params.offset,
                 limit: params.limit,
                 order: `${params.order_by} ${params.order_dir}`
@@ -170,7 +172,9 @@ Returns all available fields for the lead including description/notes.`,
     }, async (params) => {
         try {
             const client = getOdooClient();
-            const leads = await client.read('crm.lead', [params.lead_id], CRM_FIELDS.LEAD_DETAIL);
+            // Resolve fields from preset or custom array (default: full for detail views)
+            const fields = resolveFields(params.fields, 'lead', 'full');
+            const leads = await client.read('crm.lead', [params.lead_id], fields);
             if (leads.length === 0) {
                 return {
                     isError: true,
@@ -439,8 +443,10 @@ Returns: name, email, phone, city, country`,
             }
             // Get total count
             const total = await client.searchCount('res.partner', domain);
+            // Resolve fields from preset or custom array
+            const fields = resolveFields(params.fields, 'contact', 'basic');
             // Fetch records
-            const contacts = await client.searchRead('res.partner', domain, CRM_FIELDS.CONTACT_LIST, {
+            const contacts = await client.searchRead('res.partner', domain, fields, {
                 offset: params.offset,
                 limit: params.limit,
                 order: 'name asc'
@@ -996,8 +1002,10 @@ Returns a paginated list of lost opportunities with details including the lost r
             }
             // Get total count
             const total = await client.searchCount('crm.lead', domain);
+            // Resolve fields from preset or custom array
+            const fields = resolveFields(params.fields, 'lost', 'basic');
             // Fetch records
-            const opportunities = await client.searchRead('crm.lead', domain, CRM_FIELDS.LOST_OPPORTUNITY_DETAIL, {
+            const opportunities = await client.searchRead('crm.lead', domain, fields, {
                 offset: params.offset,
                 limit: params.limit,
                 order: `${params.order_by} ${params.order_dir}`
@@ -1317,8 +1325,10 @@ Returns a paginated list of won opportunities with details including revenue, sa
             }
             // Get total count
             const total = await client.searchCount('crm.lead', domain);
+            // Resolve fields from preset or custom array
+            const fields = resolveFields(params.fields, 'won', 'basic');
             // Fetch records
-            const opportunities = await client.searchRead('crm.lead', domain, CRM_FIELDS.WON_OPPORTUNITY_LIST, {
+            const opportunities = await client.searchRead('crm.lead', domain, fields, {
                 offset: params.offset,
                 limit: params.limit,
                 order: `${params.order_by} ${params.order_dir}`
@@ -2090,8 +2100,10 @@ Returns a paginated list of activities with details including type, due date, st
             }
             // Get total count
             const total = await client.searchCount('mail.activity', domain);
+            // Resolve fields from preset or custom array
+            const fields = resolveFields(params.fields, 'activity', 'basic');
             // Fetch activities
-            const activities = await client.searchRead('mail.activity', domain, CRM_FIELDS.ACTIVITY_DETAIL, {
+            const activities = await client.searchRead('mail.activity', domain, fields, {
                 offset: params.offset,
                 limit: params.limit,
                 order: 'date_deadline asc'

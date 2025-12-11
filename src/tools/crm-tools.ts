@@ -82,7 +82,7 @@ import {
   ListFieldsSchema,
   type ListFieldsInput
 } from '../schemas/index.js';
-import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG, FIELD_PRESETS } from '../constants.js';
+import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG, FIELD_PRESETS, resolveFields } from '../constants.js';
 import type { CrmLead, CrmStage, ResPartner, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, CrmLostReason, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, CrmTeam, ResUsers, OdooRecord, ExportFormat, ResCountryState, StateWithStats, StateComparison } from '../types.js';
 import { ExportWriter, generateExportFilename, getOutputDirectory, getMimeType } from '../utils/export-writer.js';
 import { convertDateToUtc, getDaysAgoUtc } from '../utils/timezone.js';
@@ -226,11 +226,14 @@ Returns paginated list with: name, contact, email, stage, revenue, probability`,
         // Get total count
         const total = await client.searchCount('crm.lead', domain);
 
+        // Resolve fields from preset or custom array
+        const fields = resolveFields(params.fields, 'lead', 'basic');
+
         // Fetch records
         const leads = await client.searchRead<CrmLead>(
           'crm.lead',
           domain,
-          CRM_FIELDS.LEAD_LIST,
+          fields,
           {
             offset: params.offset,
             limit: params.limit,
@@ -299,11 +302,14 @@ Returns all available fields for the lead including description/notes.`,
     async (params: LeadDetailInput) => {
       try {
         const client = getOdooClient();
-        
+
+        // Resolve fields from preset or custom array (default: full for detail views)
+        const fields = resolveFields(params.fields, 'lead', 'full');
+
         const leads = await client.read<CrmLead>(
           'crm.lead',
           [params.lead_id],
-          CRM_FIELDS.LEAD_DETAIL
+          fields
         );
         
         if (leads.length === 0) {
@@ -677,22 +683,25 @@ Returns: name, email, phone, city, country`,
             domain.push(['id', 'in', partnerIds]);
           }
         }
-        
+
         // Get total count
         const total = await client.searchCount('res.partner', domain);
-        
+
+        // Resolve fields from preset or custom array
+        const fields = resolveFields(params.fields, 'contact', 'basic');
+
         // Fetch records
         const contacts = await client.searchRead<ResPartner>(
           'res.partner',
           domain,
-          CRM_FIELDS.CONTACT_LIST,
+          fields,
           {
             offset: params.offset,
             limit: params.limit,
             order: 'name asc'
           }
         );
-        
+
         const response: PaginatedResponse<ResPartner> = {
           total,
           count: contacts.length,
@@ -1449,11 +1458,14 @@ Returns a paginated list of lost opportunities with details including the lost r
         // Get total count
         const total = await client.searchCount('crm.lead', domain);
 
+        // Resolve fields from preset or custom array
+        const fields = resolveFields(params.fields, 'lost', 'basic');
+
         // Fetch records
         const opportunities = await client.searchRead<LostOpportunity>(
           'crm.lead',
           domain,
-          CRM_FIELDS.LOST_OPPORTUNITY_DETAIL,
+          fields,
           {
             offset: params.offset,
             limit: params.limit,
@@ -1851,11 +1863,14 @@ Returns a paginated list of won opportunities with details including revenue, sa
         // Get total count
         const total = await client.searchCount('crm.lead', domain);
 
+        // Resolve fields from preset or custom array
+        const fields = resolveFields(params.fields, 'won', 'basic');
+
         // Fetch records
         const opportunities = await client.searchRead<WonOpportunity>(
           'crm.lead',
           domain,
-          CRM_FIELDS.WON_OPPORTUNITY_LIST,
+          fields,
           {
             offset: params.offset,
             limit: params.limit,
@@ -2883,11 +2898,14 @@ Returns a paginated list of activities with details including type, due date, st
         // Get total count
         const total = await client.searchCount('mail.activity', domain);
 
+        // Resolve fields from preset or custom array
+        const fields = resolveFields(params.fields, 'activity', 'basic');
+
         // Fetch activities
         const activities = await client.searchRead<ActivityDetail>(
           'mail.activity',
           domain,
-          CRM_FIELDS.ACTIVITY_DETAIL,
+          fields,
           {
             offset: params.offset,
             limit: params.limit,

@@ -87,6 +87,7 @@ export declare const LeadSearchSchema: z.ZodObject<{
     city: z.ZodOptional<z.ZodString>;
     order_by: z.ZodDefault<z.ZodEnum<["create_date", "expected_revenue", "probability", "name", "date_closed"]>>;
     order_dir: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
+    fields: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
 }, "strict", z.ZodTypeAny, {
     offset: number;
     limit: number;
@@ -105,6 +106,7 @@ export declare const LeadSearchSchema: z.ZodObject<{
     state_id?: number | undefined;
     type?: "lead" | "opportunity" | undefined;
     stage_name?: string | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
@@ -127,6 +129,7 @@ export declare const LeadSearchSchema: z.ZodObject<{
     offset?: number | undefined;
     limit?: number | undefined;
     stage_name?: string | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     response_format?: ResponseFormat | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
@@ -145,11 +148,14 @@ export declare const LeadSearchSchema: z.ZodObject<{
 export declare const LeadDetailSchema: z.ZodObject<{
     lead_id: z.ZodNumber;
     response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
+    fields: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
 }, "strict", z.ZodTypeAny, {
     response_format: ResponseFormat;
     lead_id: number;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
 }, {
     lead_id: number;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     response_format?: ResponseFormat | undefined;
 }>;
 export declare const PipelineSummarySchema: z.ZodObject<{
@@ -205,6 +211,7 @@ export declare const ContactSearchSchema: z.ZodObject<{
     state_id: z.ZodOptional<z.ZodNumber>;
     state_name: z.ZodOptional<z.ZodString>;
     city: z.ZodOptional<z.ZodString>;
+    fields: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
 }, "strict", z.ZodTypeAny, {
     offset: number;
     limit: number;
@@ -212,6 +219,7 @@ export declare const ContactSearchSchema: z.ZodObject<{
     city?: string | undefined;
     state_id?: number | undefined;
     is_company?: boolean | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     query?: string | undefined;
     state_name?: string | undefined;
     has_opportunities?: boolean | undefined;
@@ -222,6 +230,7 @@ export declare const ContactSearchSchema: z.ZodObject<{
     is_company?: boolean | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     response_format?: ResponseFormat | undefined;
     query?: string | undefined;
     state_name?: string | undefined;
@@ -318,6 +327,7 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     city: z.ZodOptional<z.ZodString>;
     order_by: z.ZodDefault<z.ZodEnum<["date_closed", "expected_revenue", "name", "create_date"]>>;
     order_dir: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
+    fields: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
 }, "strict", z.ZodTypeAny, {
     offset: number;
     limit: number;
@@ -333,6 +343,7 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     city?: string | undefined;
     state_id?: number | undefined;
     lost_reason_id?: number | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
@@ -352,6 +363,7 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     lost_reason_id?: number | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     response_format?: ResponseFormat | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
@@ -409,6 +421,7 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     city: z.ZodOptional<z.ZodString>;
     order_by: z.ZodDefault<z.ZodEnum<["date_closed", "expected_revenue", "name", "create_date"]>>;
     order_dir: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
+    fields: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
 }, "strict", z.ZodTypeAny, {
     offset: number;
     limit: number;
@@ -423,6 +436,7 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     specification_id?: number | undefined;
     city?: string | undefined;
     state_id?: number | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
@@ -440,6 +454,7 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     state_id?: number | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     response_format?: ResponseFormat | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
@@ -565,6 +580,7 @@ export declare const ActivitySearchSchema: z.ZodObject<{
     lead_id: z.ZodOptional<z.ZodNumber>;
     date_from: z.ZodOptional<z.ZodString>;
     date_to: z.ZodOptional<z.ZodString>;
+    fields: z.ZodOptional<z.ZodUnion<[z.ZodEnum<["basic", "extended", "full"]>, z.ZodArray<z.ZodString, "many">]>>;
 }, "strict", z.ZodTypeAny, {
     offset: number;
     limit: number;
@@ -572,6 +588,7 @@ export declare const ActivitySearchSchema: z.ZodObject<{
     response_format: ResponseFormat;
     activity_type: "email" | "all" | "call" | "meeting" | "task";
     user_id?: number | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
     lead_id?: number | undefined;
@@ -579,6 +596,7 @@ export declare const ActivitySearchSchema: z.ZodObject<{
     user_id?: number | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
+    fields?: string[] | "basic" | "extended" | "full" | undefined;
     status?: "overdue" | "today" | "upcoming" | "done" | "all" | undefined;
     response_format?: ResponseFormat | undefined;
     date_from?: string | undefined;
