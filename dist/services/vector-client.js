@@ -161,7 +161,7 @@ export async function upsertPoints(records) {
     }
     return executeWithCircuitBreaker(async () => {
         const points = records.map(r => ({
-            id: r.id,
+            id: parseInt(r.id, 10), // Qdrant requires integer or UUID, not string
             vector: r.values,
             payload: r.metadata,
         }));
@@ -182,7 +182,7 @@ export async function deletePoints(ids) {
     return executeWithCircuitBreaker(async () => {
         await qdrantClient.delete(QDRANT_CONFIG.COLLECTION_NAME, {
             wait: true,
-            points: ids,
+            points: ids.map(id => parseInt(id, 10)), // Convert to integers
         });
     });
 }
@@ -195,7 +195,7 @@ export async function getPoint(id) {
     }
     return executeWithCircuitBreaker(async () => {
         const result = await qdrantClient.retrieve(QDRANT_CONFIG.COLLECTION_NAME, {
-            ids: [id],
+            ids: [parseInt(id, 10)], // Convert to integer
             with_vector: true,
             with_payload: true,
         });
