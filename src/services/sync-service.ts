@@ -9,7 +9,7 @@ import { VECTOR_SYNC_CONFIG, CRM_FIELDS, QDRANT_CONFIG } from '../constants.js';
 import { CrmLead, VectorRecord, VectorMetadata, SyncProgress, SyncResult, VectorStatus } from '../types.js';
 import { useClient } from './odoo-pool.js';
 import { buildEmbeddingText, embedBatch, isEmbeddingServiceAvailable } from './embedding-service.js';
-import { upsertPoints, deletePoints, getCollectionInfo, getCircuitBreakerState, healthCheck } from './vector-client.js';
+import { upsertPoints, deletePoints, getCollectionInfo, getCircuitBreakerState, healthCheck, ensureCollection } from './vector-client.js';
 import { getRelationName } from './formatters.js';
 
 // Sync state
@@ -106,6 +106,9 @@ export async function fullSync(
   let recordsFailed = 0;
 
   try {
+    // Ensure collection exists before syncing
+    await ensureCollection();
+
     // Phase 1: Fetch all active opportunities from Odoo
     const leads = await useClient(async (client) => {
       const domain = [['active', '=', true]];
@@ -249,6 +252,9 @@ export async function incrementalSync(
   let recordsFailed = 0;
 
   try {
+    // Ensure collection exists before syncing
+    await ensureCollection();
+
     // Fetch changed records from Odoo
     const leads = await useClient(async (client) => {
       const domain = [

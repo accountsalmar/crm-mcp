@@ -7,7 +7,7 @@
 import { VECTOR_SYNC_CONFIG, CRM_FIELDS, QDRANT_CONFIG } from '../constants.js';
 import { useClient } from './odoo-pool.js';
 import { buildEmbeddingText, embedBatch, isEmbeddingServiceAvailable } from './embedding-service.js';
-import { upsertPoints, getCircuitBreakerState, healthCheck } from './vector-client.js';
+import { upsertPoints, getCircuitBreakerState, healthCheck, ensureCollection } from './vector-client.js';
 import { getRelationName } from './formatters.js';
 // Sync state
 let lastSyncTime = null;
@@ -93,6 +93,8 @@ export async function fullSync(onProgress) {
     let recordsSynced = 0;
     let recordsFailed = 0;
     try {
+        // Ensure collection exists before syncing
+        await ensureCollection();
         // Phase 1: Fetch all active opportunities from Odoo
         const leads = await useClient(async (client) => {
             const domain = [['active', '=', true]];
@@ -214,6 +216,8 @@ export async function incrementalSync(since, onProgress) {
     let recordsSynced = 0;
     let recordsFailed = 0;
     try {
+        // Ensure collection exists before syncing
+        await ensureCollection();
         // Fetch changed records from Odoo
         const leads = await useClient(async (client) => {
             const domain = [
