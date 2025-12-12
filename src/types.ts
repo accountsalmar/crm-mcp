@@ -903,6 +903,17 @@ export interface PatternCluster {
     id: number;
     name: string;
     similarity: number;
+    // Enhanced semantic fields (optional - populated from VectorMetadata)
+    partner_name?: string;
+    stage_name?: string;
+    expected_revenue?: number;
+    city?: string;
+    state_name?: string;
+    sector?: string;
+    specification_name?: string;
+    is_won?: boolean;
+    is_lost?: boolean;
+    lost_reason_name?: string;
   }>;
   commonThemes: {
     topSectors: Array<{ sector: string; count: number }>;

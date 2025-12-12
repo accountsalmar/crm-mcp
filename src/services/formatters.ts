@@ -1304,24 +1304,73 @@ export function formatSemanticSearchResults(
     leadMap.set(lead.id, lead);
   }
 
-  // JSON format - return structured data
+  // JSON format - return structured data with all semantic fields
   if (format === ResponseFormat.JSON) {
     const results = matches.map(match => {
       const lead = leadMap.get(parseInt(match.id));
+      const meta = match.metadata;
       return {
+        // Core identification
         id: parseInt(match.id),
-        name: lead?.name || match.metadata?.name || 'Unknown',
+        name: lead?.name || meta?.name || 'Unknown',
         similarity_score: Math.round(match.score * 100),
-        stage: getRelationName(lead?.stage_id),
-        expected_revenue: lead?.expected_revenue || 0,
-        probability: lead?.probability || 0,
-        salesperson: getRelationName(lead?.user_id),
-        team: getRelationName(lead?.team_id),
-        sector: lead?.sector || match.metadata?.sector || null,
-        city: lead?.city || match.metadata?.city || null,
-        state: getRelationName(lead?.state_id),
-        is_won: match.metadata?.is_won || false,
-        is_lost: match.metadata?.is_lost || false,
+
+        // Stage & metrics
+        stage: getRelationName(lead?.stage_id) || meta?.stage_name || null,
+        expected_revenue: lead?.expected_revenue || meta?.expected_revenue || 0,
+        probability: lead?.probability || meta?.probability || 0,
+        priority_label: meta?.priority_label || null,
+
+        // Assignment
+        salesperson: getRelationName(lead?.user_id) || meta?.user_name || null,
+        team: getRelationName(lead?.team_id) || meta?.team_name || null,
+
+        // Partner/Company
+        partner_name: meta?.partner_name || null,
+
+        // Contact information
+        contact_name: lead?.contact_name || meta?.contact_name || null,
+        function: lead?.function || meta?.function || null,
+        email_from: lead?.email_from || meta?.email_from || null,
+        phone: lead?.phone || meta?.phone || null,
+        mobile: lead?.mobile || meta?.mobile || null,
+
+        // Location
+        street: lead?.street || meta?.street || null,
+        city: lead?.city || meta?.city || null,
+        state: getRelationName(lead?.state_id) || meta?.state_name || null,
+        zip: lead?.zip || meta?.zip || null,
+        country: meta?.country_name || null,
+        project_address: meta?.project_address || null,
+
+        // Classification
+        sector: lead?.sector || meta?.sector || null,
+        specification_name: meta?.specification_name || null,
+        lead_source_name: meta?.lead_source_name || null,
+
+        // UTM Attribution
+        source_name: meta?.source_name || null,
+        medium_name: meta?.medium_name || null,
+        campaign_name: meta?.campaign_name || null,
+        referred: meta?.referred || null,
+
+        // Status
+        is_won: meta?.is_won || false,
+        is_lost: meta?.is_lost || false,
+        lost_reason_name: meta?.lost_reason_name || null,
+
+        // Custom role fields
+        architect_name: meta?.architect_name || null,
+        client_name: meta?.client_name || null,
+        estimator_name: meta?.estimator_name || null,
+        project_manager_name: meta?.project_manager_name || null,
+        spec_rep_name: meta?.spec_rep_name || null,
+
+        // Custom text fields
+        x_studio_building_owner: meta?.x_studio_building_owner || null,
+        design: meta?.design || null,
+        quote: meta?.quote || null,
+        address_note: meta?.address_note || null,
       };
     });
 
@@ -1353,31 +1402,89 @@ export function formatSemanticSearchResults(
     output += `### ${i + 1}. ${formatLinkedName(parseInt(match.id), lead?.name || match.metadata?.name || 'Unknown', 'crm.lead')}\n`;
     output += `${similarityBar} **${similarity}% match** | ID: ${match.id}\n\n`;
 
-    if (lead) {
+    const meta = match.metadata;
+    if (lead || meta) {
       // Status badges
       const statusBadges: string[] = [];
-      if (match.metadata?.is_won) statusBadges.push('✅ Won');
-      if (match.metadata?.is_lost) statusBadges.push('❌ Lost');
-      if (!match.metadata?.is_won && !match.metadata?.is_lost) statusBadges.push('🔵 Active');
+      if (meta?.is_won) statusBadges.push('✅ Won');
+      if (meta?.is_lost) statusBadges.push('❌ Lost');
+      if (!meta?.is_won && !meta?.is_lost) statusBadges.push('🔵 Active');
 
-      output += `- **Status:** ${statusBadges.join(' ')}\n`;
-      output += `- **Stage:** ${getRelationName(lead.stage_id)} | **Revenue:** ${formatCurrency(lead.expected_revenue)} | **Prob:** ${formatPercent(lead.probability)}\n`;
-      output += `- **Contact:** ${getContactName(lead)} | ${lead.email_from || '-'}\n`;
-      output += `- **Salesperson:** ${getRelationName(lead.user_id)} | **Team:** ${getRelationName(lead.team_id)}\n`;
+      output += `- **Status:** ${statusBadges.join(' ')}`;
+      if (meta?.priority_label) {
+        output += ` | **Priority:** ${meta.priority_label}`;
+      }
+      output += '\n';
 
-      const location = [lead.city, getRelationName(lead.state_id)].filter(x => x && x !== '-').join(', ');
-      if (location) {
-        output += `- **Location:** ${location}\n`;
+      // Stage, revenue, probability
+      const stage = getRelationName(lead?.stage_id) || meta?.stage_name || '-';
+      const revenue = formatCurrency(lead?.expected_revenue || meta?.expected_revenue);
+      const prob = formatPercent(lead?.probability || meta?.probability);
+      output += `- **Stage:** ${stage} | **Revenue:** ${revenue} | **Prob:** ${prob}\n`;
+
+      // Partner/Company (new field)
+      if (meta?.partner_name) {
+        output += `- **Company:** ${meta.partner_name}\n`;
       }
 
-      if (lead.sector) {
-        output += `- **Sector:** ${lead.sector}\n`;
+      // Contact with role
+      const contactName = (lead ? getContactName(lead) : null) || meta?.contact_name || '-';
+      const contactRole = lead?.function || meta?.function;
+      const email = lead?.email_from || meta?.email_from || '-';
+      const phone = lead?.phone || meta?.phone;
+      let contactLine = `- **Contact:** ${contactName}`;
+      if (contactRole) contactLine += ` (${contactRole})`;
+      contactLine += ` | ${email}`;
+      if (phone) contactLine += ` | ${phone}`;
+      output += contactLine + '\n';
+
+      // Salesperson and team
+      const salesperson = getRelationName(lead?.user_id) || meta?.user_name || '-';
+      const team = getRelationName(lead?.team_id) || meta?.team_name || '-';
+      output += `- **Salesperson:** ${salesperson} | **Team:** ${team}\n`;
+
+      // Location - enhanced with street and zip
+      const locationParts = [
+        lead?.street || meta?.street,
+        lead?.city || meta?.city,
+        getRelationName(lead?.state_id) || meta?.state_name,
+        lead?.zip || meta?.zip,
+      ].filter(x => x && x !== '-');
+      if (locationParts.length > 0) {
+        output += `- **Location:** ${locationParts.join(', ')}\n`;
       }
-    } else if (match.metadata) {
-      // Fallback to metadata if lead not found
-      output += `- **Stage:** ${match.metadata.stage_name || '-'}\n`;
-      output += `- **Revenue:** ${formatCurrency(match.metadata.expected_revenue)}\n`;
-      output += `- **Sector:** ${match.metadata.sector || '-'}\n`;
+
+      // Sector and specification
+      const sector = lead?.sector || meta?.sector;
+      const spec = meta?.specification_name;
+      if (sector || spec) {
+        let classLine = '- ';
+        if (sector) classLine += `**Sector:** ${sector}`;
+        if (sector && spec) classLine += ' | ';
+        if (spec) classLine += `**Spec:** ${spec}`;
+        output += classLine + '\n';
+      }
+
+      // Lead source
+      const leadSource = meta?.lead_source_name;
+      if (leadSource) {
+        output += `- **Lead Source:** ${leadSource}\n`;
+      }
+
+      // Lost reason (if lost)
+      if (meta?.is_lost && meta?.lost_reason_name) {
+        output += `- **Lost Reason:** ${meta.lost_reason_name}\n`;
+      }
+
+      // Custom roles (if any present)
+      const roles: string[] = [];
+      if (meta?.architect_name) roles.push(`Architect: ${meta.architect_name}`);
+      if (meta?.project_manager_name) roles.push(`PM: ${meta.project_manager_name}`);
+      if (meta?.estimator_name) roles.push(`Estimator: ${meta.estimator_name}`);
+      if (meta?.spec_rep_name) roles.push(`Spec Rep: ${meta.spec_rep_name}`);
+      if (roles.length > 0) {
+        output += `- **Roles:** ${roles.join(' | ')}\n`;
+      }
     }
 
     output += '\n';
@@ -1408,19 +1515,50 @@ export function formatSimilarDeals(
     leadMap.set(lead.id, lead);
   }
 
-  // JSON format
+  // JSON format - include all semantic fields
   if (format === ResponseFormat.JSON) {
     const results = matches.map(match => {
       const lead = leadMap.get(parseInt(match.id));
+      const meta = match.metadata;
       return {
+        // Core identification
         id: parseInt(match.id),
-        name: lead?.name || match.metadata?.name || 'Unknown',
+        name: lead?.name || meta?.name || 'Unknown',
         similarity_score: Math.round(match.score * 100),
-        stage: getRelationName(lead?.stage_id),
-        expected_revenue: lead?.expected_revenue || 0,
-        outcome: match.metadata?.is_won ? 'won' : match.metadata?.is_lost ? 'lost' : 'active',
-        salesperson: getRelationName(lead?.user_id),
-        sector: lead?.sector || match.metadata?.sector || null,
+
+        // Stage & metrics
+        stage: getRelationName(lead?.stage_id) || meta?.stage_name || null,
+        expected_revenue: lead?.expected_revenue || meta?.expected_revenue || 0,
+        outcome: meta?.is_won ? 'won' : meta?.is_lost ? 'lost' : 'active',
+        priority_label: meta?.priority_label || null,
+
+        // Assignment
+        salesperson: getRelationName(lead?.user_id) || meta?.user_name || null,
+        team: getRelationName(lead?.team_id) || meta?.team_name || null,
+
+        // Partner/Company
+        partner_name: meta?.partner_name || null,
+
+        // Contact information
+        contact_name: lead?.contact_name || meta?.contact_name || null,
+        email_from: lead?.email_from || meta?.email_from || null,
+        phone: lead?.phone || meta?.phone || null,
+
+        // Location
+        city: lead?.city || meta?.city || null,
+        state: getRelationName(lead?.state_id) || meta?.state_name || null,
+
+        // Classification
+        sector: lead?.sector || meta?.sector || null,
+        specification_name: meta?.specification_name || null,
+        lead_source_name: meta?.lead_source_name || null,
+
+        // Lost details
+        lost_reason_name: meta?.is_lost ? meta?.lost_reason_name || null : null,
+
+        // Custom roles
+        architect_name: meta?.architect_name || null,
+        project_manager_name: meta?.project_manager_name || null,
       };
     });
 
@@ -1431,20 +1569,43 @@ export function formatSimilarDeals(
         stage: reference.stage_name,
         revenue: reference.expected_revenue,
         outcome: reference.is_won ? 'won' : reference.is_lost ? 'lost' : 'active',
+        partner_name: reference.partner_name || null,
+        sector: reference.sector || null,
+        specification_name: reference.specification_name || null,
+        city: reference.city || null,
+        state: reference.state_name || null,
+        salesperson: reference.user_name || null,
+        team: reference.team_name || null,
       },
       similar_deals_count: matches.length,
       similar_deals: results,
     }, null, 2);
   }
 
-  // Markdown format
+  // Markdown format - enhanced with semantic fields
   let output = `## Similar Deals\n\n`;
   output += `### Reference Deal\n`;
   output += `- **${formatLinkedName(reference.odoo_id, reference.name, 'crm.lead')}** (ID: ${reference.odoo_id})\n`;
   output += `- Stage: ${reference.stage_name} | Revenue: ${formatCurrency(reference.expected_revenue)}\n`;
 
   const refStatus = reference.is_won ? '✅ Won' : reference.is_lost ? '❌ Lost' : '🔵 Active';
-  output += `- Status: ${refStatus}\n\n`;
+  output += `- Status: ${refStatus}`;
+  if (reference.priority_label) output += ` | Priority: ${reference.priority_label}`;
+  output += '\n';
+
+  if (reference.partner_name) {
+    output += `- Company: ${reference.partner_name}\n`;
+  }
+  if (reference.sector || reference.specification_name) {
+    let classLine = '- ';
+    if (reference.sector) classLine += `Sector: ${reference.sector}`;
+    if (reference.sector && reference.specification_name) classLine += ' | ';
+    if (reference.specification_name) classLine += `Spec: ${reference.specification_name}`;
+    output += classLine + '\n';
+  }
+  const refLocation = [reference.city, reference.state_name].filter(Boolean).join(', ');
+  if (refLocation) output += `- Location: ${refLocation}\n`;
+  output += '\n';
 
   output += `### Similar Opportunities (${matches.length})\n\n`;
 
@@ -1465,13 +1626,37 @@ export function formatSimilarDeals(
 
     for (const match of deals) {
       const lead = leadMap.get(parseInt(match.id));
+      const meta = match.metadata;
       const similarity = Math.round(match.score * 100);
 
-      groupOutput += `- **${formatLinkedName(parseInt(match.id), lead?.name || match.metadata?.name || 'Unknown', 'crm.lead')}** - ${similarity}% similar\n`;
-      groupOutput += `  Revenue: ${formatCurrency(lead?.expected_revenue || match.metadata?.expected_revenue)} | ${getRelationName(lead?.stage_id) || match.metadata?.stage_name || '-'}\n`;
+      groupOutput += `- **${formatLinkedName(parseInt(match.id), lead?.name || meta?.name || 'Unknown', 'crm.lead')}** - ${similarity}% similar\n`;
+      groupOutput += `  Revenue: ${formatCurrency(lead?.expected_revenue || meta?.expected_revenue)} | ${getRelationName(lead?.stage_id) || meta?.stage_name || '-'}\n`;
 
-      if (lead?.sector || match.metadata?.sector) {
-        groupOutput += `  Sector: ${lead?.sector || match.metadata?.sector}\n`;
+      // Partner/Company
+      if (meta?.partner_name) {
+        groupOutput += `  Company: ${meta.partner_name}\n`;
+      }
+
+      // Sector and spec
+      const sector = lead?.sector || meta?.sector;
+      const spec = meta?.specification_name;
+      if (sector || spec) {
+        let classLine = '  ';
+        if (sector) classLine += `Sector: ${sector}`;
+        if (sector && spec) classLine += ' | ';
+        if (spec) classLine += `Spec: ${spec}`;
+        groupOutput += classLine + '\n';
+      }
+
+      // Location
+      const location = [meta?.city, meta?.state_name].filter(Boolean).join(', ');
+      if (location) {
+        groupOutput += `  Location: ${location}\n`;
+      }
+
+      // Lost reason
+      if (meta?.is_lost && meta?.lost_reason_name) {
+        groupOutput += `  Lost Reason: ${meta.lost_reason_name}\n`;
       }
     }
     groupOutput += '\n';
@@ -1559,12 +1744,38 @@ export function formatPatternDiscovery(
       output += '\n\n';
     }
 
-    // Representative deals
+    // Representative deals - with enhanced semantic fields
     if (cluster.representativeDeals.length > 0) {
       output += `**Representative Deals:**\n`;
       for (const deal of cluster.representativeDeals) {
         const similarity = Math.round(deal.similarity * 100);
-        output += `- ${formatLinkedName(deal.id, deal.name, 'crm.lead')} (${similarity}% to center)\n`;
+        const status = deal.is_won ? '✅' : deal.is_lost ? '❌' : '🔵';
+
+        output += `- ${status} ${formatLinkedName(deal.id, deal.name, 'crm.lead')} (${similarity}% to center)\n`;
+
+        // Additional context on separate lines
+        const details: string[] = [];
+        if (deal.expected_revenue) details.push(`Revenue: ${formatCurrency(deal.expected_revenue)}`);
+        if (deal.stage_name) details.push(`Stage: ${deal.stage_name}`);
+        if (details.length > 0) {
+          output += `  ${details.join(' | ')}\n`;
+        }
+
+        // Company/Partner
+        if (deal.partner_name) {
+          output += `  Company: ${deal.partner_name}\n`;
+        }
+
+        // Location
+        const location = [deal.city, deal.state_name].filter(Boolean).join(', ');
+        if (location) {
+          output += `  Location: ${location}\n`;
+        }
+
+        // Lost reason (if lost)
+        if (deal.is_lost && deal.lost_reason_name) {
+          output += `  Lost Reason: ${deal.lost_reason_name}\n`;
+        }
       }
       output += '\n';
     }
