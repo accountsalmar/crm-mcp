@@ -5,7 +5,7 @@
  * Handles collection management, upserts, and similarity search.
  */
 import { QdrantClient } from '@qdrant/js-client-rest';
-import { VectorRecord, VectorQueryOptions, VectorQueryResult, CircuitBreakerState } from '../types.js';
+import { VectorRecord, VectorQueryOptions, VectorQueryResult, VectorMetadata, CircuitBreakerState } from '../types.js';
 /**
  * Initialize Qdrant client connection.
  */
@@ -54,6 +54,22 @@ export declare function search(options: VectorQueryOptions): Promise<VectorQuery
  * Search within a specific set of IDs.
  */
 export declare function searchWithinIds(vector: number[], ids: string[], topK: number, minScore?: number): Promise<VectorQueryResult>;
+/**
+ * Scroll through all points matching a filter (without similarity search).
+ * Better for clustering than search with dummy vector.
+ */
+export declare function scrollPoints(filter?: {
+    is_won?: boolean;
+    is_lost?: boolean;
+    is_active?: boolean;
+    sector?: string;
+    expected_revenue?: {
+        $gte?: number;
+    };
+}, limit?: number): Promise<{
+    id: string;
+    metadata: VectorMetadata;
+}[]>;
 /**
  * Health check for vector service.
  */

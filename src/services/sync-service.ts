@@ -42,9 +42,17 @@ export function isSyncInProgress(): boolean {
  * Build VectorMetadata from CrmLead.
  */
 function buildMetadata(lead: CrmLead, embeddingText: string, truncated: boolean): VectorMetadata {
-  // Determine if opportunity is won (stage name contains 'won')
-  const isWon = !!(lead.stage_id && typeof lead.stage_id !== 'number' &&
-                lead.stage_id[1]?.toLowerCase().includes('won'));
+  // Determine if opportunity is won
+  // Priority: 1) won_status field, 2) stage name patterns, 3) 'won' in stage name
+  const stageName = (lead.stage_id && typeof lead.stage_id !== 'number')
+    ? lead.stage_id[1]?.toLowerCase() || ''
+    : '';
+
+  const isWon = lead.won_status === 'won' ||
+                stageName.includes('invoiced') ||
+                stageName.includes('signed oc') ||
+                stageName.includes('in production') ||
+                stageName.includes('won');
   const isLost = !!lead.lost_reason_id;
 
   return {

@@ -328,6 +328,61 @@ export async function searchWithinIds(vector, ids, topK, minScore) {
     });
 }
 /**
+ * Scroll through all points matching a filter (without similarity search).
+ * Better for clustering than search with dummy vector.
+ */
+export async function scrollPoints(filter, limit = 1000) {
+    if (!qdrantClient) {
+        throw new Error('Vector client not initialized');
+    }
+    return executeWithCircuitBreaker(async () => {
+        // Build filter for scroll
+        const scrollFilter = filter ? { must: [] } : undefined;
+        if (scrollFilter && filter) {
+            if (filter.is_won !== undefined) {
+                scrollFilter.must.push({ key: 'is_won', match: { value: filter.is_won } });
+            }
+            if (filter.is_lost !== undefined) {
+                scrollFilter.must.push({ key: 'is_lost', match: { value: filter.is_lost } });
+            }
+            if (filter.is_active !== undefined) {
+                scrollFilter.must.push({ key: 'is_active', match: { value: filter.is_active } });
+            }
+            if (filter.sector !== undefined) {
+                scrollFilter.must.push({ key: 'sector', match: { value: filter.sector } });
+            }
+            if (filter.expected_revenue?.$gte !== undefined) {
+                scrollFilter.must.push({ key: 'expected_revenue', range: { gte: filter.expected_revenue.$gte } });
+            }
+        }
+        const results = [];
+        let offset = undefined;
+        // Scroll through all matching points
+        while (results.length < limit) {
+            const batchSize = Math.min(100, limit - results.length);
+            const response = await qdrantClient.scroll(QDRANT_CONFIG.COLLECTION_NAME, {
+                filter: scrollFilter?.must.length ? scrollFilter : undefined,
+                limit: batchSize,
+                offset,
+                with_payload: true,
+                with_vector: false,
+            });
+            if (response.points.length === 0)
+                break;
+            for (const point of response.points) {
+                results.push({
+                    id: String(point.id),
+                    metadata: point.payload,
+                });
+            }
+            offset = response.next_page_offset;
+            if (!offset)
+                break;
+        }
+        return results;
+    });
+}
+/**
  * Health check for vector service.
  */
 export async function healthCheck() {

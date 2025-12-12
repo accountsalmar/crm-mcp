@@ -48,6 +48,7 @@ export interface CrmLead extends OdooRecord {
   lead_source_id?: [number, string];
   sector?: string;
   specification_id?: [number, string];
+  won_status?: string;  // Odoo native field: 'won' | 'lost' | 'pending'
 }
 
 // CRM Stage

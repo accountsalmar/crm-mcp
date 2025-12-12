@@ -42,6 +42,7 @@ export interface CrmLead extends OdooRecord {
     lead_source_id?: [number, string];
     sector?: string;
     specification_id?: [number, string];
+    won_status?: string;
 }
 export interface CrmStage extends OdooRecord {
     id: number;

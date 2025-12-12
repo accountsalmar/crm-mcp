@@ -388,6 +388,71 @@ export async function searchWithinIds(
 }
 
 /**
+ * Scroll through all points matching a filter (without similarity search).
+ * Better for clustering than search with dummy vector.
+ */
+export async function scrollPoints(
+  filter?: { is_won?: boolean; is_lost?: boolean; is_active?: boolean; sector?: string; expected_revenue?: { $gte?: number } },
+  limit: number = 1000
+): Promise<{ id: string; metadata: VectorMetadata }[]> {
+  if (!qdrantClient) {
+    throw new Error('Vector client not initialized');
+  }
+
+  return executeWithCircuitBreaker(async () => {
+    // Build filter for scroll
+    const scrollFilter: { must: object[] } | undefined = filter ? { must: [] } : undefined;
+
+    if (scrollFilter && filter) {
+      if (filter.is_won !== undefined) {
+        scrollFilter.must.push({ key: 'is_won', match: { value: filter.is_won } });
+      }
+      if (filter.is_lost !== undefined) {
+        scrollFilter.must.push({ key: 'is_lost', match: { value: filter.is_lost } });
+      }
+      if (filter.is_active !== undefined) {
+        scrollFilter.must.push({ key: 'is_active', match: { value: filter.is_active } });
+      }
+      if (filter.sector !== undefined) {
+        scrollFilter.must.push({ key: 'sector', match: { value: filter.sector } });
+      }
+      if (filter.expected_revenue?.$gte !== undefined) {
+        scrollFilter.must.push({ key: 'expected_revenue', range: { gte: filter.expected_revenue.$gte } });
+      }
+    }
+
+    const results: { id: string; metadata: VectorMetadata }[] = [];
+    let offset: string | number | null | undefined = undefined;
+
+    // Scroll through all matching points
+    while (results.length < limit) {
+      const batchSize = Math.min(100, limit - results.length);
+      const response = await qdrantClient!.scroll(QDRANT_CONFIG.COLLECTION_NAME, {
+        filter: scrollFilter?.must.length ? scrollFilter : undefined,
+        limit: batchSize,
+        offset,
+        with_payload: true,
+        with_vector: false,
+      });
+
+      if (response.points.length === 0) break;
+
+      for (const point of response.points) {
+        results.push({
+          id: String(point.id),
+          metadata: point.payload as unknown as VectorMetadata,
+        });
+      }
+
+      offset = response.next_page_offset as typeof offset;
+      if (!offset) break;
+    }
+
+    return results;
+  });
+}
+
+/**
  * Health check for vector service.
  */
 export async function healthCheck(): Promise<{

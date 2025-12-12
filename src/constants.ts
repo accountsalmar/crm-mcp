@@ -68,7 +68,7 @@ export const CRM_FIELDS = {
     'campaign_id', 'description', 'create_date', 'write_date',
     'date_deadline', 'date_closed', 'lost_reason_id', 'tag_ids',
     'partner_id', 'company_id', 'priority', 'type', 'active',
-    'lead_source_id', 'sector', 'specification_id'
+    'lead_source_id', 'sector', 'specification_id', 'won_status'
   ] as string[],
   
   // Fields for pipeline analysis

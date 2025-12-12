@@ -5,9 +5,8 @@
  * Groups similar opportunities to discover common themes.
  */
 import { kmeans } from 'ml-kmeans';
-import { search } from './vector-client.js';
+import { scrollPoints } from './vector-client.js';
 import { embed } from './embedding-service.js';
-import { QDRANT_CONFIG } from '../constants.js';
 /**
  * Cluster embeddings using K-means.
  *
@@ -123,48 +122,54 @@ function generateClusterSummary(themes, size) {
 export async function discoverPatterns(analysisType, filter, numClusters = 5) {
     const startTime = Date.now();
     // Build filter based on analysis type
-    const vectorFilter = {};
+    const scrollFilter = {};
     if (analysisType === 'lost_reasons' || analysisType === 'objection_themes') {
-        vectorFilter.is_lost = true;
+        scrollFilter.is_lost = true;
     }
     else if (analysisType === 'winning_factors') {
-        vectorFilter.is_won = true;
+        scrollFilter.is_won = true;
     }
     if (filter.sector) {
-        vectorFilter.sector = filter.sector;
+        scrollFilter.sector = filter.sector;
     }
     if (filter.min_revenue) {
-        vectorFilter.expected_revenue = { $gte: filter.min_revenue };
+        scrollFilter.expected_revenue = { $gte: filter.min_revenue };
     }
-    // Get all matching vectors (up to 1000 for clustering)
-    const dummyVector = new Array(QDRANT_CONFIG.VECTOR_SIZE).fill(0);
-    const searchResult = await search({
-        vector: dummyVector,
-        topK: 1000,
-        filter: vectorFilter,
-        minScore: 0, // Get all regardless of similarity
-        includeMetadata: true,
-    });
-    if (searchResult.matches.length < numClusters * 2) {
+    // Get all matching points using scroll (no dummy vector needed)
+    console.error(`[Clustering] Fetching records for ${analysisType} analysis...`);
+    const scrollResults = await scrollPoints(scrollFilter, 1000);
+    console.error(`[Clustering] Found ${scrollResults.length} records matching filter`);
+    if (scrollResults.length < numClusters * 2) {
+        // Provide detailed error message
+        const filterDesc = analysisType === 'lost_reasons' || analysisType === 'objection_themes'
+            ? 'lost opportunities (is_lost=true)'
+            : analysisType === 'winning_factors'
+                ? 'won opportunities (is_won=true)'
+                : 'all opportunities';
         return {
             analysisType,
-            totalRecordsAnalyzed: searchResult.matches.length,
+            totalRecordsAnalyzed: scrollResults.length,
             numClusters: 0,
             clusters: [],
-            insights: [`Not enough data for clustering: ${searchResult.matches.length} records found`],
+            insights: [
+                `Not enough data for clustering: found ${scrollResults.length} ${filterDesc}`,
+                `Minimum required: ${numClusters * 2} records (${numClusters} clusters x 2)`,
+                scrollResults.length === 0
+                    ? 'Tip: Run full_rebuild sync to ensure vector metadata is up to date'
+                    : 'Tip: Try reducing numClusters or using deal_segments analysis type'
+            ],
             durationMs: Date.now() - startTime,
         };
     }
     // Extract embeddings and metadata
-    // Note: We need to re-fetch embeddings from Qdrant since search doesn't return vectors
-    // For now, we'll use the query to generate new embeddings from metadata text
+    console.error(`[Clustering] Generating embeddings for ${scrollResults.length} records...`);
     const embeddings = [];
     const metadata = [];
-    for (const match of searchResult.matches) {
-        if (match.metadata) {
-            const embedding = await embed(match.metadata.embedding_text, 'document');
+    for (const result of scrollResults) {
+        if (result.metadata?.embedding_text) {
+            const embedding = await embed(result.metadata.embedding_text, 'document');
             embeddings.push(embedding);
-            metadata.push(match.metadata);
+            metadata.push(result.metadata);
         }
     }
     // Cluster
