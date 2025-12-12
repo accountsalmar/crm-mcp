@@ -4,7 +4,7 @@
  * Orchestrates data flow from Odoo CRM to Qdrant vector database.
  * Supports incremental sync and full rebuild with conflict handling.
  */
-import { VECTOR_SYNC_CONFIG, CRM_FIELDS, QDRANT_CONFIG } from '../constants.js';
+import { CRM_FIELDS, QDRANT_CONFIG } from '../constants.js';
 import { useClient } from './odoo-pool.js';
 import { buildEmbeddingText, embedBatch, isEmbeddingServiceAvailable } from './embedding-service.js';
 import { upsertPoints, getCircuitBreakerState, healthCheck, ensureCollection } from './vector-client.js';
@@ -81,6 +81,7 @@ function buildMetadata(lead, embeddingText, truncated) {
 }
 /**
  * Full sync - rebuild entire vector index.
+ * Uses streaming batches to minimize memory usage for large datasets.
  */
 export async function fullSync(onProgress) {
     if (isSyncing) {
@@ -102,58 +103,67 @@ export async function fullSync(onProgress) {
     try {
         // Ensure collection exists before syncing
         await ensureCollection();
-        // Phase 1: Fetch all opportunities from Odoo (including lost and won)
-        // Use active_test: false to include inactive (lost/won) records
-        const leads = await useClient(async (client) => {
-            const domain = [];
-            const context = { active_test: false };
-            const total = await client.searchCount('crm.lead', domain, context);
-            const allLeads = [];
-            const batchSize = VECTOR_SYNC_CONFIG.BATCH_SIZE;
-            const totalBatches = Math.ceil(total / batchSize);
-            for (let i = 0; i < total; i += batchSize) {
-                const batch = await client.searchRead('crm.lead', domain, CRM_FIELDS.LEAD_DETAIL, { offset: i, limit: batchSize, context });
-                allLeads.push(...batch);
-                if (onProgress) {
-                    onProgress({
-                        phase: 'fetching',
-                        currentBatch: Math.floor(i / batchSize) + 1,
-                        totalBatches,
-                        recordsProcessed: allLeads.length,
-                        totalRecords: total,
-                        percentComplete: Math.round((allLeads.length / total) * 33),
-                        elapsedMs: Date.now() - startTime,
-                    });
-                }
-            }
-            return allLeads;
+        // Get total count first (memory-efficient)
+        const domain = [];
+        const context = { active_test: false };
+        const total = await useClient(async (client) => {
+            return client.searchCount('crm.lead', domain, context);
         });
-        // Phase 2: Generate embeddings
-        const embeddingData = leads.map(lead => buildEmbeddingText(lead));
-        const documents = embeddingData.map(d => d.text);
-        const embeddings = await embedBatch(documents, 'document', (current, total) => {
+        // Use smaller batch size for memory efficiency
+        // Process 100 records at a time: fetch → embed → upsert → release memory
+        const batchSize = 100;
+        const totalBatches = Math.ceil(total / batchSize);
+        // Stream through all records in batches
+        for (let batchNum = 0; batchNum < totalBatches; batchNum++) {
+            const offset = batchNum * batchSize;
+            // Phase 1: Fetch ONE batch from Odoo
+            const batchLeads = await useClient(async (client) => {
+                return client.searchRead('crm.lead', domain, CRM_FIELDS.LEAD_DETAIL, { offset, limit: batchSize, context });
+            });
+            if (batchLeads.length === 0) {
+                break; // No more records
+            }
+            // Report fetching progress
             if (onProgress) {
                 onProgress({
-                    phase: 'embedding',
-                    currentBatch: current,
-                    totalBatches: total,
-                    recordsProcessed: current,
+                    phase: 'fetching',
+                    currentBatch: batchNum + 1,
+                    totalBatches,
+                    recordsProcessed: offset + batchLeads.length,
                     totalRecords: total,
-                    percentComplete: 33 + Math.round((current / total) * 33),
+                    percentComplete: Math.round(((offset + batchLeads.length) / total) * 33),
                     elapsedMs: Date.now() - startTime,
                 });
             }
-        });
-        // Phase 3: Upsert to Qdrant in batches
-        const vectorBatchSize = 100;
-        for (let i = 0; i < leads.length; i += vectorBatchSize) {
-            const batchLeads = leads.slice(i, i + vectorBatchSize);
-            const batchEmbeddings = embeddings.slice(i, i + vectorBatchSize);
-            const batchEmbeddingData = embeddingData.slice(i, i + vectorBatchSize);
+            // Phase 2: Generate embeddings for THIS batch only
+            const embeddingData = batchLeads.map(lead => buildEmbeddingText(lead));
+            const documents = embeddingData.map(d => d.text);
+            let embeddings;
+            try {
+                embeddings = await embedBatch(documents, 'document');
+            }
+            catch (error) {
+                recordsFailed += batchLeads.length;
+                errors.push(`Batch ${batchNum + 1} embedding failed: ${error}`);
+                continue; // Skip to next batch
+            }
+            // Report embedding progress
+            if (onProgress) {
+                onProgress({
+                    phase: 'embedding',
+                    currentBatch: batchNum + 1,
+                    totalBatches,
+                    recordsProcessed: offset + batchLeads.length,
+                    totalRecords: total,
+                    percentComplete: 33 + Math.round(((offset + batchLeads.length) / total) * 33),
+                    elapsedMs: Date.now() - startTime,
+                });
+            }
+            // Phase 3: Upsert THIS batch to Qdrant
             const records = batchLeads.map((lead, idx) => ({
                 id: String(lead.id),
-                values: batchEmbeddings[idx],
-                metadata: buildMetadata(lead, batchEmbeddingData[idx].text, batchEmbeddingData[idx].truncated),
+                values: embeddings[idx],
+                metadata: buildMetadata(lead, embeddingData[idx].text, embeddingData[idx].truncated),
             }));
             try {
                 await upsertPoints(records);
@@ -161,20 +171,21 @@ export async function fullSync(onProgress) {
             }
             catch (error) {
                 recordsFailed += records.length;
-                errors.push(`Batch ${Math.floor(i / vectorBatchSize) + 1}: ${error}`);
+                errors.push(`Batch ${batchNum + 1} upsert failed: ${error}`);
             }
+            // Report upserting progress
             if (onProgress) {
-                const processed = Math.min(i + vectorBatchSize, leads.length);
                 onProgress({
                     phase: 'upserting',
-                    currentBatch: Math.floor(i / vectorBatchSize) + 1,
-                    totalBatches: Math.ceil(leads.length / vectorBatchSize),
-                    recordsProcessed: processed,
-                    totalRecords: leads.length,
-                    percentComplete: 66 + Math.round((processed / leads.length) * 34),
+                    currentBatch: batchNum + 1,
+                    totalBatches,
+                    recordsProcessed: offset + batchLeads.length,
+                    totalRecords: total,
+                    percentComplete: 66 + Math.round(((offset + batchLeads.length) / total) * 34),
                     elapsedMs: Date.now() - startTime,
                 });
             }
+            // Memory is now freed as we move to the next batch iteration
         }
         syncVersion++;
         lastSyncTime = new Date().toISOString();

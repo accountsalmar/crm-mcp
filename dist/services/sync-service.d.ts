@@ -19,6 +19,7 @@ export declare function getSyncVersion(): number;
 export declare function isSyncInProgress(): boolean;
 /**
  * Full sync - rebuild entire vector index.
+ * Uses streaming batches to minimize memory usage for large datasets.
  */
 export declare function fullSync(onProgress?: (progress: SyncProgress) => void): Promise<SyncResult>;
 /**
