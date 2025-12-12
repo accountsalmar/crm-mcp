@@ -103,14 +103,16 @@ export async function fullSync(onProgress) {
         // Ensure collection exists before syncing
         await ensureCollection();
         // Phase 1: Fetch all opportunities from Odoo (including lost and won)
+        // Use active_test: false to include inactive (lost/won) records
         const leads = await useClient(async (client) => {
             const domain = [];
-            const total = await client.searchCount('crm.lead', domain);
+            const context = { active_test: false };
+            const total = await client.searchCount('crm.lead', domain, context);
             const allLeads = [];
             const batchSize = VECTOR_SYNC_CONFIG.BATCH_SIZE;
             const totalBatches = Math.ceil(total / batchSize);
             for (let i = 0; i < total; i += batchSize) {
-                const batch = await client.searchRead('crm.lead', domain, CRM_FIELDS.LEAD_DETAIL, { offset: i, limit: batchSize });
+                const batch = await client.searchRead('crm.lead', domain, CRM_FIELDS.LEAD_DETAIL, { offset: i, limit: batchSize, context });
                 allLeads.push(...batch);
                 if (onProgress) {
                     onProgress({
@@ -226,11 +228,13 @@ export async function incrementalSync(since, onProgress) {
         // Ensure collection exists before syncing
         await ensureCollection();
         // Fetch changed records from Odoo (including lost and won)
+        // Use active_test: false to include inactive (lost/won) records
         const leads = await useClient(async (client) => {
             const domain = [
                 ['write_date', '>=', sinceDate],
             ];
-            return client.searchRead('crm.lead', domain, CRM_FIELDS.LEAD_DETAIL);
+            const context = { active_test: false };
+            return client.searchRead('crm.lead', domain, CRM_FIELDS.LEAD_DETAIL, { context });
         });
         if (leads.length === 0) {
             return {

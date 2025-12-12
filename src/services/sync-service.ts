@@ -118,9 +118,11 @@ export async function fullSync(
     await ensureCollection();
 
     // Phase 1: Fetch all opportunities from Odoo (including lost and won)
+    // Use active_test: false to include inactive (lost/won) records
     const leads = await useClient(async (client) => {
       const domain: Array<string | boolean | Array<string | boolean>> = [];
-      const total = await client.searchCount('crm.lead', domain);
+      const context = { active_test: false };
+      const total = await client.searchCount('crm.lead', domain, context);
 
       const allLeads: CrmLead[] = [];
       const batchSize = VECTOR_SYNC_CONFIG.BATCH_SIZE;
@@ -131,7 +133,7 @@ export async function fullSync(
           'crm.lead',
           domain,
           CRM_FIELDS.LEAD_DETAIL,
-          { offset: i, limit: batchSize }
+          { offset: i, limit: batchSize, context }
         );
         allLeads.push(...batch);
 
@@ -264,11 +266,13 @@ export async function incrementalSync(
     await ensureCollection();
 
     // Fetch changed records from Odoo (including lost and won)
+    // Use active_test: false to include inactive (lost/won) records
     const leads = await useClient(async (client) => {
       const domain = [
         ['write_date', '>=', sinceDate],
       ];
-      return client.searchRead<CrmLead>('crm.lead', domain, CRM_FIELDS.LEAD_DETAIL);
+      const context = { active_test: false };
+      return client.searchRead<CrmLead>('crm.lead', domain, CRM_FIELDS.LEAD_DETAIL, { context });
     });
 
     if (leads.length === 0) {

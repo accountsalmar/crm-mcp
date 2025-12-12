@@ -167,21 +167,27 @@ export class OdooClient {
       offset?: number;
       limit?: number;
       order?: string;
+      context?: Record<string, unknown>;
     } = {}
   ): Promise<T[]> {
-    const { offset = 0, limit = 10, order = 'id desc' } = options;
-    
+    const { offset = 0, limit = 10, order = 'id desc', context } = options;
+
     return this.execute<T[]>(model, 'search_read', [domain], {
       fields,
       offset,
       limit,
-      order
+      order,
+      context,
     });
   }
 
   // Count records matching domain
-  async searchCount(model: string, domain: unknown[] = []): Promise<number> {
-    return this.execute<number>(model, 'search_count', [domain]);
+  async searchCount(
+    model: string,
+    domain: unknown[] = [],
+    context?: Record<string, unknown>
+  ): Promise<number> {
+    return this.execute<number>(model, 'search_count', [domain], context ? { context } : {});
   }
 
   // Read specific records by IDs
@@ -245,13 +251,14 @@ export class OdooClient {
       batchSize?: number;
       order?: string;
       onProgress?: ExportProgressCallback;
+      context?: Record<string, unknown>;
     }
   ): Promise<{ records: T[]; totalFetched: number; totalAvailable: number }> {
     const batchSize = options.batchSize || EXPORT_CONFIG.BATCH_SIZE;
     const startTime = Date.now();
 
     // First, count total available records
-    const totalAvailable = await this.searchCount(model, domain);
+    const totalAvailable = await this.searchCount(model, domain, options.context);
 
     // Cap at maxRecords
     const recordsToFetch = Math.min(totalAvailable, options.maxRecords);
@@ -273,7 +280,7 @@ export class OdooClient {
         model,
         domain,
         fields,
-        { offset, limit, order: options.order || 'id desc' }
+        { offset, limit, order: options.order || 'id desc', context: options.context }
       );
 
       allRecords.push(...batchRecords);
@@ -315,7 +322,7 @@ export class OdooClient {
     model: string,
     domain: unknown[],
     fields: string[],
-    options: { offset: number; limit: number; order: string }
+    options: { offset: number; limit: number; order: string; context?: Record<string, unknown> }
   ): Promise<T[]> {
     const uid = await this.authenticate();
 
@@ -326,6 +333,7 @@ export class OdooClient {
           offset: options.offset,
           limit: options.limit,
           order: options.order,
+          context: options.context,
         })
       ),
       TIMEOUTS.EXPORT_BATCH,
