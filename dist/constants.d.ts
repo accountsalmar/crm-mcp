@@ -211,4 +211,49 @@ export declare const WON_STATUS_LABELS: Record<string, string>;
  * Returns empty string if value not found (graceful handling).
  */
 export declare function getSelectionLabel(mappings: Record<string, string>, value: string | undefined | null | boolean): string;
+/**
+ * Memory feature configuration
+ * Enables vector-native conversational memory with auto-capture
+ */
+export declare const MEMORY_CONFIG: {
+    readonly ENABLED: boolean;
+    readonly COLLECTION_NAME: string;
+    readonly DEFAULT_LIMIT: 20;
+    readonly MAX_LIMIT: 100;
+    readonly CONTEXT_WINDOW: 2;
+    readonly AUTO_ARCHIVE_DAYS: number;
+};
+/**
+ * Qdrant collection configuration for conversation memory
+ * Separate from QDRANT_CONFIG to allow independent tuning
+ */
+export declare const MEMORY_COLLECTION_CONFIG: {
+    readonly COLLECTION_NAME: string;
+    readonly VECTOR_SIZE: number;
+    readonly DISTANCE_METRIC: "Cosine";
+    readonly HNSW_M: 24;
+    readonly HNSW_EF_CONSTRUCT: 128;
+    readonly PAYLOAD_INDEXES: readonly [{
+        readonly field: "session_id";
+        readonly type: "keyword";
+    }, {
+        readonly field: "session_prefix";
+        readonly type: "keyword";
+    }, {
+        readonly field: "user_id";
+        readonly type: "keyword";
+    }, {
+        readonly field: "message_timestamp";
+        readonly type: "datetime";
+    }, {
+        readonly field: "sequence_number";
+        readonly type: "integer";
+    }, {
+        readonly field: "role";
+        readonly type: "keyword";
+    }, {
+        readonly field: "session_status";
+        readonly type: "keyword";
+    }];
+};
 //# sourceMappingURL=constants.d.ts.map

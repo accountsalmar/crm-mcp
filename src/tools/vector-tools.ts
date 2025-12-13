@@ -32,6 +32,7 @@ import {
   formatSyncResult,
   formatVectorStatus,
 } from '../services/formatters.js';
+import { isMemoryRecording, captureInteraction } from '../services/memory-service.js';
 
 // Error message templates
 const ERROR_TEMPLATES = {
@@ -162,6 +163,11 @@ Try:
           input.response_format
         );
 
+        // Auto-capture if memory recording is active
+        if (isMemoryRecording()) {
+          captureInteraction('odoo_crm_semantic_search', input, output);
+        }
+
         return { content: [{ type: 'text', text: output }] };
 
       } catch (error) {
@@ -237,6 +243,11 @@ Try:
           input.response_format
         );
 
+        // Auto-capture if memory recording is active
+        if (isMemoryRecording()) {
+          captureInteraction('odoo_crm_find_similar_deals', input, output);
+        }
+
         return { content: [{ type: 'text', text: output }] };
 
       } catch (error) {
@@ -277,6 +288,11 @@ Try:
         );
 
         const output = formatPatternDiscovery(result, input.response_format);
+
+        // Auto-capture if memory recording is active
+        if (isMemoryRecording()) {
+          captureInteraction('odoo_crm_discover_patterns', input, output);
+        }
 
         return { content: [{ type: 'text', text: output }] };
 
@@ -338,8 +354,15 @@ Try:
           result = await syncRecord(input.lead_id);
         }
 
+        const output = formatSyncResult(result!);
+
+        // Auto-capture if memory recording is active
+        if (isMemoryRecording()) {
+          captureInteraction('odoo_crm_sync_embeddings', input, output);
+        }
+
         return {
-          content: [{ type: 'text', text: formatSyncResult(result!) }],
+          content: [{ type: 'text', text: output }],
         };
 
       } catch (error) {
@@ -364,8 +387,14 @@ Try:
     VectorStatusSchema.shape,
     async (args): Promise<CallToolResult> => {
       try {
+        const input = VectorStatusSchema.parse(args);
         const status = await getVectorStatus();
         const output = formatVectorStatus(status);
+
+        // Auto-capture if memory recording is active
+        if (isMemoryRecording()) {
+          captureInteraction('odoo_crm_vector_status', input, output);
+        }
 
         return { content: [{ type: 'text', text: output }] };
 

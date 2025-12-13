@@ -830,4 +830,98 @@ export interface CircuitBreakerState {
     lastStateChange: number;
     secondsUntilRetry?: number;
 }
+/**
+ * Role of a message in conversation memory
+ */
+export type MemoryRole = 'user' | 'assistant';
+/**
+ * Status of a memory session
+ */
+export type SessionStatus = 'recording' | 'saved' | 'archived';
+/**
+ * A single message captured during recording
+ */
+export interface MemoryMessage {
+    role: MemoryRole;
+    content: string;
+    toolName?: string;
+    toolInput?: unknown;
+    timestamp: Date;
+}
+/**
+ * An active or saved memory session
+ */
+export interface MemorySession {
+    sessionId: string;
+    sessionPrefix: string;
+    userId: string;
+    description?: string;
+    tags?: string[];
+    status: SessionStatus;
+    startTime: Date;
+    endTime?: Date;
+    messages: MemoryMessage[];
+}
+/**
+ * Metadata stored with each vector in the conversation_memory collection
+ */
+export interface MemoryMetadata {
+    message_id: string;
+    session_id: string;
+    session_prefix: string;
+    user_id: string;
+    role: MemoryRole;
+    sequence_number: number;
+    message_timestamp: string;
+    content: string;
+    tool_name?: string;
+    embedding_text: string;
+    session_status: SessionStatus;
+    session_created: string;
+    session_saved?: string;
+    session_description?: string;
+    tags?: string[];
+    sync_version: number;
+    last_synced: string;
+}
+/**
+ * Options for querying conversation memory
+ */
+export interface MemoryQueryOptions {
+    sessionId?: string;
+    userId: string;
+    query?: string;
+    role?: MemoryRole | 'all';
+    dateFrom?: string;
+    dateTo?: string;
+    tags?: string[];
+    limit?: number;
+    minScore?: number;
+    includeContext?: boolean;
+    contextWindow?: number;
+}
+/**
+ * Result of a memory search
+ */
+export interface MemoryQueryResult {
+    matches: Array<{
+        id: string;
+        score: number;
+        metadata?: MemoryMetadata;
+    }>;
+    searchTimeMs: number;
+}
+/**
+ * Health status of memory infrastructure
+ */
+export interface MemoryHealthStatus {
+    connected: boolean;
+    collectionExists: boolean;
+    vectorCount: number;
+    activeSession: {
+        sessionId: string;
+        messageCount: number;
+        startTime: string;
+    } | null;
+}
 //# sourceMappingURL=types.d.ts.map

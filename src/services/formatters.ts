@@ -1897,3 +1897,167 @@ function formatCircuitBreakerState(state: string): string {
       return state;
   }
 }
+
+// =============================================================================
+// MEMORY FORMATTERS
+// =============================================================================
+
+import type { MemoryMetadata, MemoryQueryResult, MemoryHealthStatus } from '../types.js';
+
+/**
+ * Format a memory session's messages for display.
+ */
+export function formatMemorySession(
+  messages: MemoryMetadata[],
+  format: ResponseFormat
+): string {
+  if (format === ResponseFormat.JSON) {
+    return JSON.stringify({ messages }, null, 2);
+  }
+
+  if (messages.length === 0) {
+    return '## Memory Session\n\n*No messages found*';
+  }
+
+  const sessionId = messages[0]?.session_id || 'Unknown';
+  const lines: string[] = [
+    `## Memory Session: ${sessionId}`,
+    `**Messages:** ${messages.length}`,
+    `**Created:** ${messages[0]?.session_created ? formatDate(messages[0].session_created) : 'Unknown'}`,
+    messages[0]?.session_description ? `**Description:** ${messages[0].session_description}` : '',
+    '',
+    '---',
+    '',
+  ].filter(Boolean);
+
+  for (const msg of messages) {
+    const roleIcon = msg.role === 'user' ? '👤' : '🤖';
+    lines.push(`### ${roleIcon} ${msg.role.toUpperCase()} (#${msg.sequence_number})`);
+    if (msg.tool_name) {
+      lines.push(`*Tool: ${msg.tool_name}*`);
+    }
+    lines.push('');
+    // Truncate long content
+    lines.push(msg.content.slice(0, 500) + (msg.content.length > 500 ? '...' : ''));
+    lines.push('');
+  }
+
+  return lines.join('\n');
+}
+
+/**
+ * Format memory search results for display.
+ */
+export function formatMemorySearch(
+  results: MemoryQueryResult,
+  query: string,
+  format: ResponseFormat
+): string {
+  if (format === ResponseFormat.JSON) {
+    return JSON.stringify({ query, results }, null, 2);
+  }
+
+  const lines: string[] = [
+    `## Memory Search Results`,
+    `**Query:** "${query}"`,
+    `**Found:** ${results.matches.length} messages`,
+    `**Search Time:** ${results.searchTimeMs}ms`,
+    '',
+    '---',
+    '',
+  ];
+
+  if (results.matches.length === 0) {
+    lines.push('*No matching messages found*');
+    return lines.join('\n');
+  }
+
+  for (const match of results.matches) {
+    const meta = match.metadata;
+    if (!meta) continue;
+
+    const score = (match.score * 100).toFixed(1);
+    lines.push(`### [${score}%] Session: ${meta.session_id} (#${meta.sequence_number})`);
+    lines.push(`*${meta.role}* | ${formatDate(meta.message_timestamp)}`);
+    if (meta.tool_name) {
+      lines.push(`*Tool: ${meta.tool_name}*`);
+    }
+    lines.push('');
+    lines.push(meta.content.slice(0, 300) + (meta.content.length > 300 ? '...' : ''));
+    lines.push('');
+  }
+
+  return lines.join('\n');
+}
+
+/**
+ * Format session list for display.
+ */
+export function formatSessionList(
+  sessions: Array<{ sessionId: string; messageCount: number; created: string; description?: string }>,
+  format: ResponseFormat
+): string {
+  if (format === ResponseFormat.JSON) {
+    return JSON.stringify({ sessions }, null, 2);
+  }
+
+  const lines: string[] = [
+    `## Your Memory Sessions`,
+    `**Total:** ${sessions.length}`,
+    '',
+  ];
+
+  if (sessions.length === 0) {
+    lines.push('*No saved sessions yet. Use `memory action:start` to begin recording.*');
+    return lines.join('\n');
+  }
+
+  lines.push('| Session ID | Created | Messages | Description |');
+  lines.push('|------------|---------|----------|-------------|');
+
+  for (const session of sessions) {
+    const createdDate = session.created ? session.created.split('T')[0] : '-';
+    const desc = session.description ? truncateText(session.description, 30) : '-';
+    lines.push(`| ${session.sessionId} | ${createdDate} | ${session.messageCount} | ${desc} |`);
+  }
+
+  return lines.join('\n');
+}
+
+/**
+ * Format memory health status for display.
+ */
+export function formatMemoryStatus(
+  health: MemoryHealthStatus,
+  format: ResponseFormat
+): string {
+  if (format === ResponseFormat.JSON) {
+    return JSON.stringify(health, null, 2);
+  }
+
+  const statusIcon = health.connected ? '✅' : '❌';
+  const lines: string[] = [
+    `## Memory Status`,
+    '',
+    `| Component | Status |`,
+    `|-----------|--------|`,
+    `| Qdrant Connection | ${statusIcon} ${health.connected ? 'Connected' : 'Disconnected'} |`,
+    `| Collection | ${health.collectionExists ? '✅ Exists' : '❌ Missing'} |`,
+    `| Total Vectors | ${health.vectorCount.toLocaleString()} |`,
+    '',
+  ];
+
+  if (health.activeSession) {
+    lines.push('### Active Recording');
+    lines.push('');
+    lines.push(`- **Session:** ${health.activeSession.sessionId}`);
+    lines.push(`- **Messages:** ${health.activeSession.messageCount}`);
+    lines.push(`- **Started:** ${health.activeSession.startTime}`);
+  } else {
+    lines.push('### Recording Status');
+    lines.push('');
+    lines.push('*No active recording. Use `memory action:start` to begin.*');
+  }
+
+  return lines.join('\n');
+}

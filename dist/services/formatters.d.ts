@@ -118,4 +118,26 @@ export declare function formatSyncResult(result: SyncResult): string;
  * @returns Formatted string
  */
 export declare function formatVectorStatus(status: VectorStatus): string;
+import type { MemoryMetadata, MemoryQueryResult, MemoryHealthStatus } from '../types.js';
+/**
+ * Format a memory session's messages for display.
+ */
+export declare function formatMemorySession(messages: MemoryMetadata[], format: ResponseFormat): string;
+/**
+ * Format memory search results for display.
+ */
+export declare function formatMemorySearch(results: MemoryQueryResult, query: string, format: ResponseFormat): string;
+/**
+ * Format session list for display.
+ */
+export declare function formatSessionList(sessions: Array<{
+    sessionId: string;
+    messageCount: number;
+    created: string;
+    description?: string;
+}>, format: ResponseFormat): string;
+/**
+ * Format memory health status for display.
+ */
+export declare function formatMemoryStatus(health: MemoryHealthStatus, format: ResponseFormat): string;
 //# sourceMappingURL=formatters.d.ts.map

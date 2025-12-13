@@ -869,4 +869,47 @@ export const VectorStatusSchema = z.object({
         .default(false)
         .describe('Include a sample vector for debugging'),
 }).strict();
+// =============================================================================
+// MEMORY SCHEMAS
+// =============================================================================
+/**
+ * Memory action enum for the unified memory tool.
+ */
+export const MemoryActionEnum = z.enum(['start', 'save', 'retrieve', 'list', 'status']);
+/**
+ * Schema for the unified memory tool.
+ * Single tool with 5 actions for conversational memory management.
+ */
+export const MemorySchema = z.object({
+    action: MemoryActionEnum
+        .describe("Action: 'start' (begin recording), 'save' (end and save), 'retrieve' (search/get messages), 'list' (show sessions), 'status' (health check)"),
+    // For retrieve action
+    session_id: z.string()
+        .max(20)
+        .optional()
+        .describe("Retrieve specific session by ID (e.g., '20241215_103045')"),
+    query: z.string()
+        .max(500)
+        .optional()
+        .describe("Semantic search query across all your saved sessions"),
+    // For start action
+    description: z.string()
+        .max(500)
+        .optional()
+        .describe("Optional description for the recording session"),
+    tags: z.array(z.string().max(50))
+        .max(10)
+        .optional()
+        .describe("Optional tags for categorization"),
+    // For retrieve/list actions
+    limit: z.number()
+        .int()
+        .min(1)
+        .max(100)
+        .default(20)
+        .describe("Number of results to return"),
+    response_format: z.nativeEnum(ResponseFormat)
+        .default(ResponseFormat.MARKDOWN)
+        .describe("Output format: 'markdown' (human-readable) or 'json' (structured)"),
+}).strict();
 //# sourceMappingURL=index.js.map

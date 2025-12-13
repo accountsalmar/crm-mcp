@@ -449,3 +449,55 @@ export function getSelectionLabel(
   }
   return mappings[String(value)] || String(value);
 }
+
+// =============================================================================
+// CONVERSATIONAL MEMORY CONFIGURATION (Command 1984)
+// =============================================================================
+
+/**
+ * Memory feature configuration
+ * Enables vector-native conversational memory with auto-capture
+ */
+export const MEMORY_CONFIG = {
+  // Feature toggle (default: enabled)
+  ENABLED: process.env.MEMORY_ENABLED !== 'false',
+
+  // Collection name for conversation memory (separate from CRM vectors)
+  COLLECTION_NAME: process.env.MEMORY_COLLECTION_NAME || 'conversation_memory',
+
+  // Session defaults
+  DEFAULT_LIMIT: 20,
+  MAX_LIMIT: 100,
+  CONTEXT_WINDOW: 2,  // Messages before/after for context retrieval
+
+  // Auto-archive inactive sessions (days)
+  AUTO_ARCHIVE_DAYS: parseInt(process.env.MEMORY_AUTO_ARCHIVE_DAYS || '90'),
+} as const;
+
+/**
+ * Qdrant collection configuration for conversation memory
+ * Separate from QDRANT_CONFIG to allow independent tuning
+ */
+export const MEMORY_COLLECTION_CONFIG = {
+  // Collection name (uses MEMORY_CONFIG for consistency)
+  COLLECTION_NAME: MEMORY_CONFIG.COLLECTION_NAME,
+
+  // Vector settings (same as CRM - voyage-3-lite)
+  VECTOR_SIZE: VOYAGE_CONFIG.DIMENSIONS,  // 512
+  DISTANCE_METRIC: 'Cosine' as const,
+
+  // HNSW tuned for conversational queries (higher recall than CRM)
+  HNSW_M: 24,                // More links for better recall
+  HNSW_EF_CONSTRUCT: 128,    // Higher for conversational patterns
+
+  // Payload indexes for efficient filtering
+  PAYLOAD_INDEXES: [
+    { field: 'session_id', type: 'keyword' as const },
+    { field: 'session_prefix', type: 'keyword' as const },
+    { field: 'user_id', type: 'keyword' as const },
+    { field: 'message_timestamp', type: 'datetime' as const },
+    { field: 'sequence_number', type: 'integer' as const },
+    { field: 'role', type: 'keyword' as const },
+    { field: 'session_status', type: 'keyword' as const },
+  ],
+} as const;

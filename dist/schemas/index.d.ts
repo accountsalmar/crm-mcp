@@ -33,13 +33,13 @@ export declare const ListFieldsSchema: z.ZodObject<{
     filter: z.ZodDefault<z.ZodEnum<["all", "basic", "relational", "required"]>>;
     response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
 }, "strict", z.ZodTypeAny, {
-    filter: "basic" | "required" | "all" | "relational";
+    filter: "basic" | "all" | "required" | "relational";
     model: "crm.stage" | "crm.lost.reason" | "crm.lead" | "res.partner" | "mail.activity";
     include_types: boolean;
     include_descriptions: boolean;
     response_format: ResponseFormat;
 }, {
-    filter?: "basic" | "required" | "all" | "relational" | undefined;
+    filter?: "basic" | "all" | "required" | "relational" | undefined;
     model?: "crm.stage" | "crm.lost.reason" | "crm.lead" | "res.partner" | "mail.activity" | undefined;
     include_types?: boolean | undefined;
     include_descriptions?: boolean | undefined;
@@ -726,10 +726,10 @@ export declare const CacheStatusSchema: z.ZodObject<{
     cache_type: z.ZodDefault<z.ZodEnum<["all", "stages", "lost_reasons", "teams", "salespeople", "states"]>>;
 }, "strict", z.ZodTypeAny, {
     action: "clear" | "status";
-    cache_type: "salespeople" | "teams" | "states" | "lost_reasons" | "stages" | "all";
+    cache_type: "salespeople" | "teams" | "states" | "lost_reasons" | "all" | "stages";
 }, {
     action?: "clear" | "status" | undefined;
-    cache_type?: "salespeople" | "teams" | "states" | "lost_reasons" | "stages" | "all" | undefined;
+    cache_type?: "salespeople" | "teams" | "states" | "lost_reasons" | "all" | "stages" | undefined;
 }>;
 export declare const HealthCheckSchema: z.ZodObject<{
     response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
@@ -888,4 +888,38 @@ export declare const VectorStatusSchema: z.ZodObject<{
     include_sample?: boolean | undefined;
 }>;
 export type VectorStatusInput = z.infer<typeof VectorStatusSchema>;
+/**
+ * Memory action enum for the unified memory tool.
+ */
+export declare const MemoryActionEnum: z.ZodEnum<["start", "save", "retrieve", "list", "status"]>;
+/**
+ * Schema for the unified memory tool.
+ * Single tool with 5 actions for conversational memory management.
+ */
+export declare const MemorySchema: z.ZodObject<{
+    action: z.ZodEnum<["start", "save", "retrieve", "list", "status"]>;
+    session_id: z.ZodOptional<z.ZodString>;
+    query: z.ZodOptional<z.ZodString>;
+    description: z.ZodOptional<z.ZodString>;
+    tags: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    limit: z.ZodDefault<z.ZodNumber>;
+    response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
+}, "strict", z.ZodTypeAny, {
+    limit: number;
+    response_format: ResponseFormat;
+    action: "status" | "start" | "save" | "retrieve" | "list";
+    description?: string | undefined;
+    query?: string | undefined;
+    session_id?: string | undefined;
+    tags?: string[] | undefined;
+}, {
+    action: "status" | "start" | "save" | "retrieve" | "list";
+    description?: string | undefined;
+    query?: string | undefined;
+    session_id?: string | undefined;
+    limit?: number | undefined;
+    tags?: string[] | undefined;
+    response_format?: ResponseFormat | undefined;
+}>;
+export type MemoryInput = z.infer<typeof MemorySchema>;
 //# sourceMappingURL=index.d.ts.map

@@ -946,3 +946,118 @@ export interface CircuitBreakerState {
   lastStateChange: number;
   secondsUntilRetry?: number;
 }
+
+// =============================================================================
+// CONVERSATIONAL MEMORY TYPES (Command 1984)
+// =============================================================================
+
+/**
+ * Role of a message in conversation memory
+ */
+export type MemoryRole = 'user' | 'assistant';
+
+/**
+ * Status of a memory session
+ */
+export type SessionStatus = 'recording' | 'saved' | 'archived';
+
+/**
+ * A single message captured during recording
+ */
+export interface MemoryMessage {
+  role: MemoryRole;
+  content: string;
+  toolName?: string;          // Which tool was called (if any)
+  toolInput?: unknown;        // Tool input parameters
+  timestamp: Date;
+}
+
+/**
+ * An active or saved memory session
+ */
+export interface MemorySession {
+  sessionId: string;          // Auto-generated: YYYYMMDD_HHMMSS
+  sessionPrefix: string;      // memory_YYYYMMDD_HHMMSS
+  userId: string;             // User who owns this session
+  description?: string;       // Optional user-provided description
+  tags?: string[];            // Optional categorization tags
+  status: SessionStatus;
+  startTime: Date;
+  endTime?: Date;
+  messages: MemoryMessage[];
+}
+
+/**
+ * Metadata stored with each vector in the conversation_memory collection
+ */
+export interface MemoryMetadata {
+  // Identifiers
+  message_id: string;         // UUID for each message
+  session_id: string;         // Session identifier (e.g., '20241215_103045')
+  session_prefix: string;     // Full prefix (e.g., 'memory_20241215_103045')
+  user_id: string;            // User who owns this session
+
+  // Message attributes
+  role: MemoryRole;
+  sequence_number: number;    // Order within session (1, 2, 3...)
+  message_timestamp: string;  // ISO timestamp
+
+  // Content
+  content: string;            // Original message text
+  tool_name?: string;         // Tool name if this was a tool call
+  embedding_text: string;     // Text used for embedding (with context)
+
+  // Session metadata
+  session_status: SessionStatus;
+  session_created: string;    // When session started
+  session_saved?: string;     // When memory action:save was called
+  session_description?: string;
+  tags?: string[];
+
+  // Sync tracking
+  sync_version: number;
+  last_synced: string;
+}
+
+/**
+ * Options for querying conversation memory
+ */
+export interface MemoryQueryOptions {
+  sessionId?: string;         // Filter to specific session
+  userId: string;             // Required: user isolation
+  query?: string;             // Semantic search query
+  role?: MemoryRole | 'all';  // Filter by message role
+  dateFrom?: string;          // Date range start
+  dateTo?: string;            // Date range end
+  tags?: string[];            // Filter by tags
+  limit?: number;             // Max results
+  minScore?: number;          // Minimum similarity score
+  includeContext?: boolean;   // Include surrounding messages
+  contextWindow?: number;     // Messages before/after
+}
+
+/**
+ * Result of a memory search
+ */
+export interface MemoryQueryResult {
+  matches: Array<{
+    id: string;
+    score: number;
+    metadata?: MemoryMetadata;
+  }>;
+  searchTimeMs: number;
+}
+
+/**
+ * Health status of memory infrastructure
+ */
+export interface MemoryHealthStatus {
+  connected: boolean;
+  collectionExists: boolean;
+  vectorCount: number;
+  activeSession: {
+    sessionId: string;
+    messageCount: number;
+    startTime: string;
+  } | null;
+}
