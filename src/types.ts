@@ -49,6 +49,27 @@ export interface CrmLead extends OdooRecord {
   sector?: string;
   specification_id?: [number, string];
   won_status?: string;  // Odoo native field: 'won' | 'lost' | 'pending'
+
+  // Additional standard fields
+  zip?: string;
+  function?: string;  // Job position/title
+  partner_name?: string;  // Partner display name (convenience field)
+
+  // Custom many2one fields (may not exist in all Odoo instances)
+  // These return [id, name] tuples if present, undefined if field doesn't exist
+  architect_id?: [number, string];
+  client_id?: [number, string];
+  estimator_id?: [number, string];
+  project_manager_id?: [number, string];
+  spec_rep_id?: [number, string];
+
+  // Custom text/char fields
+  design?: string;
+  quote?: string;
+  referred?: string;
+  address_note?: string;
+  project_address?: string;
+  x_studio_building_owner?: string;
 }
 
 // CRM Stage
@@ -691,6 +712,57 @@ export interface VectorMetadata {
 
   // Original text (for display, not filtering)
   embedding_text: string;
+
+  // === NEW FIELDS FOR SEARCH RESULTS (Phase 2) ===
+
+  // Partner/Company (CRITICAL for B2B)
+  partner_id?: number;
+  partner_name?: string;
+
+  // Contact Information
+  contact_name?: string;
+  function?: string;           // Job role/position
+  email_from?: string;
+  phone?: string;
+  mobile?: string;
+
+  // Extended Location
+  street?: string;
+  zip?: string;
+  country_id?: number;
+  country_name?: string;
+  project_address?: string;
+
+  // UTM Attribution
+  source_id?: number;
+  source_name?: string;
+  medium_id?: number;
+  medium_name?: string;
+  campaign_id?: number;
+  campaign_name?: string;
+  referred?: string;
+
+  // Priority (with label)
+  priority?: string;
+  priority_label?: string;
+
+  // Custom Role Fields (may not exist in all Odoo instances)
+  architect_id?: number;
+  architect_name?: string;
+  client_id?: number;
+  client_name?: string;
+  estimator_id?: number;
+  estimator_name?: string;
+  project_manager_id?: number;
+  project_manager_name?: string;
+  spec_rep_id?: number;
+  spec_rep_name?: string;
+
+  // Custom Text Fields
+  x_studio_building_owner?: string;
+  design?: string;
+  quote?: string;
+  address_note?: string;
 }
 
 /**
@@ -718,6 +790,7 @@ export interface VectorQueryOptions {
  * Supports exact match, arrays ($in), and ranges.
  */
 export interface VectorFilter {
+  // Existing filters
   stage_id?: number | { $in: number[] };
   user_id?: number | { $in: number[] };
   team_id?: number;
@@ -729,6 +802,13 @@ export interface VectorFilter {
   lost_reason_id?: number;
   expected_revenue?: { $gte?: number; $lte?: number };
   create_date?: { $gte?: string; $lte?: string };
+
+  // NEW filters (Phase 2)
+  partner_id?: number | { $in: number[] };
+  country_id?: number;
+  priority?: string;
+  architect_id?: number;
+  source_id?: number;
 }
 
 /**
@@ -823,6 +903,17 @@ export interface PatternCluster {
     id: number;
     name: string;
     similarity: number;
+    // Enhanced semantic fields (optional - populated from VectorMetadata)
+    partner_name?: string;
+    stage_name?: string;
+    expected_revenue?: number;
+    city?: string;
+    state_name?: string;
+    sector?: string;
+    specification_name?: string;
+    is_won?: boolean;
+    is_lost?: boolean;
+    lost_reason_name?: string;
   }>;
   commonThemes: {
     topSectors: Array<{ sector: string; count: number }>;

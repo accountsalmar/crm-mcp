@@ -108,6 +108,7 @@ export declare const LeadSearchSchema: z.ZodObject<{
     query?: string | undefined;
     stage_name?: string | undefined;
     fields?: string[] | "basic" | "extended" | "full" | undefined;
+    state_name?: string | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
     min_probability?: number | undefined;
@@ -115,7 +116,6 @@ export declare const LeadSearchSchema: z.ZodObject<{
     date_to?: string | undefined;
     date_closed_from?: string | undefined;
     date_closed_to?: string | undefined;
-    state_name?: string | undefined;
 }, {
     stage_id?: number | undefined;
     user_id?: number | undefined;
@@ -131,6 +131,7 @@ export declare const LeadSearchSchema: z.ZodObject<{
     limit?: number | undefined;
     stage_name?: string | undefined;
     fields?: string[] | "basic" | "extended" | "full" | undefined;
+    state_name?: string | undefined;
     response_format?: ResponseFormat | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
@@ -141,7 +142,6 @@ export declare const LeadSearchSchema: z.ZodObject<{
     date_closed_from?: string | undefined;
     date_closed_to?: string | undefined;
     date_field?: "create_date" | "date_closed" | undefined;
-    state_name?: string | undefined;
     order_by?: "name" | "expected_revenue" | "probability" | "create_date" | "date_closed" | undefined;
     order_dir?: "asc" | "desc" | undefined;
 }>;
@@ -232,8 +232,8 @@ export declare const ContactSearchSchema: z.ZodObject<{
     offset?: number | undefined;
     limit?: number | undefined;
     fields?: string[] | "basic" | "extended" | "full" | undefined;
-    response_format?: ResponseFormat | undefined;
     state_name?: string | undefined;
+    response_format?: ResponseFormat | undefined;
     has_opportunities?: boolean | undefined;
     country?: string | undefined;
 }>;
@@ -345,12 +345,12 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     lost_reason_id?: number | undefined;
     query?: string | undefined;
     fields?: string[] | "basic" | "extended" | "full" | undefined;
+    lost_reason_name?: string | undefined;
+    state_name?: string | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
-    state_name?: string | undefined;
-    lost_reason_name?: string | undefined;
 }, {
     stage_id?: number | undefined;
     user_id?: number | undefined;
@@ -365,15 +365,15 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     offset?: number | undefined;
     limit?: number | undefined;
     fields?: string[] | "basic" | "extended" | "full" | undefined;
+    lost_reason_name?: string | undefined;
+    state_name?: string | undefined;
     response_format?: ResponseFormat | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
-    state_name?: string | undefined;
     order_by?: "name" | "expected_revenue" | "create_date" | "date_closed" | undefined;
     order_dir?: "asc" | "desc" | undefined;
-    lost_reason_name?: string | undefined;
 }>;
 export declare const LostTrendsSchema: z.ZodObject<{
     date_from: z.ZodOptional<z.ZodString>;
@@ -438,11 +438,11 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     state_id?: number | undefined;
     query?: string | undefined;
     fields?: string[] | "basic" | "extended" | "full" | undefined;
+    state_name?: string | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
-    state_name?: string | undefined;
 }, {
     stage_id?: number | undefined;
     user_id?: number | undefined;
@@ -456,12 +456,12 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     offset?: number | undefined;
     limit?: number | undefined;
     fields?: string[] | "basic" | "extended" | "full" | undefined;
+    state_name?: string | undefined;
     response_format?: ResponseFormat | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
-    state_name?: string | undefined;
     order_by?: "name" | "expected_revenue" | "create_date" | "date_closed" | undefined;
     order_dir?: "asc" | "desc" | undefined;
 }>;
@@ -626,11 +626,11 @@ export declare const ExportDataSchema: z.ZodObject<{
         city?: string | undefined;
         state_id?: number | undefined;
         query?: string | undefined;
+        state_name?: string | undefined;
         min_revenue?: number | undefined;
         max_revenue?: number | undefined;
         date_from?: string | undefined;
         date_to?: string | undefined;
-        state_name?: string | undefined;
     }, {
         stage_id?: number | undefined;
         user_id?: number | undefined;
@@ -638,11 +638,11 @@ export declare const ExportDataSchema: z.ZodObject<{
         city?: string | undefined;
         state_id?: number | undefined;
         query?: string | undefined;
+        state_name?: string | undefined;
         min_revenue?: number | undefined;
         max_revenue?: number | undefined;
         date_from?: string | undefined;
         date_to?: string | undefined;
-        state_name?: string | undefined;
     }>>;
     fields: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     max_records: z.ZodDefault<z.ZodNumber>;
@@ -661,11 +661,11 @@ export declare const ExportDataSchema: z.ZodObject<{
         city?: string | undefined;
         state_id?: number | undefined;
         query?: string | undefined;
+        state_name?: string | undefined;
         min_revenue?: number | undefined;
         max_revenue?: number | undefined;
         date_from?: string | undefined;
         date_to?: string | undefined;
-        state_name?: string | undefined;
     } | undefined;
     output_directory?: string | undefined;
 }, {
@@ -680,11 +680,11 @@ export declare const ExportDataSchema: z.ZodObject<{
         city?: string | undefined;
         state_id?: number | undefined;
         query?: string | undefined;
+        state_name?: string | undefined;
         min_revenue?: number | undefined;
         max_revenue?: number | undefined;
         date_from?: string | undefined;
         date_to?: string | undefined;
-        state_name?: string | undefined;
     } | undefined;
     max_records?: number | undefined;
     output_directory?: string | undefined;
