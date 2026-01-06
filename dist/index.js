@@ -4,14 +4,8 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import express from 'express';
 import { registerCrmTools } from './tools/crm-tools.js';
-import { registerVectorTools } from './tools/vector-tools.js';
-import { registerMemoryTools } from './tools/memory-tools.js';
 import { warmCache } from './services/odoo-client.js';
 import { warmPool } from './services/odoo-pool.js';
-import { warmVectorClient } from './services/vector-client.js';
-import { warmMemoryClient } from './services/memory-client.js';
-import { initializeEmbeddingService } from './services/embedding-service.js';
-import { MEMORY_CONFIG } from './constants.js';
 // Create MCP server instance
 const server = new McpServer({
     name: 'odoo-crm-mcp-server',
@@ -19,12 +13,6 @@ const server = new McpServer({
 });
 // Register all CRM tools
 registerCrmTools(server);
-// Register vector tools (semantic search, pattern discovery, etc.)
-// These will only be active if VECTOR_ENABLED=true in environment
-registerVectorTools(server);
-// Register memory tools (conversation recording and retrieval)
-// These will only be active if MEMORY_ENABLED=true in environment
-registerMemoryTools(server);
 // ============================================
 // STDIO Transport (for desktop Claude, Claude Code)
 // ============================================
@@ -32,21 +20,9 @@ async function runStdio() {
     const transport = new StdioServerTransport();
     await server.connect(transport);
     console.error('Odoo CRM MCP Server running on stdio');
-    // Warm cache, connection pool, vector, and memory services asynchronously (non-blocking)
-    Promise.all([
-        warmCache(),
-        warmPool(),
-        // Initialize vector and memory services
-        (async () => {
-            initializeEmbeddingService();
-            await warmVectorClient();
-            // Initialize memory client if enabled
-            if (MEMORY_CONFIG.ENABLED) {
-                await warmMemoryClient();
-            }
-        })()
-    ])
-        .then(() => console.error('Cache, pool, vector, and memory services warmed successfully'))
+    // Warm cache and connection pool asynchronously (non-blocking)
+    Promise.all([warmCache(), warmPool()])
+        .then(() => console.error('Cache and pool warmed successfully'))
         .catch(err => console.error('Warm-up error:', err instanceof Error ? err.message : err));
 }
 // ============================================
@@ -93,21 +69,9 @@ async function runHTTP() {
         console.error(`Odoo CRM MCP Server running on http://${host}:${port}/mcp`);
         console.error('Environment variables required:');
         console.error('  ODOO_URL, ODOO_DB, ODOO_USERNAME, ODOO_PASSWORD');
-        // Warm cache, connection pool, vector, and memory services asynchronously (non-blocking)
-        Promise.all([
-            warmCache(),
-            warmPool(),
-            // Initialize vector and memory services
-            (async () => {
-                initializeEmbeddingService();
-                await warmVectorClient();
-                // Initialize memory client if enabled
-                if (MEMORY_CONFIG.ENABLED) {
-                    await warmMemoryClient();
-                }
-            })()
-        ])
-            .then(() => console.error('Cache, pool, vector, and memory services warmed successfully'))
+        // Warm cache and connection pool asynchronously (non-blocking)
+        Promise.all([warmCache(), warmPool()])
+            .then(() => console.error('Cache and pool warmed successfully'))
             .catch(err => console.error('Warm-up error:', err instanceof Error ? err.message : err));
     });
 }

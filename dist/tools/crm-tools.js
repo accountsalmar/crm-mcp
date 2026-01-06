@@ -1,6 +1,5 @@
 import { getOdooClient } from '../services/odoo-client.js';
 import { getPoolMetrics, useClient } from '../services/odoo-pool.js';
-import { isMemoryRecording, captureInteraction } from '../services/memory-service.js';
 import { formatLeadList, formatLeadDetail, formatPipelineSummary, formatSalesAnalytics, formatContactList, formatActivitySummary, getRelationName, formatLostReasonsList, formatLostAnalysis, formatLostOpportunitiesList, formatLostTrends, formatDate, formatWonOpportunitiesList, formatWonAnalysis, formatWonTrends, formatSalespeopleList, formatTeamsList, formatPerformanceComparison, formatActivityList, formatExportResult, formatStatesList, formatStateComparison, formatFieldsList } from '../services/formatters.js';
 import { LeadSearchSchema, LeadDetailSchema, PipelineSummarySchema, SalesAnalyticsSchema, ContactSearchSchema, ActivitySummarySchema, StageListSchema, LostReasonsListSchema, LostAnalysisSchema, LostOpportunitiesSearchSchema, LostTrendsSchema, WonOpportunitiesSearchSchema, WonAnalysisSchema, WonTrendsSchema, SalespeopleListSchema, TeamsListSchema, ComparePerformanceSchema, ActivitySearchSchema, ExportDataSchema, StatesListSchema, CompareStatesSchema, CacheStatusSchema, HealthCheckSchema, ListFieldsSchema } from '../schemas/index.js';
 import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG, FIELD_PRESETS, resolveFields } from '../constants.js';
@@ -135,10 +134,6 @@ Returns paginated list with: name, contact, email, stage, revenue, probability`,
                     response.context_note = `Large dataset (${total} records). Consider using filters or odoo_crm_get_pipeline_summary for overview.`;
                 }
                 const output = formatLeadList(response, params.response_format);
-                // Auto-capture if memory recording is active
-                if (isMemoryRecording()) {
-                    captureInteraction('odoo_crm_search_leads', params, output);
-                }
                 return {
                     content: [{ type: 'text', text: output }],
                     structuredContent: response
@@ -188,15 +183,14 @@ Returns all available fields for the lead including description/notes.`,
                     };
                 }
                 const lead = leads[0];
-                const output = params.response_format === ResponseFormat.JSON
-                    ? JSON.stringify(lead, null, 2)
-                    : formatLeadDetail(lead);
-                // Auto-capture if memory recording is active
-                if (isMemoryRecording()) {
-                    captureInteraction('odoo_crm_get_lead_detail', params, output);
+                if (params.response_format === ResponseFormat.JSON) {
+                    return {
+                        content: [{ type: 'text', text: JSON.stringify(lead, null, 2) }],
+                        structuredContent: lead
+                    };
                 }
                 return {
-                    content: [{ type: 'text', text: output }],
+                    content: [{ type: 'text', text: formatLeadDetail(lead) }],
                     structuredContent: lead
                 };
             });
@@ -275,10 +269,6 @@ Returns: count, total revenue, avg probability per stage, plus optional top oppo
                 stageSummaries.push(summary);
             }
             const output = formatPipelineSummary(stageSummaries, params.response_format);
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_get_pipeline_summary', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: { stages: stageSummaries }
@@ -387,10 +377,6 @@ Returns aggregated metrics including conversion rates, revenue analysis, and per
                 }));
             }
             const output = formatSalesAnalytics(analytics, params.response_format);
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_get_sales_analytics', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: analytics
@@ -477,10 +463,6 @@ Returns: name, email, phone, city, country`,
                     next_offset: total > params.offset + contacts.length ? params.offset + contacts.length : undefined
                 };
                 const output = formatContactList(response, params.response_format);
-                // Auto-capture if memory recording is active
-                if (isMemoryRecording()) {
-                    captureInteraction('odoo_crm_search_contacts', params, output);
-                }
                 return {
                     content: [{ type: 'text', text: output }],
                     structuredContent: response
@@ -574,10 +556,6 @@ Returns activity counts by status (overdue, today, upcoming) and by type/user.
                 })
             };
             const output = formatActivitySummary(summary, params.response_format);
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_get_activity_summary', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: summary
@@ -629,10 +607,6 @@ Use this to understand the pipeline structure and get stage IDs for filtering.
                 if (stage.fold)
                     output += ' 📁 Folded';
                 output += '\n';
-            }
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_list_stages', params, output);
             }
             return {
                 content: [{ type: 'text', text: output }],
@@ -705,10 +679,6 @@ Returns the list of predefined reasons for losing opportunities, with a count of
                     .sort((a, b) => a.name.localeCompare(b.name));
             }
             const output = formatLostReasonsList(reasonsWithCounts, params.response_format);
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_list_lost_reasons', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: { reasons: reasonsWithCounts }
@@ -931,10 +901,6 @@ Returns summary statistics including total lost count and revenue, breakdown by 
                 }));
             }
             const output = formatLostAnalysis(analysis, params.group_by, params.response_format);
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_get_lost_analysis', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: analysis
@@ -1058,10 +1024,6 @@ Returns a paginated list of lost opportunities with details including the lost r
                     next_offset: total > params.offset + opportunities.length ? params.offset + opportunities.length : undefined
                 };
                 const output = formatLostOpportunitiesList(response, params.response_format);
-                // Auto-capture if memory recording is active
-                if (isMemoryRecording()) {
-                    captureInteraction('odoo_crm_search_lost_opportunities', params, output);
-                }
                 return {
                     content: [{ type: 'text', text: output }],
                     structuredContent: response
@@ -1276,10 +1238,6 @@ Returns time-series data showing lost opportunities grouped by week, month, or q
                 most_common_reason: mostCommonReason
             };
             const output = formatLostTrends(trends, params.response_format);
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_get_lost_trends', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: trends
@@ -1390,10 +1348,6 @@ Returns a paginated list of won opportunities with details including revenue, sa
                     next_offset: total > params.offset + opportunities.length ? params.offset + opportunities.length : undefined
                 };
                 const output = formatWonOpportunitiesList(response, params.response_format);
-                // Auto-capture if memory recording is active
-                if (isMemoryRecording()) {
-                    captureInteraction('odoo_crm_search_won_opportunities', params, output);
-                }
                 return {
                     content: [{ type: 'text', text: output }],
                     structuredContent: response
@@ -1611,10 +1565,6 @@ Returns summary statistics including total won count and revenue, breakdown by t
                 });
             }
             const output = formatWonAnalysis(analysis, params.group_by, params.response_format);
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_get_won_analysis', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: analysis
@@ -1803,10 +1753,6 @@ Returns time-series data showing won opportunities grouped by week, month, or qu
                 avg_deal_size_trend: avgDealSizeTrend
             };
             const output = formatWonTrends(trends, params.response_format);
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_get_won_trends', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: trends
@@ -1869,10 +1815,6 @@ Returns a list of users with their IDs and optionally their opportunity statisti
             // Sort by opportunity count
             salespeople.sort((a, b) => (b.opportunity_count || 0) - (a.opportunity_count || 0));
             const output = formatSalespeopleList(salespeople, params.response_format);
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_list_salespeople', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: { salespeople }
@@ -1943,10 +1885,6 @@ Returns a list of teams with their IDs and optionally member count and opportuni
             // Sort by opportunity count
             teams.sort((a, b) => (b.opportunity_count || 0) - (a.opportunity_count || 0));
             const output = formatTeamsList(teams, params.response_format);
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_list_teams', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: { teams }
@@ -2095,10 +2033,6 @@ Returns side-by-side comparison of key metrics including won count, revenue, win
                 }
             }
             const output = formatPerformanceComparison(comparison, params.response_format);
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_compare_performance', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: comparison
@@ -2203,10 +2137,6 @@ Returns a paginated list of activities with details including type, due date, st
                     next_offset: total > params.offset + activities.length ? params.offset + activities.length : undefined
                 };
                 const output = formatActivityList(response, params.response_format);
-                // Auto-capture if memory recording is active
-                if (isMemoryRecording()) {
-                    captureInteraction('odoo_crm_search_activities', params, output);
-                }
                 return {
                     content: [{ type: 'text', text: output }],
                     structuredContent: response
@@ -2368,10 +2298,6 @@ Returns a paginated list of activities with details including type, due date, st
                     instructions: `File exported successfully to: ${filePath}`,
                 };
                 const output = formatExportResult(result, ResponseFormat.MARKDOWN);
-                // Auto-capture if memory recording is active
-                if (isMemoryRecording()) {
-                    captureInteraction('odoo_crm_export_data', params, output);
-                }
                 return {
                     content: [{ type: 'text', text: output }],
                     structuredContent: result
@@ -2498,10 +2424,6 @@ The server caches frequently accessed, rarely-changing data to improve performan
                 }
                 output += '\n*Cache entries automatically expire. Use action="clear" to force refresh.*\n';
             }
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_cache_status', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: {
@@ -2604,10 +2526,6 @@ Returns field names you can use in the 'fields' parameter of search tools.`,
             };
             if (modelType && FIELD_PRESETS[modelType]) {
                 structuredContent.presets = Object.keys(FIELD_PRESETS[modelType]);
-            }
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_list_fields', params, output);
             }
             return {
                 content: [{ type: 'text', text: output }],
@@ -2779,10 +2697,6 @@ Returns: status (healthy/unhealthy), odoo_connected, latency_ms, cache_entries, 
         else {
             output += `\n*Unable to connect to Odoo. Check credentials and network connectivity.*`;
         }
-        // Auto-capture if memory recording is active
-        if (isMemoryRecording()) {
-            captureInteraction('odoo_crm_health_check', params, output);
-        }
         return {
             content: [{ type: 'text', text: output }],
             structuredContent: result
@@ -2852,10 +2766,6 @@ Returns all states for the specified country (default: Australia) with opportuni
                 statesWithStats.sort((a, b) => (b.opportunity_count || 0) - (a.opportunity_count || 0));
             }
             const output = formatStatesList(statesWithStats, params.country_code, params.response_format);
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_list_states', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: { states: statesWithStats, country_code: params.country_code }
@@ -2972,10 +2882,6 @@ Returns win/loss metrics, revenue, and win rates for each state, allowing geogra
                 }
             };
             const output = formatStateComparison(comparison, params.response_format);
-            // Auto-capture if memory recording is active
-            if (isMemoryRecording()) {
-                captureInteraction('odoo_crm_compare_states', params, output);
-            }
             return {
                 content: [{ type: 'text', text: output }],
                 structuredContent: comparison

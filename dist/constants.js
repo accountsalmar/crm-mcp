@@ -47,22 +47,15 @@ export const CRM_FIELDS = {
         'date_deadline', 'partner_id', 'description',
         'lead_source_id', 'sector', 'specification_id'
     ],
-    // Detailed fields for single record views (including custom fields for embeddings)
+    // Detailed fields for single record views
     LEAD_DETAIL: [
-        // Core fields
         'id', 'name', 'contact_name', 'email_from', 'phone', 'mobile',
         'street', 'city', 'state_id', 'country_id', 'expected_revenue', 'probability',
         'stage_id', 'user_id', 'team_id', 'source_id', 'medium_id',
         'campaign_id', 'description', 'create_date', 'write_date',
         'date_deadline', 'date_closed', 'lost_reason_id', 'tag_ids',
         'partner_id', 'company_id', 'priority', 'type', 'active',
-        'lead_source_id', 'sector', 'specification_id', 'won_status',
-        // Additional standard fields for embeddings
-        'zip', 'function', 'partner_name',
-        // Custom fields (will be undefined if not present in Odoo instance)
-        'architect_id', 'client_id', 'estimator_id', 'project_manager_id',
-        'spec_rep_id', 'design', 'quote', 'referred',
-        'address_note', 'project_address', 'x_studio_building_owner',
+        'lead_source_id', 'sector', 'specification_id'
     ],
     // Fields for pipeline analysis
     PIPELINE_SUMMARY: [
@@ -262,166 +255,5 @@ export const POOL_CONFIG = {
     TEST_ON_BORROW: process.env.ODOO_POOL_TEST_ON_BORROW !== 'false',
     // Use FIFO (queue) for client allocation - ensures fair distribution
     FIFO: true,
-};
-// =============================================================================
-// VECTOR DATABASE CONFIGURATION (Qdrant + Voyage AI)
-// =============================================================================
-/**
- * Qdrant vector database configuration
- */
-export const QDRANT_CONFIG = {
-    // Connection settings
-    HOST: process.env.QDRANT_HOST || 'http://localhost:6333',
-    API_KEY: process.env.QDRANT_API_KEY || '',
-    COLLECTION_NAME: process.env.QDRANT_COLLECTION || 'odoo_crm_leads',
-    // Vector settings (voyage-3-lite supports 512 dims only)
-    VECTOR_SIZE: parseInt(process.env.EMBEDDING_DIMENSIONS || '512'),
-    DISTANCE_METRIC: 'Cosine',
-    // HNSW index settings (create BEFORE data upload)
-    HNSW_M: 16, // Number of bi-directional links
-    HNSW_EF_CONSTRUCT: 100, // Size of dynamic candidate list
-    // Payload indexes to create
-    PAYLOAD_INDEXES: [
-        // Existing indexes
-        { field: 'stage_id', type: 'integer' },
-        { field: 'user_id', type: 'integer' },
-        { field: 'team_id', type: 'integer' },
-        { field: 'expected_revenue', type: 'float' },
-        { field: 'is_won', type: 'bool' },
-        { field: 'is_lost', type: 'bool' },
-        { field: 'is_active', type: 'bool' },
-        { field: 'create_date', type: 'datetime' },
-        { field: 'sector', type: 'keyword' },
-        { field: 'lost_reason_id', type: 'integer' },
-        // NEW indexes for common filtering (Phase 2)
-        { field: 'partner_id', type: 'integer' },
-        { field: 'country_id', type: 'integer' },
-        { field: 'priority', type: 'keyword' },
-        { field: 'architect_id', type: 'integer' },
-        { field: 'source_id', type: 'integer' },
-    ],
-    // Enabled flag
-    ENABLED: process.env.VECTOR_ENABLED !== 'false',
-};
-/**
- * Voyage AI embedding configuration
- */
-export const VOYAGE_CONFIG = {
-    API_KEY: process.env.VOYAGE_API_KEY || '',
-    MODEL: process.env.EMBEDDING_MODEL || 'voyage-3-lite',
-    DIMENSIONS: parseInt(process.env.EMBEDDING_DIMENSIONS || '512'), // voyage-3-lite max
-    // Input types (improves retrieval quality)
-    INPUT_TYPE_DOCUMENT: 'document',
-    INPUT_TYPE_QUERY: 'query',
-    // Batch settings
-    MAX_BATCH_SIZE: 128,
-    MAX_TOKENS_PER_BATCH: 120000,
-    // Text handling
-    MAX_WORDS: 2000, // Truncate descriptions longer than this
-    TRUNCATION: true,
-};
-/**
- * Sync service configuration
- */
-export const VECTOR_SYNC_CONFIG = {
-    ENABLED: process.env.VECTOR_SYNC_ENABLED !== 'false',
-    INTERVAL_MS: parseInt(process.env.VECTOR_SYNC_INTERVAL_MS || '900000'), // 15 min
-    BATCH_SIZE: parseInt(process.env.VECTOR_SYNC_BATCH_SIZE || '200'),
-    MAX_RECORDS_PER_SYNC: 10000,
-};
-/**
- * Similarity score thresholds
- * Research shows 0.5 is too low - use 0.6 as default
- */
-export const SIMILARITY_THRESHOLDS = {
-    VERY_SIMILAR: 0.8, // Near duplicate
-    MEANINGFULLY_SIMILAR: 0.6, // Good match (default min)
-    LOOSELY_RELATED: 0.4, // Weak match
-    DEFAULT_MIN: 0.6, // Default minimum score
-};
-/**
- * Circuit breaker for vector services
- */
-export const VECTOR_CIRCUIT_BREAKER_CONFIG = {
-    FAILURE_THRESHOLD: 3, // Open after 3 failures
-    RESET_TIMEOUT_MS: 30000, // Try again after 30s
-    HALF_OPEN_MAX_ATTEMPTS: 1,
-};
-// =============================================================================
-// SELECTION FIELD LABEL MAPPINGS (for embedding text generation)
-// =============================================================================
-/**
- * Priority field labels.
- * Odoo stores priority as '0', '1', '2', '3' strings.
- */
-export const PRIORITY_LABELS = {
-    '0': 'Low',
-    '1': 'Medium',
-    '2': 'High',
-    '3': 'Very High',
-    'false': '',
-};
-/**
- * Won status labels.
- * Maps Odoo's won_status selection field values.
- */
-export const WON_STATUS_LABELS = {
-    'won': 'Won',
-    'lost': 'Lost',
-    'pending': 'In Progress',
-    'false': '',
-};
-/**
- * Helper to get human-readable label from selection field.
- * Returns empty string if value not found (graceful handling).
- */
-export function getSelectionLabel(mappings, value) {
-    if (value === undefined || value === null || value === false) {
-        return '';
-    }
-    return mappings[String(value)] || String(value);
-}
-// =============================================================================
-// CONVERSATIONAL MEMORY CONFIGURATION (Command 1984)
-// =============================================================================
-/**
- * Memory feature configuration
- * Enables vector-native conversational memory with auto-capture
- */
-export const MEMORY_CONFIG = {
-    // Feature toggle (default: enabled)
-    ENABLED: process.env.MEMORY_ENABLED !== 'false',
-    // Collection name for conversation memory (separate from CRM vectors)
-    COLLECTION_NAME: process.env.MEMORY_COLLECTION_NAME || 'conversation_memory',
-    // Session defaults
-    DEFAULT_LIMIT: 20,
-    MAX_LIMIT: 100,
-    CONTEXT_WINDOW: 2, // Messages before/after for context retrieval
-    // Auto-archive inactive sessions (days)
-    AUTO_ARCHIVE_DAYS: parseInt(process.env.MEMORY_AUTO_ARCHIVE_DAYS || '90'),
-};
-/**
- * Qdrant collection configuration for conversation memory
- * Separate from QDRANT_CONFIG to allow independent tuning
- */
-export const MEMORY_COLLECTION_CONFIG = {
-    // Collection name (uses MEMORY_CONFIG for consistency)
-    COLLECTION_NAME: MEMORY_CONFIG.COLLECTION_NAME,
-    // Vector settings (same as CRM - voyage-3-lite)
-    VECTOR_SIZE: VOYAGE_CONFIG.DIMENSIONS, // 512
-    DISTANCE_METRIC: 'Cosine',
-    // HNSW tuned for conversational queries (higher recall than CRM)
-    HNSW_M: 24, // More links for better recall
-    HNSW_EF_CONSTRUCT: 128, // Higher for conversational patterns
-    // Payload indexes for efficient filtering
-    PAYLOAD_INDEXES: [
-        { field: 'session_id', type: 'keyword' },
-        { field: 'session_prefix', type: 'keyword' },
-        { field: 'user_id', type: 'keyword' },
-        { field: 'message_timestamp', type: 'datetime' },
-        { field: 'sequence_number', type: 'integer' },
-        { field: 'role', type: 'keyword' },
-        { field: 'session_status', type: 'keyword' },
-    ],
 };
 //# sourceMappingURL=constants.js.map
