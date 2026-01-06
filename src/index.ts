@@ -7,6 +7,20 @@ import { registerCrmTools } from './tools/crm-tools.js';
 import { warmCache } from './services/odoo-client.js';
 import { warmPool } from './services/odoo-pool.js';
 
+// ============================================
+// Global Error Handlers - Prevent crashes
+// ============================================
+process.on('uncaughtException', (error) => {
+  console.error('[FATAL] Uncaught exception (server will continue):', error.message);
+  // Don't exit - keep the server running
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[WARN] Unhandled promise rejection (server will continue):',
+    reason instanceof Error ? reason.message : reason);
+  // Don't exit - keep the server running
+});
+
 // Create MCP server instance
 const server = new McpServer({
   name: 'odoo-crm-mcp-server',
