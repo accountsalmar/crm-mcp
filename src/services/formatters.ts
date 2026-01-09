@@ -1,5 +1,5 @@
 import { CONTEXT_LIMITS, ResponseFormat, CRM_FIELDS, FIELD_PRESETS } from '../constants.js';
-import type { CrmLead, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, ResPartner, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, StateWithStats, StateComparison } from '../types.js';
+import type { CrmLead, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, ResPartner, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, StateWithStats, StateComparison, ColorTrendsSummary, LeadWithColor, RfqSearchResult } from '../types.js';
 import { stripHtml, getContactName } from '../utils/html-utils.js';
 import { formatLinkedName } from '../utils/odoo-urls.js';
 
@@ -1274,6 +1274,159 @@ export function formatFieldsList(
     const safeLabel = field.label.replace(/\|/g, '\\|');
     output += `| \`${field.name}\` | ${safeLabel} | ${field.type} | ${required} |\n`;
   }
+
+  return output;
+}
+
+// =============================================================================
+// COLOR ANALYSIS FORMATTERS - For color trends and RFQ search tools
+// =============================================================================
+
+/**
+ * Format color trends summary for display.
+ * Shows overall color distribution, trends over time, and detection rate.
+ *
+ * @param summary - The color trends summary data
+ * @param format - Output format (markdown, json, csv)
+ * @returns Formatted string
+ */
+export function formatColorTrends(summary: ColorTrendsSummary, format: ResponseFormat): string {
+  if (format === ResponseFormat.JSON) {
+    return JSON.stringify(summary, null, 2);
+  }
+
+  let output = `## Color Trends Analysis\n\n`;
+  output += `**Period:** ${summary.period} | **Granularity:** ${summary.granularity}\n\n`;
+
+  // Overall Summary
+  output += `### Overall Summary\n`;
+  output += `- **Top Color:** ${summary.overall_summary.top_color} (${summary.overall_summary.top_color_count} RFQs, ${formatPercent(summary.overall_summary.top_color_percentage)})\n`;
+  output += `- **RFQs with Color:** ${summary.overall_summary.total_rfqs_with_color.toLocaleString()}\n`;
+  output += `- **RFQs without Color:** ${summary.overall_summary.total_rfqs_without_color.toLocaleString()}\n`;
+  output += `- **Detection Rate:** ${formatPercent(summary.overall_summary.color_detection_rate)}\n\n`;
+
+  // Color Distribution Table
+  if (summary.color_distribution && summary.color_distribution.length > 0) {
+    output += `### Color Distribution\n`;
+    output += '| Color | Count | % of RFQs | Avg Revenue |\n';
+    output += '|-------|-------|-----------|-------------|\n';
+
+    for (const color of summary.color_distribution) {
+      output += `| ${color.color_category} | ${color.count.toLocaleString()} | ${formatPercent(color.percentage)} | ${formatCurrency(color.avg_revenue)} |\n`;
+    }
+    output += '\n';
+  }
+
+  // Color Trends (if available)
+  if (summary.color_trends && summary.color_trends.length > 0) {
+    output += `### Color Trends\n`;
+    for (const trend of summary.color_trends) {
+      const trendEmoji = trend.trend === 'up' ? '📈' : trend.trend === 'down' ? '📉' : '➡️';
+      const changeStr = trend.change_percent !== 0 ? ` (${trend.change_percent > 0 ? '+' : ''}${trend.change_percent}%)` : '';
+      output += `- ${trendEmoji} **${trend.color_category}:** ${trend.trend}${changeStr}\n`;
+    }
+    output += '\n';
+  }
+
+  // Period-by-Period Breakdown (compact table)
+  if (summary.periods && summary.periods.length > 0) {
+    output += `### Period Breakdown\n`;
+    output += '| Period | Total RFQs | Total Revenue | Top Colors |\n';
+    output += '|--------|------------|---------------|------------|\n';
+
+    for (const period of summary.periods) {
+      // Get top 3 colors for this period
+      const topColors = period.colors.slice(0, 3).map(c => `${c.color_category} (${c.count})`).join(', ') || 'None';
+      output += `| ${period.period_label} | ${period.total_count.toLocaleString()} | ${formatCurrency(period.total_revenue)} | ${topColors} |\n`;
+    }
+  }
+
+  return output;
+}
+
+/**
+ * Format RFQ search results with color badges.
+ * Shows paginated list of RFQs with color extraction data.
+ *
+ * @param data - The RFQ search result (paginated leads with color)
+ * @param format - Output format (markdown, json, csv)
+ * @returns Formatted string
+ */
+export function formatRfqByColorList(data: RfqSearchResult, format: ResponseFormat): string {
+  if (format === ResponseFormat.JSON) {
+    return JSON.stringify(data, null, 2);
+  }
+
+  if (format === ResponseFormat.CSV) {
+    // Custom CSV for color data
+    const csvRecords = data.items.map(lead => ({
+      id: lead.id,
+      name: lead.name,
+      contact_name: lead.contact_name || '',
+      email: lead.email_from || '',
+      raw_color: lead.color?.raw_color || '',
+      color_category: lead.color?.color_category || 'Unknown',
+      extraction_source: lead.color?.extraction_source || 'none',
+      expected_revenue: lead.expected_revenue || 0,
+      tender_rfq_date: lead.tender_rfq_date || '',
+      stage: getRelationName(lead.stage_id),
+      salesperson: getRelationName(lead.user_id),
+      city: lead.city || '',
+      state: getRelationName(lead.state_id)
+    }));
+    return formatRecordsAsCSV(csvRecords);
+  }
+
+  // Markdown format
+  let output = `## RFQ Search Results (${data.count} of ${data.total})\n\n`;
+
+  if (data.color_filter_applied) {
+    output += `**Color Filter:** ${data.color_filter_applied}\n\n`;
+  }
+
+  if (data.items.length === 0) {
+    output += '_No RFQs found matching your criteria._\n';
+  } else {
+    for (let i = 0; i < data.items.length; i++) {
+      const lead = data.items[i];
+      const color = lead.color;
+
+      // Color badge
+      const colorBadge = color && color.color_category !== 'Unknown'
+        ? `🎨 **${color.color_category}**${color.raw_color ? ` (${color.raw_color})` : ''}`
+        : '⚪ _No color detected_';
+
+      output += `${data.offset + i + 1}. **${formatLinkedName(lead.id, lead.name, 'crm.lead')}** (ID: ${lead.id})\n`;
+      output += `   - Color: ${colorBadge}\n`;
+      output += `   - Contact: ${getContactName(lead)} | ${lead.email_from || '-'}\n`;
+      output += `   - Revenue: ${formatCurrency(lead.expected_revenue)} | Stage: ${getRelationName(lead.stage_id)}\n`;
+      output += `   - RFQ Date: ${formatDate(lead.tender_rfq_date)} | Created: ${formatDate(lead.create_date)}\n`;
+      output += `   - Salesperson: ${getRelationName(lead.user_id)}\n`;
+
+      // Location
+      const location = [lead.city, getRelationName(lead.state_id)].filter(x => x && x !== '-').join(', ');
+      if (location) {
+        output += `   - Location: ${location}\n`;
+      }
+
+      // Notes excerpt (if color was extracted from it)
+      if (color && color.extraction_source !== 'none' && lead.description) {
+        const excerpt = truncateText(stripHtml(lead.description), 100);
+        output += `   - Notes: _${excerpt}_\n`;
+      }
+
+      output += '\n';
+    }
+  }
+
+  output += '---\n';
+  output += `**Showing:** ${data.offset + 1}-${data.offset + data.count} of ${data.total}`;
+
+  if (data.has_more) {
+    output += ` | **Next page:** Use offset=${data.next_offset}`;
+  }
+
+  output += '\n\n**Color Legend:** 🎨 Detected | ⚪ No color';
 
   return output;
 }

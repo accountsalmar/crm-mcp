@@ -1,5 +1,5 @@
 import { ResponseFormat } from '../constants.js';
-import type { CrmLead, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, ResPartner, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, StateWithStats, StateComparison } from '../types.js';
+import type { CrmLead, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, ResPartner, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, StateWithStats, StateComparison, ColorTrendsSummary, RfqSearchResult } from '../types.js';
 export declare function formatCurrency(value: number | undefined | null): string;
 export declare function formatPercent(value: number | undefined | null): string;
 export declare function formatDate(dateStr: string | undefined | null): string;
@@ -71,4 +71,22 @@ export interface FieldInfo {
  * @returns Formatted string
  */
 export declare function formatFieldsList(model: string, fields: FieldInfo[], format: ResponseFormat, modelType?: 'lead' | 'contact' | 'activity' | 'lost' | 'won'): string;
+/**
+ * Format color trends summary for display.
+ * Shows overall color distribution, trends over time, and detection rate.
+ *
+ * @param summary - The color trends summary data
+ * @param format - Output format (markdown, json, csv)
+ * @returns Formatted string
+ */
+export declare function formatColorTrends(summary: ColorTrendsSummary, format: ResponseFormat): string;
+/**
+ * Format RFQ search results with color badges.
+ * Shows paginated list of RFQs with color extraction data.
+ *
+ * @param data - The RFQ search result (paginated leads with color)
+ * @param format - Output format (markdown, json, csv)
+ * @returns Formatted string
+ */
+export declare function formatRfqByColorList(data: RfqSearchResult, format: ResponseFormat): string;
 //# sourceMappingURL=formatters.d.ts.map

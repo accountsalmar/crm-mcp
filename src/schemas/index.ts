@@ -794,6 +794,117 @@ export const HealthCheckSchema = z.object({
     .describe("Output format: 'markdown' or 'json'")
 }).strict();
 
+// =============================================================================
+// COLOR ANALYSIS SCHEMAS - For RFQ color trends and analysis
+// =============================================================================
+
+import { COLOR_CATEGORIES } from '../constants.js';
+
+/**
+ * Schema for color trends analysis tool.
+ * Analyzes color mentions in opportunity descriptions over time.
+ */
+export const ColorTrendsSchema = z.object({
+  date_from: z.string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional()
+    .describe('Start date (YYYY-MM-DD). Defaults to 12 months ago.'),
+  date_to: z.string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional()
+    .describe('End date (YYYY-MM-DD). Defaults to today.'),
+  date_field: z.enum(['create_date', 'tender_rfq_date', 'date_closed'])
+    .default('tender_rfq_date')
+    .describe("Date field to use for filtering and grouping: 'tender_rfq_date' (RFQ date), 'create_date', or 'date_closed'"),
+  granularity: z.enum(['month', 'quarter'])
+    .default('month')
+    .describe("Time period granularity: 'month' or 'quarter'"),
+  user_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by salesperson user ID'),
+  team_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by sales team ID'),
+  state_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by Australian state/territory ID'),
+  min_revenue: z.number()
+    .min(0)
+    .optional()
+    .describe('Minimum expected revenue filter'),
+  response_format: z.nativeEnum(ResponseFormat)
+    .default(ResponseFormat.MARKDOWN)
+    .describe("Output format: 'markdown' or 'json'")
+}).strict();
+
+/**
+ * Schema for RFQ search by color tool.
+ * Searches opportunities filtered by extracted color information.
+ */
+export const RfqByColorSearchSchema = PaginationSchema.extend({
+  color_category: z.enum(COLOR_CATEGORIES as unknown as [string, ...string[]])
+    .optional()
+    .describe("Filter by color category: 'Blue', 'Grey', 'White', 'Black', 'Brown', 'Green', 'Red', 'Yellow', 'Orange', 'Pink', 'Purple', 'Other', or 'Unknown'. Leave empty for all colors."),
+  raw_color: z.string()
+    .max(50)
+    .optional()
+    .describe("Filter by raw color text (partial match): 'navy', 'cream', 'charcoal', etc."),
+  date_from: z.string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional()
+    .describe('Filter by date from (YYYY-MM-DD)'),
+  date_to: z.string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional()
+    .describe('Filter by date to (YYYY-MM-DD)'),
+  date_field: z.enum(['create_date', 'tender_rfq_date', 'date_closed'])
+    .default('tender_rfq_date')
+    .describe('Which date field to filter on'),
+  user_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by salesperson user ID'),
+  team_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by sales team ID'),
+  state_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by Australian state/territory ID'),
+  min_revenue: z.number()
+    .min(0)
+    .optional()
+    .describe('Minimum expected revenue'),
+  max_revenue: z.number()
+    .min(0)
+    .optional()
+    .describe('Maximum expected revenue'),
+  stage_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by stage ID'),
+  include_no_color: z.boolean()
+    .default(false)
+    .describe('Include RFQs where no color was detected in description'),
+  order_by: z.enum(['tender_rfq_date', 'expected_revenue', 'create_date', 'name'])
+    .default('tender_rfq_date')
+    .describe('Field to sort by'),
+  order_dir: z.enum(['asc', 'desc'])
+    .default('desc')
+    .describe('Sort direction')
+}).strict();
+
 // Export inferred types
 export type LeadSearchInput = z.infer<typeof LeadSearchSchema>;
 export type LeadDetailInput = z.infer<typeof LeadDetailSchema>;
@@ -818,3 +929,5 @@ export type StatesListInput = z.infer<typeof StatesListSchema>;
 export type CompareStatesInput = z.infer<typeof CompareStatesSchema>;
 export type CacheStatusInput = z.infer<typeof CacheStatusSchema>;
 export type HealthCheckInput = z.infer<typeof HealthCheckSchema>;
+export type ColorTrendsInput = z.infer<typeof ColorTrendsSchema>;
+export type RfqByColorSearchInput = z.infer<typeof RfqByColorSearchSchema>;

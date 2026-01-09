@@ -1,8 +1,9 @@
 import { getOdooClient } from '../services/odoo-client.js';
 import { getPoolMetrics, useClient } from '../services/odoo-pool.js';
-import { formatLeadList, formatLeadDetail, formatPipelineSummary, formatSalesAnalytics, formatContactList, formatActivitySummary, getRelationName, formatLostReasonsList, formatLostAnalysis, formatLostOpportunitiesList, formatLostTrends, formatDate, formatWonOpportunitiesList, formatWonAnalysis, formatWonTrends, formatSalespeopleList, formatTeamsList, formatPerformanceComparison, formatActivityList, formatExportResult, formatStatesList, formatStateComparison, formatFieldsList } from '../services/formatters.js';
-import { LeadSearchSchema, LeadDetailSchema, PipelineSummarySchema, SalesAnalyticsSchema, ContactSearchSchema, ActivitySummarySchema, StageListSchema, LostReasonsListSchema, LostAnalysisSchema, LostOpportunitiesSearchSchema, LostTrendsSchema, WonOpportunitiesSearchSchema, WonAnalysisSchema, WonTrendsSchema, SalespeopleListSchema, TeamsListSchema, ComparePerformanceSchema, ActivitySearchSchema, ExportDataSchema, StatesListSchema, CompareStatesSchema, CacheStatusSchema, HealthCheckSchema, ListFieldsSchema } from '../schemas/index.js';
+import { formatLeadList, formatLeadDetail, formatPipelineSummary, formatSalesAnalytics, formatContactList, formatActivitySummary, getRelationName, formatLostReasonsList, formatLostAnalysis, formatLostOpportunitiesList, formatLostTrends, formatDate, formatWonOpportunitiesList, formatWonAnalysis, formatWonTrends, formatSalespeopleList, formatTeamsList, formatPerformanceComparison, formatActivityList, formatExportResult, formatStatesList, formatStateComparison, formatFieldsList, formatColorTrends, formatRfqByColorList } from '../services/formatters.js';
+import { LeadSearchSchema, LeadDetailSchema, PipelineSummarySchema, SalesAnalyticsSchema, ContactSearchSchema, ActivitySummarySchema, StageListSchema, LostReasonsListSchema, LostAnalysisSchema, LostOpportunitiesSearchSchema, LostTrendsSchema, WonOpportunitiesSearchSchema, WonAnalysisSchema, WonTrendsSchema, SalespeopleListSchema, TeamsListSchema, ComparePerformanceSchema, ActivitySearchSchema, ExportDataSchema, StatesListSchema, CompareStatesSchema, CacheStatusSchema, HealthCheckSchema, ListFieldsSchema, ColorTrendsSchema, RfqByColorSearchSchema } from '../schemas/index.js';
 import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG, FIELD_PRESETS, resolveFields } from '../constants.js';
+import { enrichLeadsWithColor, buildColorTrendsSummary, filterLeadsByColor } from '../services/color-service.js';
 import { ExportWriter, generateExportFilename, getOutputDirectory, getMimeType } from '../utils/export-writer.js';
 import { convertDateToUtc, getDaysAgoUtc } from '../utils/timezone.js';
 import { cache, CACHE_KEYS } from '../utils/cache.js';
@@ -2892,6 +2893,191 @@ Returns win/loss metrics, revenue, and win rates for each state, allowing geogra
             return {
                 isError: true,
                 content: [{ type: 'text', text: `Error comparing states: ${message}` }]
+            };
+        }
+    });
+    // ============================================
+    // TOOL: Get Color Trends
+    // ============================================
+    server.registerTool('odoo_crm_get_color_trends', {
+        title: 'Analyze RFQ Color Trends',
+        description: `Analyze color trends from RFQ descriptions over time.
+
+This tool extracts color information from opportunity notes/descriptions and aggregates trends by period.
+
+**When to use:**
+- Analyzing which colors are most popular in RFQs
+- Understanding color demand trends over time (monthly/quarterly)
+- Identifying emerging color preferences
+
+**Color Detection:**
+- Colors are extracted from the description field using pattern matching
+- Supports 11 main color categories: White, Black, Grey, Blue, Brown, Green, Red, Yellow, Orange, Pink, Purple
+- Detects both explicit mentions ("Color: Navy Blue") and contextual ("customer wants grey panels")
+
+**Key Outputs:**
+- Overall top color and distribution
+- Period-by-period breakdown
+- Trend direction (up/down/stable) for each color
+- Detection rate statistics`,
+        inputSchema: ColorTrendsSchema,
+        annotations: {
+            readOnlyHint: true,
+            destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: true
+        }
+    }, async (params) => {
+        try {
+            return await useClient(async (client) => {
+                // Build domain filter
+                const domain = [['active', '=', true]];
+                // Date filters
+                const dateField = params.date_field || 'tender_rfq_date';
+                if (params.date_from) {
+                    domain.push([dateField, '>=', convertDateToUtc(params.date_from, false)]);
+                }
+                if (params.date_to) {
+                    domain.push([dateField, '<=', convertDateToUtc(params.date_to, true)]);
+                }
+                // Optional filters
+                if (params.user_id) {
+                    domain.push(['user_id', '=', params.user_id]);
+                }
+                if (params.team_id) {
+                    domain.push(['team_id', '=', params.team_id]);
+                }
+                if (params.state_id) {
+                    domain.push(['state_id', '=', params.state_id]);
+                }
+                if (params.min_revenue !== undefined) {
+                    domain.push(['expected_revenue', '>=', params.min_revenue]);
+                }
+                // Fetch leads with description field (up to 5000 for trend analysis)
+                const leads = await client.searchRead('crm.lead', domain, CRM_FIELDS.RFQ_COLOR_FIELDS, { limit: 5000, offset: 0, order: `${dateField} desc` });
+                // Enrich leads with color extraction
+                const leadsWithColor = enrichLeadsWithColor(leads);
+                // Build color trends summary
+                const summary = buildColorTrendsSummary(leadsWithColor, params.granularity || 'month', dateField);
+                const output = formatColorTrends(summary, params.response_format);
+                return {
+                    content: [{ type: 'text', text: output }],
+                    structuredContent: summary
+                };
+            });
+        }
+        catch (error) {
+            const message = error instanceof Error ? error.message : 'Unknown error';
+            return {
+                isError: true,
+                content: [{ type: 'text', text: `Error analyzing color trends: ${message}` }]
+            };
+        }
+    });
+    // ============================================
+    // TOOL: Search RFQs by Color
+    // ============================================
+    server.registerTool('odoo_crm_search_rfq_by_color', {
+        title: 'Search RFQs by Color',
+        description: `Search and filter RFQs/opportunities by color mentioned in descriptions.
+
+This tool allows you to drill down into specific color RFQs after analyzing trends.
+
+**When to use:**
+- Finding all RFQs that mention a specific color (e.g., "Navy Blue")
+- Drilling down after using odoo_crm_get_color_trends
+- Exporting color-specific RFQ lists for supplier research
+
+**Color Filtering Options:**
+- color_category: Filter by normalized category (Blue, Grey, White, etc.)
+- raw_color: Partial match on extracted color text (e.g., "navy")
+- include_no_color: Include RFQs with no detected color (default: false)
+
+**Outputs:**
+- Paginated list with color badges
+- Contact, revenue, RFQ date, stage for each match
+- Notes excerpt showing color context`,
+        inputSchema: RfqByColorSearchSchema,
+        annotations: {
+            readOnlyHint: true,
+            destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: true
+        }
+    }, async (params) => {
+        try {
+            return await useClient(async (client) => {
+                // Build domain filter
+                const domain = [['active', '=', true]];
+                // Date filters
+                if (params.date_from) {
+                    domain.push(['tender_rfq_date', '>=', convertDateToUtc(params.date_from, false)]);
+                }
+                if (params.date_to) {
+                    domain.push(['tender_rfq_date', '<=', convertDateToUtc(params.date_to, true)]);
+                }
+                // Optional filters
+                if (params.user_id) {
+                    domain.push(['user_id', '=', params.user_id]);
+                }
+                if (params.team_id) {
+                    domain.push(['team_id', '=', params.team_id]);
+                }
+                if (params.state_id) {
+                    domain.push(['state_id', '=', params.state_id]);
+                }
+                if (params.min_revenue !== undefined) {
+                    domain.push(['expected_revenue', '>=', params.min_revenue]);
+                }
+                if (params.max_revenue !== undefined) {
+                    domain.push(['expected_revenue', '<=', params.max_revenue]);
+                }
+                if (params.stage_id) {
+                    domain.push(['stage_id', '=', params.stage_id]);
+                }
+                // Determine order
+                const orderBy = params.order_by || 'tender_rfq_date';
+                const orderDir = params.order_dir || 'desc';
+                const order = `${orderBy} ${orderDir}`;
+                // Fetch more leads than needed for client-side color filtering
+                // Color filtering happens client-side since Odoo doesn't know about extracted colors
+                const fetchLimit = Math.min((params.limit || 20) * 5, 1000);
+                const leads = await client.searchRead('crm.lead', domain, CRM_FIELDS.RFQ_COLOR_FIELDS, { limit: fetchLimit, offset: 0, order });
+                // Enrich leads with color extraction
+                const leadsWithColor = enrichLeadsWithColor(leads);
+                // Apply color filters client-side
+                const filteredLeads = filterLeadsByColor(leadsWithColor, {
+                    color_category: params.color_category,
+                    raw_color: params.raw_color,
+                    include_no_color: params.include_no_color
+                });
+                // Pagination
+                const offset = params.offset || 0;
+                const limit = params.limit || 20;
+                const paginatedLeads = filteredLeads.slice(offset, offset + limit);
+                // Build result
+                const result = {
+                    items: paginatedLeads,
+                    total: filteredLeads.length,
+                    count: paginatedLeads.length,
+                    offset: offset,
+                    limit: limit,
+                    has_more: offset + limit < filteredLeads.length,
+                    next_offset: offset + limit < filteredLeads.length ? offset + limit : undefined,
+                    color_filter_applied: params.color_category || params.raw_color || null
+                };
+                const output = formatRfqByColorList(result, params.response_format);
+                return {
+                    content: [{ type: 'text', text: output }],
+                    structuredContent: result
+                };
+            });
+        }
+        catch (error) {
+            const message = error instanceof Error ? error.message : 'Unknown error';
+            return {
+                isError: true,
+                content: [{ type: 'text', text: `Error searching RFQs by color: ${message}` }]
             };
         }
     });

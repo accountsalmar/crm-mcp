@@ -31,6 +31,7 @@ export declare const CRM_FIELDS: {
     USER_LIST: string[];
     TEAM_LIST: string[];
     STATE_LIST: string[];
+    RFQ_COLOR_FIELDS: string[];
 };
 export declare enum ResponseFormat {
     JSON = "json",
@@ -96,4 +97,23 @@ export declare const POOL_CONFIG: {
     readonly TEST_ON_BORROW: boolean;
     readonly FIFO: true;
 };
+/**
+ * Color taxonomy mapping raw color names to standard categories.
+ * Used to normalize extracted colors for consistent trend analysis.
+ */
+export declare const COLOR_TAXONOMY: Record<string, string[]>;
+/**
+ * Regex patterns for extracting colors from description text.
+ * EXPLICIT patterns are more reliable (e.g., "Color: Navy Blue")
+ * CONTEXTUAL patterns catch standalone color words.
+ */
+export declare const COLOR_PATTERNS: {
+    readonly EXPLICIT: RegExp;
+    readonly CONTEXTUAL: RegExp;
+};
+/**
+ * Color categories enum for schema validation
+ */
+export declare const COLOR_CATEGORIES: readonly ["White", "Black", "Grey", "Blue", "Brown", "Green", "Red", "Yellow", "Orange", "Pink", "Purple", "Other", "Unknown"];
+export type ColorCategory = typeof COLOR_CATEGORIES[number];
 //# sourceMappingURL=constants.d.ts.map

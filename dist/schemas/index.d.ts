@@ -384,7 +384,7 @@ export declare const LostTrendsSchema: z.ZodObject<{
     compare_to_won: z.ZodDefault<z.ZodBoolean>;
     response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
 }, "strict", z.ZodTypeAny, {
-    granularity: "month" | "week" | "quarter";
+    granularity: "month" | "quarter" | "week";
     response_format: ResponseFormat;
     compare_to_won: boolean;
     user_id?: number | undefined;
@@ -394,7 +394,7 @@ export declare const LostTrendsSchema: z.ZodObject<{
 }, {
     user_id?: number | undefined;
     team_id?: number | undefined;
-    granularity?: "month" | "week" | "quarter" | undefined;
+    granularity?: "month" | "quarter" | "week" | undefined;
     response_format?: ResponseFormat | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
@@ -502,7 +502,7 @@ export declare const WonTrendsSchema: z.ZodObject<{
     compare_to_lost: z.ZodDefault<z.ZodBoolean>;
     response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
 }, "strict", z.ZodTypeAny, {
-    granularity: "month" | "week" | "quarter";
+    granularity: "month" | "quarter" | "week";
     response_format: ResponseFormat;
     compare_to_lost: boolean;
     user_id?: number | undefined;
@@ -512,7 +512,7 @@ export declare const WonTrendsSchema: z.ZodObject<{
 }, {
     user_id?: number | undefined;
     team_id?: number | undefined;
-    granularity?: "month" | "week" | "quarter" | undefined;
+    granularity?: "month" | "quarter" | "week" | undefined;
     response_format?: ResponseFormat | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
@@ -738,6 +738,101 @@ export declare const HealthCheckSchema: z.ZodObject<{
 }, {
     response_format?: ResponseFormat | undefined;
 }>;
+/**
+ * Schema for color trends analysis tool.
+ * Analyzes color mentions in opportunity descriptions over time.
+ */
+export declare const ColorTrendsSchema: z.ZodObject<{
+    date_from: z.ZodOptional<z.ZodString>;
+    date_to: z.ZodOptional<z.ZodString>;
+    date_field: z.ZodDefault<z.ZodEnum<["create_date", "tender_rfq_date", "date_closed"]>>;
+    granularity: z.ZodDefault<z.ZodEnum<["month", "quarter"]>>;
+    user_id: z.ZodOptional<z.ZodNumber>;
+    team_id: z.ZodOptional<z.ZodNumber>;
+    state_id: z.ZodOptional<z.ZodNumber>;
+    min_revenue: z.ZodOptional<z.ZodNumber>;
+    response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
+}, "strict", z.ZodTypeAny, {
+    granularity: "month" | "quarter";
+    response_format: ResponseFormat;
+    date_field: "create_date" | "date_closed" | "tender_rfq_date";
+    user_id?: number | undefined;
+    team_id?: number | undefined;
+    state_id?: number | undefined;
+    min_revenue?: number | undefined;
+    date_from?: string | undefined;
+    date_to?: string | undefined;
+}, {
+    user_id?: number | undefined;
+    team_id?: number | undefined;
+    state_id?: number | undefined;
+    granularity?: "month" | "quarter" | undefined;
+    response_format?: ResponseFormat | undefined;
+    min_revenue?: number | undefined;
+    date_from?: string | undefined;
+    date_to?: string | undefined;
+    date_field?: "create_date" | "date_closed" | "tender_rfq_date" | undefined;
+}>;
+/**
+ * Schema for RFQ search by color tool.
+ * Searches opportunities filtered by extracted color information.
+ */
+export declare const RfqByColorSearchSchema: z.ZodObject<{
+    limit: z.ZodDefault<z.ZodNumber>;
+    offset: z.ZodDefault<z.ZodNumber>;
+    response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
+} & {
+    color_category: z.ZodOptional<z.ZodEnum<[string, ...string[]]>>;
+    raw_color: z.ZodOptional<z.ZodString>;
+    date_from: z.ZodOptional<z.ZodString>;
+    date_to: z.ZodOptional<z.ZodString>;
+    date_field: z.ZodDefault<z.ZodEnum<["create_date", "tender_rfq_date", "date_closed"]>>;
+    user_id: z.ZodOptional<z.ZodNumber>;
+    team_id: z.ZodOptional<z.ZodNumber>;
+    state_id: z.ZodOptional<z.ZodNumber>;
+    min_revenue: z.ZodOptional<z.ZodNumber>;
+    max_revenue: z.ZodOptional<z.ZodNumber>;
+    stage_id: z.ZodOptional<z.ZodNumber>;
+    include_no_color: z.ZodDefault<z.ZodBoolean>;
+    order_by: z.ZodDefault<z.ZodEnum<["tender_rfq_date", "expected_revenue", "create_date", "name"]>>;
+    order_dir: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
+}, "strict", z.ZodTypeAny, {
+    offset: number;
+    limit: number;
+    response_format: ResponseFormat;
+    date_field: "create_date" | "date_closed" | "tender_rfq_date";
+    order_by: "name" | "expected_revenue" | "create_date" | "tender_rfq_date";
+    order_dir: "asc" | "desc";
+    include_no_color: boolean;
+    stage_id?: number | undefined;
+    user_id?: number | undefined;
+    team_id?: number | undefined;
+    state_id?: number | undefined;
+    raw_color?: string | undefined;
+    color_category?: string | undefined;
+    min_revenue?: number | undefined;
+    max_revenue?: number | undefined;
+    date_from?: string | undefined;
+    date_to?: string | undefined;
+}, {
+    stage_id?: number | undefined;
+    user_id?: number | undefined;
+    team_id?: number | undefined;
+    state_id?: number | undefined;
+    offset?: number | undefined;
+    limit?: number | undefined;
+    raw_color?: string | undefined;
+    color_category?: string | undefined;
+    response_format?: ResponseFormat | undefined;
+    min_revenue?: number | undefined;
+    max_revenue?: number | undefined;
+    date_from?: string | undefined;
+    date_to?: string | undefined;
+    date_field?: "create_date" | "date_closed" | "tender_rfq_date" | undefined;
+    order_by?: "name" | "expected_revenue" | "create_date" | "tender_rfq_date" | undefined;
+    order_dir?: "asc" | "desc" | undefined;
+    include_no_color?: boolean | undefined;
+}>;
 export type LeadSearchInput = z.infer<typeof LeadSearchSchema>;
 export type LeadDetailInput = z.infer<typeof LeadDetailSchema>;
 export type PipelineSummaryInput = z.infer<typeof PipelineSummarySchema>;
@@ -761,4 +856,6 @@ export type StatesListInput = z.infer<typeof StatesListSchema>;
 export type CompareStatesInput = z.infer<typeof CompareStatesSchema>;
 export type CacheStatusInput = z.infer<typeof CacheStatusSchema>;
 export type HealthCheckInput = z.infer<typeof HealthCheckSchema>;
+export type ColorTrendsInput = z.infer<typeof ColorTrendsSchema>;
+export type RfqByColorSearchInput = z.infer<typeof RfqByColorSearchSchema>;
 //# sourceMappingURL=index.d.ts.map

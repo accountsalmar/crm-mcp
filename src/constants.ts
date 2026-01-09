@@ -144,6 +144,13 @@ export const CRM_FIELDS = {
   // State/Territory fields (for geographic analysis)
   STATE_LIST: [
     'id', 'name', 'code', 'country_id'
+  ] as string[],
+
+  // RFQ/Color fields for tender analysis
+  RFQ_COLOR_FIELDS: [
+    'id', 'name', 'contact_name', 'email_from', 'expected_revenue',
+    'stage_id', 'user_id', 'team_id', 'description', 'tender_rfq_date',
+    'create_date', 'date_closed', 'city', 'state_id', 'partner_id'
   ] as string[]
 };
 
@@ -304,3 +311,48 @@ export const POOL_CONFIG = {
   // Use FIFO (queue) for client allocation - ensures fair distribution
   FIFO: true,
 } as const;
+
+// =============================================================================
+// COLOR EXTRACTION - Taxonomy and patterns for RFQ color analysis
+// =============================================================================
+
+/**
+ * Color taxonomy mapping raw color names to standard categories.
+ * Used to normalize extracted colors for consistent trend analysis.
+ */
+export const COLOR_TAXONOMY: Record<string, string[]> = {
+  'White': ['white', 'off-white', 'ivory', 'cream', 'pearl', 'snow', 'alabaster'],
+  'Black': ['black', 'charcoal', 'onyx', 'ebony', 'jet', 'midnight'],
+  'Grey': ['grey', 'gray', 'silver', 'slate', 'ash', 'graphite', 'pewter', 'steel'],
+  'Blue': ['blue', 'navy', 'navy blue', 'cobalt', 'azure', 'teal', 'turquoise', 'sapphire', 'indigo', 'cyan', 'royal blue', 'sky blue'],
+  'Brown': ['brown', 'tan', 'beige', 'chocolate', 'coffee', 'espresso', 'mocha', 'taupe', 'bronze', 'copper', 'caramel', 'walnut'],
+  'Green': ['green', 'olive', 'sage', 'mint', 'forest', 'emerald', 'lime', 'hunter', 'moss', 'seafoam'],
+  'Red': ['red', 'maroon', 'burgundy', 'crimson', 'scarlet', 'ruby', 'wine', 'cherry', 'brick'],
+  'Yellow': ['yellow', 'gold', 'golden', 'amber', 'mustard', 'lemon', 'canary', 'honey'],
+  'Orange': ['orange', 'terracotta', 'rust', 'coral', 'peach', 'apricot', 'tangerine', 'burnt orange'],
+  'Pink': ['pink', 'rose', 'blush', 'magenta', 'fuchsia', 'salmon', 'hot pink', 'dusty pink'],
+  'Purple': ['purple', 'violet', 'lavender', 'plum', 'mauve', 'lilac', 'grape', 'amethyst'],
+  'Other': [] // Catch-all for unrecognized colors
+} as const;
+
+/**
+ * Regex patterns for extracting colors from description text.
+ * EXPLICIT patterns are more reliable (e.g., "Color: Navy Blue")
+ * CONTEXTUAL patterns catch standalone color words.
+ */
+export const COLOR_PATTERNS = {
+  // Match "color:" or "colour:" or "paint:" followed by color name
+  EXPLICIT: /(?:colou?r|paint|finish|shade|panel|panels)[\s:]+([a-zA-Z\s-]+?)(?:[,\.\n\r]|$)/gi,
+  // Match common color words as standalone terms
+  CONTEXTUAL: /\b(white|off-white|black|charcoal|grey|gray|silver|blue|navy|teal|brown|tan|beige|green|olive|red|maroon|burgundy|yellow|gold|orange|coral|pink|rose|purple|violet|lavender|cream|ivory)\b/gi
+} as const;
+
+/**
+ * Color categories enum for schema validation
+ */
+export const COLOR_CATEGORIES = [
+  'White', 'Black', 'Grey', 'Blue', 'Brown', 'Green',
+  'Red', 'Yellow', 'Orange', 'Pink', 'Purple', 'Other', 'Unknown'
+] as const;
+
+export type ColorCategory = typeof COLOR_CATEGORIES[number];

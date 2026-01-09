@@ -611,3 +611,92 @@ export interface StateComparison {
     overall_win_rate: number;
   };
 }
+
+// =============================================================================
+// COLOR ANALYSIS TYPES - For RFQ color trends and analysis
+// =============================================================================
+
+/**
+ * Result of extracting a color from description text
+ */
+export interface ColorExtraction {
+  /** The exact color text extracted (e.g., "navy blue") */
+  raw_color: string | null;
+  /** Normalized category (e.g., "Blue") */
+  color_category: string;
+  /** How the color was detected */
+  extraction_source: 'explicit' | 'contextual' | 'none';
+}
+
+/**
+ * CRM Lead extended with color extraction data
+ */
+export interface LeadWithColor extends CrmLead {
+  /** Extracted color information */
+  color: ColorExtraction;
+  /** RFQ tender date (custom field) */
+  tender_rfq_date?: string;
+}
+
+/**
+ * Color statistics for a single time period
+ */
+export interface ColorTrendPeriod {
+  /** Period label (e.g., "Jan 2025", "2025-Q1") */
+  period_label: string;
+  /** Color breakdown for this period */
+  colors: Array<{
+    color_category: string;
+    raw_colors: string[];
+    count: number;
+    revenue: number;
+    percentage: number;
+  }>;
+  /** Total RFQs in this period */
+  total_count: number;
+  /** Total revenue in this period */
+  total_revenue: number;
+}
+
+/**
+ * Complete color trends analysis summary
+ */
+export interface ColorTrendsSummary {
+  [key: string]: unknown;
+  /** Date range analyzed */
+  period: string;
+  /** Time grouping used */
+  granularity: 'month' | 'quarter';
+  /** Period-by-period breakdown */
+  periods: ColorTrendPeriod[];
+  /** Overall statistics */
+  overall_summary: {
+    top_color: string;
+    top_color_count: number;
+    top_color_percentage: number;
+    total_rfqs_with_color: number;
+    total_rfqs_without_color: number;
+    color_detection_rate: number;
+  };
+  /** Distribution across all colors */
+  color_distribution: Array<{
+    color_category: string;
+    count: number;
+    percentage: number;
+    avg_revenue: number;
+  }>;
+  /** Trend direction for each color */
+  color_trends?: Array<{
+    color_category: string;
+    trend: 'up' | 'down' | 'stable';
+    change_percent: number;
+  }>;
+}
+
+/**
+ * Paginated search results for RFQs filtered by color
+ */
+export interface RfqSearchResult extends PaginatedResponse<LeadWithColor> {
+  /** Which color filter was applied, if any */
+  color_filter_applied: string | null;
+}
