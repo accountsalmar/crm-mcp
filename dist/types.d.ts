@@ -554,10 +554,50 @@ export interface ColorExtraction {
     extraction_source: 'explicit' | 'contextual' | 'none';
 }
 /**
+ * Structured color specification from industry product codes
+ * Example: "9610 Pure Ash" => { code: "9610", name: "Pure Ash", full_spec: "9610 Pure Ash" }
+ */
+export interface ProductColorSpecification {
+    /** Numeric product code (e.g., "9610", "2440") - null if no code */
+    color_code: string | null;
+    /** Color name without code (e.g., "Pure Ash", "White Pearl") */
+    color_name: string;
+    /** Original full specification as written */
+    full_specification: string;
+    /** Normalized category (e.g., "Grey" for "Pure Ash") */
+    color_category: string;
+}
+/**
+ * Enhanced color extraction result with multi-color support
+ * Used for industry specifications like "Specified Colours = 9610 Pure Ash, White Pearl"
+ */
+export interface EnhancedColorExtraction {
+    /** Primary color (first extracted or most prominent) */
+    primary: ProductColorSpecification | null;
+    /** All colors found in description */
+    all_colors: ProductColorSpecification[];
+    /** How colors were detected: 'specified' for industry specs, 'explicit'/'contextual' for generic */
+    extraction_source: 'specified' | 'explicit' | 'contextual' | 'none';
+    /** Total color count */
+    color_count: number;
+}
+/**
  * CRM Lead extended with color extraction data
  */
 export interface LeadWithColor extends CrmLead {
     /** Extracted color information */
+    color: ColorExtraction;
+    /** RFQ tender date (custom field) */
+    tender_rfq_date?: string;
+}
+/**
+ * CRM Lead with enhanced multi-color extraction data
+ * Includes both legacy 'color' field and new 'colors' field for backward compatibility
+ */
+export interface LeadWithEnhancedColor extends CrmLead {
+    /** Enhanced color extraction with multi-color support */
+    colors: EnhancedColorExtraction;
+    /** Legacy: kept for backward compatibility */
     color: ColorExtraction;
     /** RFQ tender date (custom field) */
     tender_rfq_date?: string;

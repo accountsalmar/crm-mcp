@@ -5,11 +5,12 @@
  * Used by the color trends and RFQ search MCP tools.
  */
 
-import { extractColorFromDescription, getColorStats } from '../utils/color-extractor.js';
+import { extractColorFromDescription, extractEnhancedColors, getColorStats } from '../utils/color-extractor.js';
 import type {
   ColorExtraction,
   CrmLead,
   LeadWithColor,
+  LeadWithEnhancedColor,
   ColorTrendPeriod,
   ColorTrendsSummary
 } from '../types.js';
@@ -82,6 +83,49 @@ export function enrichLeadsWithColor(leads: CrmLead[]): LeadWithColor[] {
     ...lead,
     color: getLeadColor(lead.id, lead.description)
   })) as LeadWithColor[];
+}
+
+/**
+ * Enrich leads with enhanced multi-color extraction data.
+ * Populates BOTH legacy 'color' field AND new 'colors' field for backward compatibility.
+ *
+ * Use this function when you need:
+ * - Industry color specifications (e.g., "Specified Colours = 9610 Pure Ash")
+ * - Multiple colors per lead
+ * - Color codes separate from color names
+ *
+ * @param leads - Array of CRM leads
+ * @returns Array of leads with enhanced color data
+ *
+ * @example
+ * const leads = await searchLeads({ date_from: '2024-01-01' });
+ * const enriched = enrichLeadsWithEnhancedColor(leads);
+ * // enriched[0].colors.primary.color_code === "9610"
+ * // enriched[0].colors.all_colors.length === 2 (for multi-color specs)
+ * // enriched[0].color still works (backward compatible)
+ */
+export function enrichLeadsWithEnhancedColor(leads: CrmLead[]): LeadWithEnhancedColor[] {
+  return leads.map(lead => {
+    const enhanced = extractEnhancedColors(lead.description);
+
+    // Build legacy ColorExtraction for backward compatibility
+    const legacy: ColorExtraction = enhanced.primary
+      ? {
+          raw_color: enhanced.primary.full_specification,
+          color_category: enhanced.primary.color_category,
+          // Map 'specified' to 'explicit' for legacy compatibility
+          extraction_source: enhanced.extraction_source === 'specified'
+            ? 'explicit'
+            : (enhanced.extraction_source as 'explicit' | 'contextual' | 'none')
+        }
+      : { raw_color: null, color_category: 'Unknown', extraction_source: 'none' };
+
+    return {
+      ...lead,
+      colors: enhanced,
+      color: legacy  // Backward compatibility
+    } as LeadWithEnhancedColor;
+  });
 }
 
 /**

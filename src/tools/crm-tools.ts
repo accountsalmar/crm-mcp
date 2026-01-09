@@ -90,7 +90,7 @@ import {
 } from '../schemas/index.js';
 import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG, FIELD_PRESETS, resolveFields } from '../constants.js';
 import type { CrmLead, CrmStage, ResPartner, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, CrmLostReason, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, CrmTeam, ResUsers, OdooRecord, ExportFormat, ResCountryState, StateWithStats, StateComparison, ColorTrendsSummary, LeadWithColor, RfqSearchResult } from '../types.js';
-import { enrichLeadsWithColor, buildColorTrendsSummary, filterLeadsByColor } from '../services/color-service.js';
+import { enrichLeadsWithColor, enrichLeadsWithEnhancedColor, buildColorTrendsSummary, filterLeadsByColor } from '../services/color-service.js';
 import { ExportWriter, generateExportFilename, getOutputDirectory, getMimeType } from '../utils/export-writer.js';
 import { convertDateToUtc, getDaysAgoUtc } from '../utils/timezone.js';
 import { cache, CACHE_KEYS } from '../utils/cache.js';
@@ -3960,17 +3960,25 @@ This tool extracts color information from opportunity notes/descriptions and agg
 This tool allows you to drill down into specific color RFQs after analyzing trends.
 
 **When to use:**
-- Finding all RFQs that mention a specific color (e.g., "Navy Blue")
+- Finding all RFQs that mention a specific color (e.g., "Navy Blue", "9610 Pure Ash")
 - Drilling down after using odoo_crm_get_color_trends
+- Searching by product color code (e.g., "9610")
 - Exporting color-specific RFQ lists for supplier research
 
 **Color Filtering Options:**
 - color_category: Filter by normalized category (Blue, Grey, White, etc.)
-- raw_color: Partial match on extracted color text (e.g., "navy")
+- color_code: Filter by product color code (e.g., "9610", "2440")
+- raw_color: Partial match on extracted color text (e.g., "navy", "Pure Ash")
 - include_no_color: Include RFQs with no detected color (default: false)
 
+**Enhanced Features:**
+- Extracts industry color specifications (e.g., "Specified Colours = 9610 Pure Ash")
+- Supports multiple colors per RFQ
+- Shows color codes alongside color names
+
 **Outputs:**
-- Paginated list with color badges
+- Paginated list with color badges showing [CODE] when available
+- All colors shown when multiple exist
 - Contact, revenue, RFQ date, stage for each match
 - Notes excerpt showing color context`,
       inputSchema: RfqByColorSearchSchema,
@@ -4031,20 +4039,41 @@ This tool allows you to drill down into specific color RFQs after analyzing tren
             { limit: fetchLimit, offset: 0, order }
           );
 
-          // Enrich leads with color extraction
-          const leadsWithColor = enrichLeadsWithColor(leads);
+          // Enrich leads with ENHANCED color extraction (supports color codes, multi-color)
+          const leadsWithColor = enrichLeadsWithEnhancedColor(leads);
 
           // Apply color filters client-side
-          const filteredLeads = filterLeadsByColor(leadsWithColor, {
+          let filteredLeads = filterLeadsByColor(leadsWithColor, {
             color_category: params.color_category,
             raw_color: params.raw_color,
             include_no_color: params.include_no_color
           });
 
+          // Apply color_code filter (enhanced feature)
+          if (params.color_code) {
+            filteredLeads = filteredLeads.filter(lead => {
+              // Check if lead has enhanced colors data
+              const enhancedLead = lead as { colors?: { all_colors?: Array<{ color_code: string | null }> } };
+              if (enhancedLead.colors?.all_colors) {
+                // Match any color in the all_colors array
+                return enhancedLead.colors.all_colors.some(
+                  c => c.color_code === params.color_code
+                );
+              }
+              return false;
+            });
+          }
+
           // Pagination
           const offset = params.offset || 0;
           const limit = params.limit || 20;
           const paginatedLeads = filteredLeads.slice(offset, offset + limit);
+
+          // Build color filter description
+          const filterParts: string[] = [];
+          if (params.color_category) filterParts.push(`category: ${params.color_category}`);
+          if (params.color_code) filterParts.push(`code: ${params.color_code}`);
+          if (params.raw_color) filterParts.push(`text: ${params.raw_color}`);
 
           // Build result
           const result: RfqSearchResult = {
@@ -4055,7 +4084,7 @@ This tool allows you to drill down into specific color RFQs after analyzing tren
             limit: limit,
             has_more: offset + limit < filteredLeads.length,
             next_offset: offset + limit < filteredLeads.length ? offset + limit : undefined,
-            color_filter_applied: params.color_category || params.raw_color || null
+            color_filter_applied: filterParts.length > 0 ? filterParts.join(', ') : null
           };
 
           const output = formatRfqByColorList(result, params.response_format);

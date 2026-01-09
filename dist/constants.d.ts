@@ -104,13 +104,24 @@ export declare const POOL_CONFIG: {
 export declare const COLOR_TAXONOMY: Record<string, string[]>;
 /**
  * Regex patterns for extracting colors from description text.
- * EXPLICIT patterns are more reliable (e.g., "Color: Navy Blue")
+ * SPECIFIED patterns are highest priority (industry specs like "9610 Pure Ash")
+ * EXPLICIT patterns are reliable (e.g., "Color: Navy Blue")
  * CONTEXTUAL patterns catch standalone color words.
  */
 export declare const COLOR_PATTERNS: {
+    readonly SPECIFIED_COLORS: RegExp;
     readonly EXPLICIT: RegExp;
     readonly CONTEXTUAL: RegExp;
 };
+/**
+ * Known product color codes mapped to color names and categories.
+ * This lookup is used when only a numeric code is provided (e.g., "9610").
+ * Can be extended or loaded from external source in future.
+ */
+export declare const PRODUCT_COLOR_CODES: Record<string, {
+    name: string;
+    category: string;
+}>;
 /**
  * Color categories enum for schema validation
  */

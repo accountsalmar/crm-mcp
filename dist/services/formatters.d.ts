@@ -83,6 +83,7 @@ export declare function formatColorTrends(summary: ColorTrendsSummary, format: R
 /**
  * Format RFQ search results with color badges.
  * Shows paginated list of RFQs with color extraction data.
+ * Supports both legacy and enhanced color formats.
  *
  * @param data - The RFQ search result (paginated leads with color)
  * @param format - Output format (markdown, json, csv)

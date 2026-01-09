@@ -337,14 +337,30 @@ export const COLOR_TAXONOMY: Record<string, string[]> = {
 
 /**
  * Regex patterns for extracting colors from description text.
- * EXPLICIT patterns are more reliable (e.g., "Color: Navy Blue")
+ * SPECIFIED patterns are highest priority (industry specs like "9610 Pure Ash")
+ * EXPLICIT patterns are reliable (e.g., "Color: Navy Blue")
  * CONTEXTUAL patterns catch standalone color words.
  */
 export const COLOR_PATTERNS = {
+  // NEW: Industry specification pattern - "Specified Colours = 9610 Pure Ash, White Pearl"
+  SPECIFIED_COLORS: /Specified\s+Colou?rs?\s*[=:]\s*([^\n\r]+)/gi,
   // Match "color:" or "colour:" or "paint:" followed by color name
   EXPLICIT: /(?:colou?r|paint|finish|shade|panel|panels)[\s:]+([a-zA-Z\s-]+?)(?:[,\.\n\r]|$)/gi,
   // Match common color words as standalone terms
   CONTEXTUAL: /\b(white|off-white|black|charcoal|grey|gray|silver|blue|navy|teal|brown|tan|beige|green|olive|red|maroon|burgundy|yellow|gold|orange|coral|pink|rose|purple|violet|lavender|cream|ivory)\b/gi
+} as const;
+
+/**
+ * Known product color codes mapped to color names and categories.
+ * This lookup is used when only a numeric code is provided (e.g., "9610").
+ * Can be extended or loaded from external source in future.
+ */
+export const PRODUCT_COLOR_CODES: Record<string, { name: string; category: string }> = {
+  '9610': { name: 'Pure Ash', category: 'Grey' },
+  '2440': { name: 'Deep Ocean', category: 'Blue' },
+  '1001': { name: 'Classic White', category: 'White' },
+  '2001': { name: 'Night Sky', category: 'Black' },
+  // Add more codes as discovered from RFQ data
 } as const;
 
 /**

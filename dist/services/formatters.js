@@ -1119,8 +1119,46 @@ export function formatColorTrends(summary, format) {
     return output;
 }
 /**
+ * Format a color badge for display.
+ * Supports both legacy LeadWithColor and enhanced LeadWithEnhancedColor.
+ *
+ * @param lead - Lead with color data (legacy or enhanced)
+ * @returns Formatted color badge string
+ */
+function formatColorBadge(lead) {
+    // Check for enhanced color data first
+    const enhanced = lead.colors;
+    if (enhanced?.primary) {
+        const { color_code, color_name, color_category } = enhanced.primary;
+        const codeStr = color_code ? `[${color_code}] ` : '';
+        return `🎨 **${color_category}** (${codeStr}${color_name})`;
+    }
+    // Fall back to legacy color data
+    const color = lead.color;
+    if (color && color.color_category !== 'Unknown') {
+        return `🎨 **${color.color_category}**${color.raw_color ? ` (${color.raw_color})` : ''}`;
+    }
+    return '⚪ _No color detected_';
+}
+/**
+ * Format all colors when multiple exist.
+ *
+ * @param lead - Lead with enhanced color data
+ * @returns Formatted string with all colors
+ */
+function formatAllColors(lead) {
+    const enhanced = lead.colors;
+    if (enhanced && enhanced.color_count > 1) {
+        return enhanced.all_colors
+            .map(c => c.color_code ? `${c.color_code} ${c.color_name}` : c.color_name)
+            .join(', ');
+    }
+    return formatColorBadge(lead);
+}
+/**
  * Format RFQ search results with color badges.
  * Shows paginated list of RFQs with color extraction data.
+ * Supports both legacy and enhanced color formats.
  *
  * @param data - The RFQ search result (paginated leads with color)
  * @param format - Output format (markdown, json, csv)
@@ -1131,22 +1169,30 @@ export function formatRfqByColorList(data, format) {
         return JSON.stringify(data, null, 2);
     }
     if (format === ResponseFormat.CSV) {
-        // Custom CSV for color data
-        const csvRecords = data.items.map(lead => ({
-            id: lead.id,
-            name: lead.name,
-            contact_name: lead.contact_name || '',
-            email: lead.email_from || '',
-            raw_color: lead.color?.raw_color || '',
-            color_category: lead.color?.color_category || 'Unknown',
-            extraction_source: lead.color?.extraction_source || 'none',
-            expected_revenue: lead.expected_revenue || 0,
-            tender_rfq_date: lead.tender_rfq_date || '',
-            stage: getRelationName(lead.stage_id),
-            salesperson: getRelationName(lead.user_id),
-            city: lead.city || '',
-            state: getRelationName(lead.state_id)
-        }));
+        // Custom CSV for color data - include enhanced fields if available
+        const csvRecords = data.items.map(lead => {
+            const enhanced = lead.colors;
+            return {
+                id: lead.id,
+                name: lead.name,
+                contact_name: lead.contact_name || '',
+                email: lead.email_from || '',
+                // Enhanced fields (if available)
+                color_code: enhanced?.primary?.color_code || '',
+                color_name: enhanced?.primary?.color_name || lead.color?.raw_color || '',
+                color_category: enhanced?.primary?.color_category || lead.color?.color_category || 'Unknown',
+                full_specification: enhanced?.primary?.full_specification || lead.color?.raw_color || '',
+                color_count: enhanced?.color_count || (lead.color?.color_category !== 'Unknown' ? 1 : 0),
+                all_colors: enhanced?.all_colors?.map(c => c.full_specification).join('; ') || '',
+                extraction_source: enhanced?.extraction_source || lead.color?.extraction_source || 'none',
+                expected_revenue: lead.expected_revenue || 0,
+                tender_rfq_date: lead.tender_rfq_date || '',
+                stage: getRelationName(lead.stage_id),
+                salesperson: getRelationName(lead.user_id),
+                city: lead.city || '',
+                state: getRelationName(lead.state_id)
+            };
+        });
         return formatRecordsAsCSV(csvRecords);
     }
     // Markdown format
@@ -1160,13 +1206,16 @@ export function formatRfqByColorList(data, format) {
     else {
         for (let i = 0; i < data.items.length; i++) {
             const lead = data.items[i];
+            const enhanced = lead.colors;
             const color = lead.color;
-            // Color badge
-            const colorBadge = color && color.color_category !== 'Unknown'
-                ? `🎨 **${color.color_category}**${color.raw_color ? ` (${color.raw_color})` : ''}`
-                : '⚪ _No color detected_';
+            // Format color badge (handles both legacy and enhanced)
+            const colorBadge = formatColorBadge(lead);
             output += `${data.offset + i + 1}. **${formatLinkedName(lead.id, lead.name, 'crm.lead')}** (ID: ${lead.id})\n`;
             output += `   - Color: ${colorBadge}\n`;
+            // Show all colors if multiple (enhanced mode)
+            if (enhanced && enhanced.color_count > 1) {
+                output += `   - All Colors (${enhanced.color_count}): ${formatAllColors(lead)}\n`;
+            }
             output += `   - Contact: ${getContactName(lead)} | ${lead.email_from || '-'}\n`;
             output += `   - Revenue: ${formatCurrency(lead.expected_revenue)} | Stage: ${getRelationName(lead.stage_id)}\n`;
             output += `   - RFQ Date: ${formatDate(lead.tender_rfq_date)} | Created: ${formatDate(lead.create_date)}\n`;
@@ -1177,7 +1226,8 @@ export function formatRfqByColorList(data, format) {
                 output += `   - Location: ${location}\n`;
             }
             // Notes excerpt (if color was extracted from it)
-            if (color && color.extraction_source !== 'none' && lead.description) {
+            const extractionSource = enhanced?.extraction_source || color?.extraction_source;
+            if (extractionSource && extractionSource !== 'none' && lead.description) {
                 const excerpt = truncateText(stripHtml(lead.description), 100);
                 output += `   - Notes: _${excerpt}_\n`;
             }
@@ -1189,7 +1239,7 @@ export function formatRfqByColorList(data, format) {
     if (data.has_more) {
         output += ` | **Next page:** Use offset=${data.next_offset}`;
     }
-    output += '\n\n**Color Legend:** 🎨 Detected | ⚪ No color';
+    output += '\n\n**Color Legend:** 🎨 Detected | ⚪ No color | [CODE] = Product code';
     return output;
 }
 //# sourceMappingURL=formatters.js.map

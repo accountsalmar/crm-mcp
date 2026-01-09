@@ -783,6 +783,7 @@ export declare const RfqByColorSearchSchema: z.ZodObject<{
     response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
 } & {
     color_category: z.ZodOptional<z.ZodEnum<[string, ...string[]]>>;
+    color_code: z.ZodOptional<z.ZodString>;
     raw_color: z.ZodOptional<z.ZodString>;
     date_from: z.ZodOptional<z.ZodString>;
     date_to: z.ZodOptional<z.ZodString>;
@@ -808,12 +809,13 @@ export declare const RfqByColorSearchSchema: z.ZodObject<{
     user_id?: number | undefined;
     team_id?: number | undefined;
     state_id?: number | undefined;
-    raw_color?: string | undefined;
+    color_code?: string | undefined;
     color_category?: string | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
+    raw_color?: string | undefined;
 }, {
     stage_id?: number | undefined;
     user_id?: number | undefined;
@@ -821,7 +823,7 @@ export declare const RfqByColorSearchSchema: z.ZodObject<{
     state_id?: number | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
-    raw_color?: string | undefined;
+    color_code?: string | undefined;
     color_category?: string | undefined;
     response_format?: ResponseFormat | undefined;
     min_revenue?: number | undefined;
@@ -831,6 +833,7 @@ export declare const RfqByColorSearchSchema: z.ZodObject<{
     date_field?: "create_date" | "date_closed" | "tender_rfq_date" | undefined;
     order_by?: "name" | "expected_revenue" | "create_date" | "tender_rfq_date" | undefined;
     order_dir?: "asc" | "desc" | undefined;
+    raw_color?: string | undefined;
     include_no_color?: boolean | undefined;
 }>;
 export type LeadSearchInput = z.infer<typeof LeadSearchSchema>;

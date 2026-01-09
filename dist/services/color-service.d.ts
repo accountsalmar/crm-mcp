@@ -4,7 +4,7 @@
  * Provides color extraction, caching, and aggregation for trend analysis.
  * Used by the color trends and RFQ search MCP tools.
  */
-import type { ColorExtraction, CrmLead, LeadWithColor, ColorTrendsSummary } from '../types.js';
+import type { ColorExtraction, CrmLead, LeadWithColor, LeadWithEnhancedColor, ColorTrendsSummary } from '../types.js';
 /**
  * Get color extraction for a lead with caching.
  * Cache prevents re-extraction during the same analysis session.
@@ -34,6 +34,26 @@ export declare function getColorCacheStats(): {
  * @returns Array of leads with color data
  */
 export declare function enrichLeadsWithColor(leads: CrmLead[]): LeadWithColor[];
+/**
+ * Enrich leads with enhanced multi-color extraction data.
+ * Populates BOTH legacy 'color' field AND new 'colors' field for backward compatibility.
+ *
+ * Use this function when you need:
+ * - Industry color specifications (e.g., "Specified Colours = 9610 Pure Ash")
+ * - Multiple colors per lead
+ * - Color codes separate from color names
+ *
+ * @param leads - Array of CRM leads
+ * @returns Array of leads with enhanced color data
+ *
+ * @example
+ * const leads = await searchLeads({ date_from: '2024-01-01' });
+ * const enriched = enrichLeadsWithEnhancedColor(leads);
+ * // enriched[0].colors.primary.color_code === "9610"
+ * // enriched[0].colors.all_colors.length === 2 (for multi-color specs)
+ * // enriched[0].color still works (backward compatible)
+ */
+export declare function enrichLeadsWithEnhancedColor(leads: CrmLead[]): LeadWithEnhancedColor[];
 /**
  * Group leads by color category.
  *

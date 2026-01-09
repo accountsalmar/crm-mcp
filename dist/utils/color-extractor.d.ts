@@ -4,7 +4,7 @@
  * Extracts color information from free-text description fields
  * and normalizes to standard color categories for trend analysis.
  */
-import type { ColorExtraction } from '../types.js';
+import type { ColorExtraction, ProductColorSpecification, EnhancedColorExtraction } from '../types.js';
 /**
  * Normalize a raw color string to its standard category.
  *
@@ -66,4 +66,55 @@ export declare function getColorStats(extractions: ColorExtraction[]): {
     by_category: Record<string, number>;
     by_source: Record<string, number>;
 };
+/**
+ * Parse a single color specification into structured data.
+ * Handles multiple formats:
+ * - "9610 Pure Ash" → { code: "9610", name: "Pure Ash" }
+ * - "White Pearl" → { code: null, name: "White Pearl" }
+ * - "9610" → Uses PRODUCT_COLOR_CODES lookup
+ * - "grey" → { code: null, name: "grey" }
+ *
+ * @param spec - The color specification text to parse
+ * @returns ProductColorSpecification with structured color data
+ */
+export declare function parseColorSpec(spec: string): ProductColorSpecification;
+/**
+ * Extract colors from "Specified Colours = ..." pattern.
+ * This is the primary pattern for industry color specifications.
+ *
+ * Handles:
+ * - "Specified Colours = 9610 Pure Ash"
+ * - "Specified Colours = White Pearl, Oyster Grey"
+ * - "Specified Colours: 9610 Pure Ash, 2440 Deep Ocean"
+ * - "Specified Color = White" (US spelling)
+ *
+ * @param text - The cleaned text (HTML already stripped)
+ * @returns Array of ProductColorSpecification for multi-color support
+ */
+export declare function extractSpecifiedColors(text: string): ProductColorSpecification[];
+/**
+ * Enhanced extraction that returns structured multi-color data.
+ * This is the new primary extraction function for industry specifications.
+ *
+ * Extraction priority:
+ * 1. "Specified Colours = ..." pattern (most reliable for industry specs)
+ * 2. Explicit patterns: "color:", "paint:", etc.
+ * 3. Contextual patterns: standalone color words
+ *
+ * @param description - The description/notes text (may contain HTML)
+ * @returns EnhancedColorExtraction with primary color and all colors array
+ *
+ * @example
+ * extractEnhancedColors("Specified Colours = 9610 Pure Ash, White Pearl")
+ * // Returns: {
+ * //   primary: { color_code: "9610", color_name: "Pure Ash", color_category: "Grey" },
+ * //   all_colors: [
+ * //     { color_code: "9610", color_name: "Pure Ash", ... },
+ * //     { color_code: null, color_name: "White Pearl", color_category: "White" }
+ * //   ],
+ * //   extraction_source: "specified",
+ * //   color_count: 2
+ * // }
+ */
+export declare function extractEnhancedColors(description: string | null | undefined): EnhancedColorExtraction;
 //# sourceMappingURL=color-extractor.d.ts.map

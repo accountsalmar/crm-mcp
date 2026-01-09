@@ -851,10 +851,14 @@ export const RfqByColorSearchSchema = PaginationSchema.extend({
   color_category: z.enum(COLOR_CATEGORIES as unknown as [string, ...string[]])
     .optional()
     .describe("Filter by color category: 'Blue', 'Grey', 'White', 'Black', 'Brown', 'Green', 'Red', 'Yellow', 'Orange', 'Pink', 'Purple', 'Other', or 'Unknown'. Leave empty for all colors."),
+  color_code: z.string()
+    .max(10)
+    .optional()
+    .describe("Filter by product color code (e.g., '9610', '2440'). Matches codes from 'Specified Colours' format."),
   raw_color: z.string()
     .max(50)
     .optional()
-    .describe("Filter by raw color text (partial match): 'navy', 'cream', 'charcoal', etc."),
+    .describe("Filter by raw color text (partial match): 'navy', 'cream', 'charcoal', 'Pure Ash', etc."),
   date_from: z.string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .optional()
