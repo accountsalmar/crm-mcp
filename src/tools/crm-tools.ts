@@ -3912,6 +3912,12 @@ This tool extracts color information from opportunity notes/descriptions and agg
           if (params.min_revenue !== undefined) {
             domain.push(['expected_revenue', '>=', params.min_revenue]);
           }
+          if (params.stage_id) {
+            domain.push(['stage_id', '=', params.stage_id]);
+          }
+          if (params.stage_name) {
+            domain.push(['stage_id.name', 'ilike', params.stage_name]);
+          }
 
           // Fetch leads with description field (up to 5000 for trend analysis)
           const leads = await client.searchRead<CrmLead>(
@@ -4021,6 +4027,9 @@ This tool allows you to drill down into specific color RFQs after analyzing tren
           }
           if (params.stage_id) {
             domain.push(['stage_id', '=', params.stage_id]);
+          }
+          if (params.stage_name) {
+            domain.push(['stage_id.name', 'ilike', params.stage_name]);
           }
 
           // Determine order

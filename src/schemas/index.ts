@@ -838,6 +838,14 @@ export const ColorTrendsSchema = z.object({
     .min(0)
     .optional()
     .describe('Minimum expected revenue filter'),
+  stage_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by specific stage ID. Use odoo_crm_list_stages to discover IDs.'),
+  stage_name: z.string()
+    .optional()
+    .describe('Filter by stage name (case-insensitive partial match). E.g., "Tender RFQ", "Design Phase"'),
   response_format: z.nativeEnum(ResponseFormat)
     .default(ResponseFormat.MARKDOWN)
     .describe("Output format: 'markdown' or 'json'")
@@ -897,7 +905,10 @@ export const RfqByColorSearchSchema = PaginationSchema.extend({
     .int()
     .positive()
     .optional()
-    .describe('Filter by stage ID'),
+    .describe('Filter by stage ID. Use odoo_crm_list_stages to discover IDs.'),
+  stage_name: z.string()
+    .optional()
+    .describe('Filter by stage name (case-insensitive partial match). Alternative to stage_id. E.g., "Tender RFQ"'),
   include_no_color: z.boolean()
     .default(false)
     .describe('Include RFQs where no color was detected in description'),

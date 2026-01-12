@@ -751,21 +751,27 @@ export declare const ColorTrendsSchema: z.ZodObject<{
     team_id: z.ZodOptional<z.ZodNumber>;
     state_id: z.ZodOptional<z.ZodNumber>;
     min_revenue: z.ZodOptional<z.ZodNumber>;
+    stage_id: z.ZodOptional<z.ZodNumber>;
+    stage_name: z.ZodOptional<z.ZodString>;
     response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
 }, "strict", z.ZodTypeAny, {
     granularity: "month" | "quarter";
     response_format: ResponseFormat;
     date_field: "create_date" | "date_closed" | "tender_rfq_date";
+    stage_id?: number | undefined;
     user_id?: number | undefined;
     team_id?: number | undefined;
     state_id?: number | undefined;
+    stage_name?: string | undefined;
     min_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
 }, {
+    stage_id?: number | undefined;
     user_id?: number | undefined;
     team_id?: number | undefined;
     state_id?: number | undefined;
+    stage_name?: string | undefined;
     granularity?: "month" | "quarter" | undefined;
     response_format?: ResponseFormat | undefined;
     min_revenue?: number | undefined;
@@ -794,6 +800,7 @@ export declare const RfqByColorSearchSchema: z.ZodObject<{
     min_revenue: z.ZodOptional<z.ZodNumber>;
     max_revenue: z.ZodOptional<z.ZodNumber>;
     stage_id: z.ZodOptional<z.ZodNumber>;
+    stage_name: z.ZodOptional<z.ZodString>;
     include_no_color: z.ZodDefault<z.ZodBoolean>;
     order_by: z.ZodDefault<z.ZodEnum<["tender_rfq_date", "expected_revenue", "create_date", "name"]>>;
     order_dir: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
@@ -809,6 +816,7 @@ export declare const RfqByColorSearchSchema: z.ZodObject<{
     user_id?: number | undefined;
     team_id?: number | undefined;
     state_id?: number | undefined;
+    stage_name?: string | undefined;
     color_code?: string | undefined;
     color_category?: string | undefined;
     min_revenue?: number | undefined;
@@ -823,6 +831,7 @@ export declare const RfqByColorSearchSchema: z.ZodObject<{
     state_id?: number | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
+    stage_name?: string | undefined;
     color_code?: string | undefined;
     color_category?: string | undefined;
     response_format?: ResponseFormat | undefined;
