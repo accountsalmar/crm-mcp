@@ -7,6 +7,39 @@
 import { COLOR_TAXONOMY, COLOR_PATTERNS, PRODUCT_COLOR_CODES } from '../constants.js';
 import { stripHtml } from './html-utils.js';
 /**
+ * Words that should NOT be detected as colors.
+ * These appear in RFQ templates or have ambiguous meanings.
+ */
+const FALSE_POSITIVE_EXCLUSIONS = new Set([
+    // Template/form words commonly found in RFQ descriptions
+    'range', 'colour', 'color', 'specified', 'system', 'tbc', 'tba',
+    'hardware', 'edge', 'retention', 'supply', 'installation',
+    'pick', 'stages', 'project', 'split', 'quoted', 'notes', 'call',
+]);
+/**
+ * Color words that are also location names (Australian).
+ * These need context checking - only detect as color if near color-related keywords.
+ */
+const LOCATION_AMBIGUOUS = new Set(['orange', 'green', 'white']);
+/**
+ * Check if a color word appears in a color-related context.
+ * Returns true if the word is likely a color reference, not a location.
+ *
+ * @param text - The full text to check
+ * @param colorWord - The color word to check context for
+ * @returns true if the word appears in a color context
+ */
+function isColorContext(text, colorWord) {
+    // Look for color-related keywords near the word
+    const colorKeywords = /(?:colou?r|finish|laminate|panel|paint|specified|shade)\s*[:=]?\s*/i;
+    const wordIndex = text.toLowerCase().indexOf(colorWord.toLowerCase());
+    if (wordIndex === -1)
+        return false;
+    // Check 50 chars before the word for color context
+    const before = text.slice(Math.max(0, wordIndex - 50), wordIndex);
+    return colorKeywords.test(before);
+}
+/**
  * Normalize a raw color string to its standard category.
  *
  * @param rawColor - The extracted color text (e.g., "navy blue")
@@ -31,7 +64,13 @@ export function normalizeColor(rawColor) {
         // Check if any variant is contained in the raw color
         // e.g., "dark navy blue" contains "navy blue"
         for (const variant of variants) {
-            if (normalized.includes(variant) || variant.includes(normalized)) {
+            // Check if normalized contains variant (e.g., "navy blue" in "dark navy blue")
+            if (normalized.includes(variant)) {
+                return category;
+            }
+            // Only allow reverse matching for very short variants (2-3 chars like "red", "tan")
+            // This prevents "range" from matching "orange" (where "orange".includes("range") is true)
+            if (variant.length <= 3 && variant.includes(normalized)) {
                 return category;
             }
         }
@@ -72,27 +111,42 @@ export function extractColorFromDescription(description) {
     const explicitMatch = explicitRegex.exec(cleanText);
     if (explicitMatch && explicitMatch[1]) {
         const rawColor = explicitMatch[1].trim().toLowerCase();
-        // Validate it's actually a color (not just any word after "color:")
-        const category = normalizeColor(rawColor);
-        if (category !== 'Other' || rawColor.length <= 20) {
-            return {
-                raw_color: rawColor,
-                color_category: category,
-                extraction_source: 'explicit'
-            };
+        // Skip false positives (template words)
+        if (!FALSE_POSITIVE_EXCLUSIONS.has(rawColor)) {
+            // Validate it's actually a color (not just any word after "color:")
+            const category = normalizeColor(rawColor);
+            if (category !== 'Other' || rawColor.length <= 20) {
+                return {
+                    raw_color: rawColor,
+                    color_category: category,
+                    extraction_source: 'explicit'
+                };
+            }
         }
     }
     // Fall back to contextual patterns (standalone color words)
     const contextualRegex = new RegExp(COLOR_PATTERNS.CONTEXTUAL.source, COLOR_PATTERNS.CONTEXTUAL.flags);
     const contextualMatches = cleanText.match(contextualRegex);
     if (contextualMatches && contextualMatches.length > 0) {
-        // Take the first match (most prominent in text)
-        const rawColor = contextualMatches[0].toLowerCase();
-        return {
-            raw_color: rawColor,
-            color_category: normalizeColor(rawColor),
-            extraction_source: 'contextual'
-        };
+        // Try each match until we find a valid color
+        for (const match of contextualMatches) {
+            const rawColor = match.toLowerCase();
+            // Skip false positives (template words)
+            if (FALSE_POSITIVE_EXCLUSIONS.has(rawColor)) {
+                continue;
+            }
+            // For location-ambiguous words, check context
+            if (LOCATION_AMBIGUOUS.has(rawColor)) {
+                if (!isColorContext(cleanText, rawColor)) {
+                    continue;
+                }
+            }
+            return {
+                raw_color: rawColor,
+                color_category: normalizeColor(rawColor),
+                extraction_source: 'contextual'
+            };
+        }
     }
     // No color found
     return { raw_color: null, color_category: 'Unknown', extraction_source: 'none' };
