@@ -88,9 +88,11 @@ export function enrichLeadsWithEnhancedColor(leads) {
     return leads.map(lead => {
         const enhanced = extractEnhancedColors(lead.description);
         // Build legacy ColorExtraction for backward compatibility
+        // Use color_name for raw_color to enable proper filtering (e.g., searching "orange" should match)
+        // Fall back to full_specification if color_name is empty
         const legacy = enhanced.primary
             ? {
-                raw_color: enhanced.primary.full_specification,
+                raw_color: enhanced.primary.color_name || enhanced.primary.full_specification,
                 color_category: enhanced.primary.color_category,
                 // Map 'specified' to 'explicit' for legacy compatibility
                 extraction_source: enhanced.extraction_source === 'specified'
@@ -307,9 +309,38 @@ export function filterLeadsByColor(leads, options) {
         filtered = filtered.filter(l => l.color.color_category === options.color_category);
     }
     // Filter by raw color (partial match)
+    // Search in both legacy raw_color and enhanced color fields for comprehensive matching
     if (options.raw_color) {
         const searchTerm = options.raw_color.toLowerCase();
-        filtered = filtered.filter(l => l.color.raw_color?.toLowerCase().includes(searchTerm));
+        filtered = filtered.filter(l => {
+            // Check legacy raw_color field
+            if (l.color.raw_color?.toLowerCase().includes(searchTerm)) {
+                return true;
+            }
+            // Check enhanced color fields if available (for LeadWithEnhancedColor)
+            const enhanced = l.colors;
+            if (enhanced?.primary) {
+                // Check color_name (e.g., "Orange", "Pure Ash")
+                if (enhanced.primary.color_name?.toLowerCase().includes(searchTerm)) {
+                    return true;
+                }
+                // Check full_specification (e.g., "9610 Pure Ash")
+                if (enhanced.primary.full_specification?.toLowerCase().includes(searchTerm)) {
+                    return true;
+                }
+                // Check color_code (e.g., "9610")
+                if (enhanced.primary.color_code?.toLowerCase().includes(searchTerm)) {
+                    return true;
+                }
+            }
+            // Also check all_colors for multi-color specifications
+            if (enhanced?.all_colors) {
+                return enhanced.all_colors.some(color => color.color_name?.toLowerCase().includes(searchTerm) ||
+                    color.full_specification?.toLowerCase().includes(searchTerm) ||
+                    color.color_code?.toLowerCase().includes(searchTerm));
+            }
+            return false;
+        });
     }
     // Exclude no-color by default unless specifically included
     if (!options.include_no_color && !options.color_category && !options.raw_color) {
