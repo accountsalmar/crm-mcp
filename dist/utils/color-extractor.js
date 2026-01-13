@@ -25,19 +25,40 @@ const LOCATION_AMBIGUOUS = new Set(['orange', 'green', 'white']);
  * Check if a color word appears in a color-related context.
  * Returns true if the word is likely a color reference, not a location.
  *
+ * Checks BOTH before and after the color word for context keywords.
+ * Examples that should return TRUE:
+ * - "Specified Colours = Orange" (context before)
+ * - "Orange finish requested" (context after)
+ * - "panels in Orange" (context before)
+ *
+ * Examples that should return FALSE:
+ * - "Delivery to Orange NSW" (no color context)
+ *
  * @param text - The full text to check
  * @param colorWord - The color word to check context for
  * @returns true if the word appears in a color context
  */
 function isColorContext(text, colorWord) {
-    // Look for color-related keywords near the word
-    const colorKeywords = /(?:colou?r|finish|laminate|panel|paint|specified|shade)\s*[:=]?\s*/i;
-    const wordIndex = text.toLowerCase().indexOf(colorWord.toLowerCase());
+    const lowerText = text.toLowerCase();
+    const lowerWord = colorWord.toLowerCase();
+    const wordIndex = lowerText.indexOf(lowerWord);
     if (wordIndex === -1)
         return false;
+    // Keywords that indicate color context
+    const beforeKeywords = /(?:colou?rs?|finish|laminate|panels?|paint|specified|shade|in)\s*[:=]?\s*$/i;
+    const afterKeywords = /^\s*(?:colou?rs?|finish|laminate|panels?|paint|shade|coated|painted)/i;
     // Check 50 chars before the word for color context
     const before = text.slice(Math.max(0, wordIndex - 50), wordIndex);
-    return colorKeywords.test(before);
+    if (beforeKeywords.test(before)) {
+        return true;
+    }
+    // Check 50 chars after the word for color context (e.g., "Orange finish")
+    const wordEnd = wordIndex + colorWord.length;
+    const after = text.slice(wordEnd, Math.min(text.length, wordEnd + 50));
+    if (afterKeywords.test(after)) {
+        return true;
+    }
+    return false;
 }
 /**
  * Normalize a raw color string to its standard category.
