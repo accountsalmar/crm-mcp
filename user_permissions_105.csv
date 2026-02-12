@@ -1,0 +1,373 @@
+Model,Name,Read,Write,Create,Delete,Access_Level
+account.account,Account,Yes,No,No,No,READ ONLY
+account.account.tag,Account Tag,Yes,No,No,No,READ ONLY
+account.analytic.account,Analytic Account,Yes,Yes,Yes,Yes,FULL ACCESS
+account.analytic.applicability,Analytic Plan's Applicabilities,Yes,Yes,Yes,Yes,FULL ACCESS
+account.analytic.distribution.model,Analytic Distribution Model,Yes,Yes,Yes,Yes,FULL ACCESS
+account.analytic.line,Analytic Account,Yes,Yes,Yes,Yes,FULL ACCESS
+account.analytic.plan,Analytic Plans,Yes,Yes,Yes,Yes,FULL ACCESS
+account.edi.document,Electronic Document for an account.move,Yes,No,No,No,READ ONLY
+account.edi.format,EDI format,Yes,No,No,No,READ ONLY
+account.fiscal.position,Fiscal Position,Yes,No,No,No,READ ONLY
+account.fiscal.position.account,Accounts Mapping of Fiscal Position,Yes,No,No,No,READ ONLY
+account.fiscal.position.tax,Tax Mapping of Fiscal Position,Yes,No,No,No,READ ONLY
+account.incoterms,Incoterms,Yes,No,No,No,READ ONLY
+account.invoice_extract.words,Extracted words from invoice scan,Yes,Yes,Yes,Yes,FULL ACCESS
+account.journal,Journal,Yes,No,No,No,READ ONLY
+account.move,Journal Entry,Yes,No,No,No,READ ONLY
+account.move.approval,Bill approval lines,Yes,Yes,Yes,Yes,FULL ACCESS
+account.move.line,Journal Item,Yes,No,No,No,READ ONLY
+account.move.reject,Vendor Bill Rejection,Yes,Yes,Yes,Yes,FULL ACCESS
+account.move.send,Account Move Send,Yes,No,No,No,READ ONLY
+account.move.stage,Bill Approval Stages,Yes,Yes,Yes,Yes,FULL ACCESS
+account.partial.reconcile,Partial Reconcile,Yes,No,No,No,READ ONLY
+account.payment.method,Payment Methods,Yes,No,No,No,READ ONLY
+account.payment.method.line,Payment Methods,Yes,No,No,No,READ ONLY
+account.payment.term,Payment Terms,Yes,No,No,No,READ ONLY
+account.payment.term.line,Payment Terms Line,Yes,No,No,No,READ ONLY
+account.tax,Tax,Yes,No,No,No,READ ONLY
+account.tax.group,Tax Group,Yes,No,No,No,READ ONLY
+account.tax.repartition.line,Tax Repartition Line,Yes,No,No,No,READ ONLY
+activity.report,Users Activity Analysis,Yes,No,No,No,READ ONLY
+appraisal.ask.feedback,Ask Feedback for Appraisal,Yes,Yes,Yes,No,READ/WRITE/CREATE
+approval.rule,Vendor Bill Approval Rules,Yes,Yes,Yes,Yes,FULL ACCESS
+auth_totp.device,Authentication Device,Yes,No,No,No,READ ONLY
+auth_totp.wizard,2-Factor Setup Wizard,Yes,Yes,Yes,Yes,FULL ACCESS
+barcode.nomenclature,Barcode Nomenclature,Yes,No,No,No,READ ONLY
+barcode.rule,Barcode Rule,Yes,No,No,No,READ ONLY
+base.geo_provider,Geo Provider,Yes,No,No,No,READ ONLY
+base.language.export,Language Export,Yes,Yes,Yes,No,READ/WRITE/CREATE
+base.module.install.request,Module Activation Request,Yes,Yes,Yes,No,READ/WRITE/CREATE
+base.partner.merge.automatic.wizard,Merge Partner Wizard,Yes,Yes,Yes,No,READ/WRITE/CREATE
+base.partner.merge.line,Merge Partner Line,Yes,Yes,Yes,Yes,FULL ACCESS
+base_import.import,Base Import,Yes,Yes,Yes,No,READ/WRITE/CREATE
+base_import.mapping,Base Import Mapping,Yes,Yes,Yes,Yes,FULL ACCESS
+board.board,Board,Yes,No,No,No,READ ONLY
+board.calculator,Board Calculator,Yes,Yes,Yes,Yes,FULL ACCESS
+board.calculator.line,Board Calculator Line,Yes,Yes,Yes,Yes,FULL ACCESS
+bus.presence,User Presence,Yes,Yes,Yes,Yes,FULL ACCESS
+business.response.line.wizard,Business Response Line Wizard,Yes,Yes,Yes,Yes,FULL ACCESS
+calendar.alarm,Event Alarm,Yes,Yes,Yes,Yes,FULL ACCESS
+calendar.alarm_manager,Event Alarm Manager,Yes,Yes,Yes,Yes,FULL ACCESS
+calendar.attendee,Calendar Attendee Information,Yes,Yes,Yes,Yes,FULL ACCESS
+calendar.event,Calendar Event,Yes,Yes,Yes,Yes,FULL ACCESS
+calendar.event.type,Event Meeting Type,Yes,No,No,No,READ ONLY
+calendar.filters,Calendar Filters,Yes,Yes,Yes,Yes,FULL ACCESS
+calendar.popover.delete.wizard,Calendar Popover Delete Wizard,Yes,Yes,Yes,Yes,FULL ACCESS
+calendar.recurrence,Event Recurrence Rule,Yes,Yes,Yes,Yes,FULL ACCESS
+change.password.own,"User, change own password wizard",Yes,Yes,Yes,Yes,FULL ACCESS
+chat.bot.credit.master,credit master,Yes,Yes,Yes,Yes,FULL ACCESS
+choose.delivery.carrier,Delivery Carrier Selection Wizard,Yes,No,No,No,READ ONLY
+client.bearer.token,Bearer Token,Yes,Yes,Yes,Yes,FULL ACCESS
+copilot.message,Copilot Message,Yes,Yes,Yes,Yes,FULL ACCESS
+copilot.session.history,Copilot Session History,Yes,Yes,Yes,Yes,FULL ACCESS
+credit.limit.report,Credit Limit Report,Yes,Yes,Yes,Yes,FULL ACCESS
+crm.activity.report,CRM Activity Analysis,Yes,No,No,No,READ ONLY
+crm.lead,Lead/Opportunity,Yes,No,No,No,READ ONLY
+crm.lead.convert2ticket,Lead convert to Ticket,Yes,No,No,No,READ ONLY
+crm.lead.lost,Get Lost Reason,Yes,No,No,No,READ ONLY
+crm.lead.scoring.frequency,Lead Scoring Frequency,Yes,No,No,No,READ ONLY
+crm.lead.scoring.frequency.field,Fields that can be used for predictive lead scoring computation,Yes,No,No,No,READ ONLY
+crm.lead.source,Opportunity source description,Yes,Yes,Yes,Yes,FULL ACCESS
+crm.lead2opportunity.partner,Convert Lead to Opportunity (not in mass),Yes,No,No,No,READ ONLY
+crm.lead2opportunity.partner.mass,Convert Lead to Opportunity (in mass),Yes,No,No,No,READ ONLY
+crm.lost.reason,Opp. Lost Reason,Yes,No,No,No,READ ONLY
+crm.merge.opportunity,Merge Opportunities,Yes,No,No,No,READ ONLY
+crm.quotation.partner,Create new or use existing Customer on new Quotation,Yes,No,No,No,READ ONLY
+crm.recurring.plan,CRM Recurring revenue plans,Yes,No,No,No,READ ONLY
+crm.specification,Lead Specification,Yes,Yes,Yes,Yes,FULL ACCESS
+crm.stage,CRM Stages,Yes,Yes,No,No,READ/WRITE
+crm.tag,CRM Tag,Yes,No,No,No,READ ONLY
+crm.team,Sales Team,Yes,No,No,No,READ ONLY
+crm.team.member,Sales Team Member,Yes,No,No,No,READ ONLY
+crossovered.budget.lines,Budget Line,Yes,Yes,Yes,No,READ/WRITE/CREATE
+delivery.carrier,Shipping Methods,Yes,No,No,No,READ ONLY
+delivery.price.rule,Delivery Price Rules,Yes,No,No,No,READ ONLY
+delivery.zip.prefix,Delivery Zip Prefix,Yes,Yes,Yes,Yes,FULL ACCESS
+digest.digest,Digest,Yes,No,No,No,READ ONLY
+digest.tip,Digest Tips,Yes,No,No,No,READ ONLY
+discuss.channel,Discussion Channel,Yes,Yes,Yes,No,READ/WRITE/CREATE
+discuss.channel.member,Channel Member,Yes,Yes,Yes,Yes,FULL ACCESS
+discuss.gif.favorite,Save favorite GIF from Tenor API,Yes,Yes,Yes,Yes,FULL ACCESS
+documents.document,Document,Yes,Yes,No,No,READ/WRITE
+documents.facet,Category,Yes,No,No,No,READ ONLY
+documents.folder,Documents Workspace,Yes,No,No,No,READ ONLY
+documents.share,Documents Share,Yes,No,No,No,READ ONLY
+documents.tag,Tag,Yes,No,No,No,READ ONLY
+documents.workflow.action,Document Workflow Tag Action,Yes,No,No,No,READ ONLY
+documents.workflow.rule,A set of condition and actions which will be available to all attachments matching the conditions,Yes,No,No,No,READ ONLY
+gamification.badge,Gamification Badge,Yes,No,No,No,READ ONLY
+gamification.badge.user,Gamification User Badge,Yes,Yes,Yes,No,READ/WRITE/CREATE
+gamification.badge.user.wizard,Gamification User Badge Wizard,Yes,Yes,Yes,No,READ/WRITE/CREATE
+gamification.challenge,Gamification Challenge,Yes,No,No,No,READ ONLY
+gamification.challenge.line,Gamification generic goal for challenge,Yes,No,No,No,READ ONLY
+gamification.goal,Gamification Goal,Yes,Yes,No,No,READ/WRITE
+gamification.goal.definition,Gamification Goal Definition,Yes,No,No,No,READ ONLY
+gamification.goal.wizard,Gamification Goal Wizard,Yes,Yes,Yes,No,READ/WRITE/CREATE
+gamification.karma.rank,Rank based on karma,Yes,Yes,Yes,Yes,FULL ACCESS
+gen.journal.entry,gen.journal.entry,Yes,Yes,Yes,Yes,FULL ACCESS
+google.calendar.credentials,Google Calendar Account Data,Yes,Yes,No,No,READ/WRITE
+helpdesk.sla,Helpdesk SLA Policies,Yes,No,No,No,READ ONLY
+helpdesk.sla.status,Ticket SLA Status,Yes,No,No,No,READ ONLY
+helpdesk.stage,Helpdesk Stage,Yes,No,No,No,READ ONLY
+helpdesk.tag,Helpdesk Tags,Yes,No,No,No,READ ONLY
+helpdesk.team,Helpdesk Team,Yes,No,No,No,READ ONLY
+helpdesk.ticket,Helpdesk Ticket,Yes,No,No,No,READ ONLY
+helpdesk.ticket.type,Helpdesk Ticket Type,Yes,No,No,No,READ ONLY
+hr.applicant.category,Category of applicant,Yes,Yes,Yes,No,READ/WRITE/CREATE
+hr.appraisal,Employee Appraisal,Yes,Yes,Yes,No,READ/WRITE/CREATE
+hr.appraisal.goal,Appraisal Goal,Yes,Yes,Yes,Yes,FULL ACCESS
+hr.appraisal.goal.tag,Appraisal Goal Tags,Yes,No,No,No,READ ONLY
+hr.appraisal.note,Appraisal Assessment Note,Yes,No,No,No,READ ONLY
+hr.department,Department,Yes,No,No,No,READ ONLY
+hr.employee.category,Employee Category,Yes,No,No,No,READ ONLY
+hr.employee.public,Public Employee,Yes,No,No,No,READ ONLY
+hr.holidays.cancel.leave,Cancel Time Off Wizard,Yes,Yes,Yes,Yes,FULL ACCESS
+hr.job,Job Position,Yes,No,No,No,READ ONLY
+hr.leave,Time Off,Yes,Yes,Yes,Yes,FULL ACCESS
+hr.leave.allocation,Time Off Allocation,Yes,Yes,Yes,Yes,FULL ACCESS
+hr.leave.employee.type.report,Time Off Summary / Report,Yes,No,No,No,READ ONLY
+hr.leave.mandatory.day,Mandatory Day,Yes,No,No,No,READ ONLY
+hr.leave.report,Time Off Summary / Report,Yes,No,No,No,READ ONLY
+hr.leave.report.calendar,Time Off Calendar,Yes,No,No,No,READ ONLY
+hr.leave.type,Time Off Type,Yes,No,No,No,READ ONLY
+hr.licence,Employee license management,Yes,Yes,Yes,Yes,FULL ACCESS
+hr.recruitment.source,Source of Applicants,Yes,No,No,No,READ ONLY
+hr.work.location,Work Location,Yes,No,No,No,READ ONLY
+iap.account,IAP Account,Yes,No,Yes,No,OTHER
+iap.account.info,IAP Account Info,Yes,Yes,Yes,Yes,FULL ACCESS
+ir.actions.report,Report Action,Yes,No,No,No,READ ONLY
+ir.attachment,Attachment,Yes,Yes,Yes,Yes,FULL ACCESS
+ir.cron,Scheduled Actions,Yes,No,No,No,READ ONLY
+ir.default,Default Values,Yes,Yes,Yes,Yes,FULL ACCESS
+ir.exports.line,Exports Line,Yes,Yes,Yes,Yes,FULL ACCESS
+ir.filters,Filters,Yes,Yes,Yes,Yes,FULL ACCESS
+ir.model,Models,Yes,No,No,No,READ ONLY
+ir.module.category,Application,Yes,No,No,No,READ ONLY
+ir.module.module,Module,Yes,No,No,No,READ ONLY
+ir.sequence,Sequence,Yes,No,No,No,READ ONLY
+ir.sequence.date_range,Sequence Date Range,Yes,No,No,No,READ ONLY
+ir.ui.menu,Menu,Yes,No,No,No,READ ONLY
+ir.ui.view,View,Yes,No,No,No,READ ONLY
+lead.closemonth,lead.closemonth,Yes,Yes,Yes,Yes,FULL ACCESS
+link.tracker,Link Tracker,Yes,No,No,No,READ ONLY
+link.tracker.click,Link Tracker Click,Yes,No,No,No,READ ONLY
+link.tracker.code,Link Tracker Code,Yes,No,No,No,READ ONLY
+mail.activity,Activity,Yes,Yes,Yes,Yes,FULL ACCESS
+mail.activity.plan,Activity Plan,Yes,No,No,No,READ ONLY
+mail.activity.plan.template,Activity plan template,Yes,No,No,No,READ ONLY
+mail.activity.schedule,Activity schedule plan Wizard,Yes,Yes,Yes,No,READ/WRITE/CREATE
+mail.activity.todo.create,Create activity and todo at the same time,Yes,Yes,Yes,No,READ/WRITE/CREATE
+mail.activity.type,Activity Type,Yes,Yes,Yes,Yes,FULL ACCESS
+mail.alias,Email Aliases,Yes,No,No,No,READ ONLY
+mail.alias.domain,Email Domain,Yes,No,No,No,READ ONLY
+mail.compose.message,Email composition wizard,Yes,Yes,Yes,No,READ/WRITE/CREATE
+mail.followers,Document Followers,Yes,No,No,No,READ ONLY
+mail.group,Mail Group,Yes,Yes,Yes,Yes,FULL ACCESS
+mail.group.member,Mailing List Member,Yes,Yes,Yes,Yes,FULL ACCESS
+mail.group.message,Mailing List Message,Yes,Yes,Yes,Yes,FULL ACCESS
+mail.group.message.reject,Reject Group Message,Yes,Yes,Yes,Yes,FULL ACCESS
+mail.group.moderation,Mailing List black/white list,Yes,Yes,Yes,Yes,FULL ACCESS
+mail.guest,Guest,Yes,No,No,No,READ ONLY
+mail.message,Message,Yes,Yes,Yes,Yes,FULL ACCESS
+mail.message.subtype,Message subtypes,Yes,No,No,No,READ ONLY
+mail.notification,Message Notifications,Yes,Yes,Yes,No,READ/WRITE/CREATE
+mail.resend.message,Email resend wizard,Yes,Yes,Yes,No,READ/WRITE/CREATE
+mail.resend.partner,Partner with additional information for mail resend,Yes,Yes,Yes,No,READ/WRITE/CREATE
+mail.shortcode,Canned Response / Shortcode,Yes,Yes,Yes,Yes,FULL ACCESS
+mail.template,Email Templates,Yes,Yes,Yes,Yes,FULL ACCESS
+mail.template.preview,Email Template Preview,Yes,Yes,Yes,No,READ/WRITE/CREATE
+mail.template.reset,Mail Template Reset,Yes,Yes,Yes,Yes,FULL ACCESS
+mail.wizard.invite,Invite wizard,Yes,Yes,Yes,No,READ/WRITE/CREATE
+maintenance.equipment,Maintenance Equipment,Yes,Yes,Yes,Yes,FULL ACCESS
+maintenance.equipment.category,Maintenance Equipment Category,Yes,Yes,Yes,Yes,FULL ACCESS
+maintenance.request,Maintenance Request,Yes,Yes,Yes,Yes,FULL ACCESS
+maintenance.stage,Maintenance Stage,Yes,Yes,Yes,Yes,FULL ACCESS
+maintenance.team,Maintenance Teams,Yes,Yes,Yes,Yes,FULL ACCESS
+message.edit.history,Mail Message Edit History,Yes,Yes,Yes,No,READ/WRITE/CREATE
+message.query.view.wizard,Query View Wizard,Yes,Yes,Yes,Yes,FULL ACCESS
+mrp.bom,Bill of Material,Yes,Yes,No,No,READ/WRITE
+mrp.bom.line,Bill of Material Line,Yes,No,No,No,READ ONLY
+mrp.production,Production Order,Yes,No,No,No,READ ONLY
+mrp.workorder,Work Order,Yes,No,No,No,READ ONLY
+partner.activity.report,Partner Activity Analysis,Yes,No,No,No,READ ONLY
+payment.capture.wizard,Payment Capture Wizard,Yes,Yes,Yes,No,READ/WRITE/CREATE
+payment.link.wizard,Generate Sales Payment Link,Yes,No,No,No,READ ONLY
+payment.method,Payment Method,Yes,No,No,No,READ ONLY
+payment.token,Payment Token,Yes,No,No,No,READ ONLY
+pending.activity.report,Pending Activity Report,Yes,No,No,No,READ ONLY
+planning.recurrency,Planning Recurrence,Yes,No,No,No,READ ONLY
+planning.role,Planning Role,Yes,No,No,No,READ ONLY
+planning.slot,Planning Shift,Yes,No,No,No,READ ONLY
+planning.slot.template,Shift Template,Yes,No,No,No,READ ONLY
+portal.share,Portal Sharing,Yes,Yes,Yes,No,READ/WRITE/CREATE
+portal.wizard,Grant Portal Access,Yes,Yes,Yes,No,READ/WRITE/CREATE
+portal.wizard.user,Portal User Config,Yes,Yes,Yes,No,READ/WRITE/CREATE
+powerbi.connection,Power BI Connection Configuration,Yes,No,No,No,READ ONLY
+powerbi.connector.dashboard,PowerBI Connector Dashboard,Yes,No,No,No,READ ONLY
+powerbi.credentials.wizard,Powerbi Credentials Wizard,Yes,No,No,No,READ ONLY
+powerbi.dashboard,Power BI Dashboards,Yes,No,No,No,READ ONLY
+powerbi.dataset,Power BI Dataset,Yes,Yes,Yes,No,READ/WRITE/CREATE
+powerbi.eventhouse,Power BI Eventhouse,Yes,No,No,No,READ ONLY
+powerbi.kql.database,Power BI KQL Database,Yes,No,No,No,READ ONLY
+powerbi.message.wizard,Powerbi Message Wizard,Yes,No,No,No,READ ONLY
+powerbi.report,Power BI Reports,Yes,Yes,No,No,READ/WRITE
+powerbi.synchronization,Power BI Synchronization,Yes,No,No,No,READ ONLY
+powerbi.table,Powerbi Table,Yes,Yes,Yes,No,READ/WRITE/CREATE
+powerbi.table.column,Power BI Table Columns,Yes,No,No,No,READ ONLY
+powerbi.wizard,Powerbi Wizard,Yes,No,No,No,READ ONLY
+powerbi.workspace,Power BI Workspace/Group,Yes,Yes,Yes,No,READ/WRITE/CREATE
+procurement.group,Procurement Group,Yes,Yes,Yes,No,READ/WRITE/CREATE
+product.attribute,Product Attribute,Yes,No,No,No,READ ONLY
+product.attribute.category,product.attribute.category,Yes,Yes,Yes,Yes,FULL ACCESS
+product.attribute.custom.value,Product Attribute Custom Value,Yes,No,No,No,READ ONLY
+product.attribute.value,Attribute Value,Yes,No,No,No,READ ONLY
+product.category,Product Category,Yes,No,No,No,READ ONLY
+product.document,Product Document,Yes,Yes,Yes,Yes,FULL ACCESS
+product.image,Product Image,Yes,Yes,Yes,Yes,FULL ACCESS
+product.label.layout,Choose the sheet layout to print the labels,Yes,Yes,Yes,Yes,FULL ACCESS
+product.packaging,Product Packaging,Yes,No,No,No,READ ONLY
+product.price.report,Product Price Report,Yes,Yes,Yes,Yes,FULL ACCESS
+product.pricelist,Pricelist,Yes,No,No,No,READ ONLY
+product.pricelist.item,Pricelist Rule,Yes,No,No,No,READ ONLY
+product.product,Product Variant,Yes,No,No,No,READ ONLY
+product.public.category,Website Product Category,Yes,No,No,No,READ ONLY
+product.removal,Removal Strategy,Yes,No,No,No,READ ONLY
+product.ribbon,Product ribbon,Yes,No,No,No,READ ONLY
+product.storage.location,product storage location,Yes,Yes,Yes,Yes,FULL ACCESS
+product.supplierinfo,Supplier Pricelist,Yes,No,No,No,READ ONLY
+product.tag,Product Tag,Yes,No,No,No,READ ONLY
+product.template,Product,Yes,No,No,No,READ ONLY
+product.template.attribute.exclusion,Product Template Attribute Exclusion,Yes,No,No,No,READ ONLY
+product.template.attribute.line,Product Template Attribute Line,Yes,No,No,No,READ ONLY
+product.template.attribute.value,Product Template Attribute Value,Yes,No,No,No,READ ONLY
+project.milestone,Project Milestone,Yes,No,No,No,READ ONLY
+project.project,Project,Yes,No,No,No,READ ONLY
+project.project.stage,Project Stage,Yes,No,No,No,READ ONLY
+project.tags,Project Tags,Yes,Yes,Yes,Yes,FULL ACCESS
+project.task,Task,Yes,Yes,Yes,Yes,FULL ACCESS
+project.task.stage.personal,Personal Task Stage,Yes,Yes,Yes,Yes,FULL ACCESS
+project.task.type,Task Stage,Yes,Yes,Yes,Yes,FULL ACCESS
+project.update,Project Update,Yes,No,No,No,READ ONLY
+rating.rating,Rating,Yes,Yes,Yes,No,READ/WRITE/CREATE
+report.layout,Report Layout,Yes,Yes,Yes,Yes,FULL ACCESS
+report.paperformat,Paper Format Config,Yes,No,No,No,READ ONLY
+report.stock.quantity,Stock Quantity Report,Yes,No,No,No,READ ONLY
+request.appraisal,Request an Appraisal,Yes,Yes,Yes,No,READ/WRITE/CREATE
+res.bank,Bank,Yes,No,No,No,READ ONLY
+res.company,Companies,Yes,No,No,No,READ ONLY
+res.country,Country,Yes,No,No,No,READ ONLY
+res.country.group,Country Group,Yes,Yes,Yes,Yes,FULL ACCESS
+res.country.state,Country state,Yes,Yes,Yes,Yes,FULL ACCESS
+res.currency,Currency,Yes,No,No,No,READ ONLY
+res.currency.rate,Currency Rate,Yes,No,No,No,READ ONLY
+res.groups,Access Groups,Yes,No,No,No,READ ONLY
+res.lang,Languages,Yes,No,No,No,READ ONLY
+res.partner,Contact,Yes,Yes,Yes,Yes,FULL ACCESS
+res.partner.autocomplete.sync,Partner Autocomplete Sync,Yes,Yes,Yes,No,READ/WRITE/CREATE
+res.partner.bank,Bank Accounts,Yes,No,No,No,READ ONLY
+res.partner.category,Partner Tags,Yes,Yes,Yes,Yes,FULL ACCESS
+res.partner.industry,Industry,Yes,No,No,No,READ ONLY
+res.partner.title,Partner Title,Yes,Yes,Yes,Yes,FULL ACCESS
+res.users,User,Yes,No,No,No,READ ONLY
+res.users.apikeys,Users API Keys,Yes,No,No,No,READ ONLY
+res.users.apikeys.description,API Key Description,Yes,No,Yes,No,OTHER
+res.users.apikeys.show,Show API Key,Yes,No,Yes,No,OTHER
+res.users.identitycheck,Password Check Wizard,Yes,Yes,Yes,No,READ/WRITE/CREATE
+res.users.settings,User Settings,Yes,Yes,Yes,Yes,FULL ACCESS
+res.users.settings.volumes,User Settings Volumes,Yes,Yes,Yes,Yes,FULL ACCESS
+resource.calendar,Resource Working Time,Yes,No,No,No,READ ONLY
+resource.calendar.attendance,Work Detail,Yes,No,No,No,READ ONLY
+resource.calendar.leaves,Resource Time Off Detail,Yes,Yes,Yes,Yes,FULL ACCESS
+resource.resource,Resources,Yes,No,No,No,READ ONLY
+sale.advance.payment.inv,Sales Advance Payment Invoice,Yes,No,No,No,READ ONLY
+sale.discount.report,Sale Discount Report,Yes,Yes,Yes,Yes,FULL ACCESS
+sale.mass.cancel.orders,Cancel multiple quotations,Yes,No,No,No,READ ONLY
+sale.order,Sales Order,Yes,No,No,No,READ ONLY
+sale.order.cancel,Sales Order Cancel,Yes,No,No,No,READ ONLY
+sale.order.discount,Discount Wizard,Yes,No,No,No,READ ONLY
+sale.order.line,Sales Order Line,Yes,No,No,No,READ ONLY
+sale.order.option,Sale Options,Yes,No,No,No,READ ONLY
+sale.order.template,Quotation Template,Yes,No,No,No,READ ONLY
+sale.order.template.line,Quotation Template Line,Yes,No,No,No,READ ONLY
+sale.order.template.option,Quotation Template Option,Yes,No,No,No,READ ONLY
+sale.report,Sales Analysis Report,Yes,No,No,No,READ ONLY
+sale.revision,Sales Quotation Revisions,Yes,Yes,Yes,No,READ/WRITE/CREATE
+sale.revision.line,Sales Quotation Revisions Line,Yes,Yes,Yes,No,READ/WRITE/CREATE
+slide.channel,Course,Yes,No,No,No,READ ONLY
+slide.channel.invite,Channel Invitation Wizard,Yes,Yes,Yes,No,READ/WRITE/CREATE
+slide.channel.tag,Channel/Course Tag,Yes,No,No,No,READ ONLY
+slide.channel.tag.group,Channel/Course Groups,Yes,No,No,No,READ ONLY
+slide.embed,Embedded Slides View Counter,Yes,Yes,Yes,Yes,FULL ACCESS
+slide.question,Content Quiz Question,Yes,No,No,No,READ ONLY
+slide.slide,Slides,Yes,No,No,No,READ ONLY
+slide.slide.resource,Additional resource for a particular slide,Yes,No,No,No,READ ONLY
+slide.tag,Slide Tag,Yes,No,No,No,READ ONLY
+sms.composer,Send SMS Wizard,Yes,Yes,Yes,No,READ/WRITE/CREATE
+sms.resend,SMS Resend,Yes,Yes,Yes,No,READ/WRITE/CREATE
+sms.resend.recipient,Resend Notification,Yes,Yes,Yes,No,READ/WRITE/CREATE
+sms.template,SMS Templates,Yes,No,No,No,READ ONLY
+sms.template.preview,SMS Template Preview,Yes,Yes,Yes,No,READ/WRITE/CREATE
+sms.template.reset,SMS Template Reset,Yes,Yes,Yes,Yes,FULL ACCESS
+snailmail.letter,Snailmail Letter,Yes,Yes,Yes,No,READ/WRITE/CREATE
+snailmail.letter.format.error,Format Error Sending a Snailmail Letter,Yes,Yes,Yes,No,READ/WRITE/CREATE
+snailmail.letter.missing.required.fields,Update address of partner,Yes,Yes,Yes,No,READ/WRITE/CREATE
+social.account,Social Account,Yes,No,No,No,READ ONLY
+social.live.post,Social Live Post,Yes,Yes,Yes,Yes,FULL ACCESS
+social.media,Social Media,Yes,No,No,No,READ ONLY
+social.post,Social Post,Yes,Yes,Yes,Yes,FULL ACCESS
+social.post.template,Social Post Template,Yes,Yes,Yes,Yes,FULL ACCESS
+social.post.to.lead,Convert Social Post to Lead,Yes,Yes,Yes,No,READ/WRITE/CREATE
+social.stream,Social Stream,Yes,Yes,Yes,Yes,FULL ACCESS
+social.stream.post,Social Stream Post,Yes,No,No,No,READ ONLY
+social.stream.post.image,Social Stream Post Image Attachment,Yes,No,No,No,READ ONLY
+social.stream.type,Social Stream Post,Yes,No,No,No,READ ONLY
+social.twitter.account,Social Twitter Account,Yes,Yes,Yes,No,READ/WRITE/CREATE
+spreadsheet.contributor,Spreadsheet Contributor,Yes,Yes,Yes,No,READ/WRITE/CREATE
+spreadsheet.dashboard,Spreadsheet Dashboard,Yes,No,No,No,READ ONLY
+spreadsheet.dashboard.group,Group of dashboards,Yes,Yes,Yes,No,READ/WRITE/CREATE
+spreadsheet.dashboard.share,Copy of a shared dashboard,Yes,Yes,Yes,Yes,FULL ACCESS
+stock.location,Inventory Locations,Yes,No,No,No,READ ONLY
+stock.move,Stock Move,Yes,No,No,No,READ ONLY
+stock.move.line,Product Moves (Stock Move Line),Yes,Yes,Yes,Yes,FULL ACCESS
+stock.package.type,Stock package type,Yes,No,No,No,READ ONLY
+stock.package_level,Stock Package Level,Yes,No,No,No,READ ONLY
+stock.picking,Transfer,Yes,No,No,No,READ ONLY
+stock.picking.type,Picking Type,Yes,No,No,No,READ ONLY
+stock.putaway.rule,Putaway Rule,Yes,No,No,No,READ ONLY
+stock.quant,Quants,Yes,No,No,No,READ ONLY
+stock.quant.package,Packages,Yes,No,No,No,READ ONLY
+stock.route,Inventory Routes,Yes,No,No,No,READ ONLY
+stock.rule,Stock Rule,Yes,No,No,No,READ ONLY
+stock.storage.category,Storage Category,Yes,No,No,No,READ ONLY
+stock.storage.category.capacity,Storage Category Capacity,Yes,No,No,No,READ ONLY
+stock.warehouse,Warehouse,Yes,No,No,No,READ ONLY
+stock.warehouse.orderpoint,Minimum Inventory Rule,Yes,No,No,No,READ ONLY
+studio.approval.entry,Studio Approval Entry,Yes,No,Yes,Yes,OTHER
+survey.question,Survey Question,Yes,No,No,No,READ ONLY
+survey.survey,Survey,Yes,No,No,No,READ ONLY
+survey.user_input,Survey User Input,Yes,No,No,No,READ ONLY
+survey.user_input.line,Survey User Input Line,Yes,No,No,No,READ ONLY
+timer.timer,Timer Module,Yes,Yes,Yes,Yes,FULL ACCESS
+unpublish.message.wizard,Unpublish Message Wizard,Yes,No,No,No,READ ONLY
+uom.category,Product UoM Categories,Yes,No,No,No,READ ONLY
+uom.uom,Product Unit of Measure,Yes,No,No,No,READ ONLY
+user.assign.wizard,User Assign Wizard,Yes,Yes,Yes,Yes,FULL ACCESS
+utm.campaign,UTM Campaign,Yes,Yes,Yes,No,READ/WRITE/CREATE
+utm.medium,UTM Medium,Yes,Yes,Yes,No,READ/WRITE/CREATE
+utm.source,UTM Source,Yes,Yes,Yes,No,READ/WRITE/CREATE
+utm.stage,Campaign Stage,Yes,No,No,No,READ ONLY
+utm.tag,UTM Tag,Yes,Yes,Yes,Yes,FULL ACCESS
+voip.call,A phone call handled using the VoIP application,Yes,Yes,Yes,No,READ/WRITE/CREATE
+web_tour.tour,Tours,Yes,No,No,No,READ ONLY
+website,Website,Yes,No,No,No,READ ONLY
+website.base.unit,Unit of Measure for price per unit on eCommerce products.,Yes,No,No,No,READ ONLY
+website.menu,Website Menu,Yes,No,No,No,READ ONLY
+website.sale.extra.field,E-Commerce Extra Info Shown on product page,Yes,Yes,Yes,Yes,FULL ACCESS
+website.seo.metadata,SEO metadata,Yes,No,No,No,READ ONLY
+website.track,Visited Pages,Yes,No,No,No,READ ONLY
+website.visitor,Website Visitor,Yes,No,No,No,READ ONLY
+website.visitor.push.subscription,Push Subscription for a Website Visitor,Yes,No,No,No,READ ONLY
+worksheet.template,Worksheet Template,Yes,Yes,Yes,Yes,FULL ACCESS
+x_invoice,Invoice,Yes,No,No,No,READ ONLY
+x_maintenance_request_worksheet_template_1,Service,Yes,Yes,Yes,Yes,FULL ACCESS

@@ -1,0 +1,813 @@
+ID,Model Technical Name,Display Name,Type,State
+2,_unknown,Unknown,Regular,base
+292,account.account,Account,Regular,base
+290,account.account.tag,Account Tag,Regular,base
+1530,account.accrued.orders.wizard,Accrued Orders Wizard,Transient,base
+1782,account.aged.partner.balance.report.handler,Aged Partner Balance Custom Handler,Regular,base
+1783,account.aged.payable.report.handler,Aged Payable Custom Handler,Regular,base
+1784,account.aged.receivable.report.handler,Aged Receivable Custom Handler,Regular,base
+177,account.analytic.account,Analytic Account,Regular,base
+1658,account.analytic.applicability,Analytic Plan's Applicabilities,Regular,base
+1661,account.analytic.distribution.model,Analytic Distribution Model,Regular,base
+178,account.analytic.line,Analytic Line,Regular,base
+176,account.analytic.plan,Analytic Plans,Regular,base
+404,account.asset,Asset/Revenue Recognition,Regular,base
+1792,account.asset.report.handler,Assets Report Custom Handler,Regular,base
+2020,account.auto.reconcile.wizard,Account automatic reconciliation wizard,Transient,base
+1022,account.automatic.entry.wizard,Create Automatic Entries,Transient,base
+3187,account.bank.reconciliation.report.handler,Bank Reconciliation Report Custom Handler,Regular,base
+2036,account.bank.selection,Link a bank account to the selected journal,Transient,base
+309,account.bank.statement,Bank Statement,Regular,base
+310,account.bank.statement.line,Bank Statement Line,Regular,base
+2038,account.bank.statement.line.transient,Transient model for bank statement line,Transient,base
+1120,account.batch.error.wizard,Batch payments error reporting wizard,Transient,base
+1121,account.batch.error.wizard.line,Batch payments error reporting wizard line,Transient,base
+798,account.batch.payment,Batch Payment,Regular,base
+1758,account.batch.payment.rejection,Manage the payment rejection from batch payments,Transient,base
+422,account.budget.post,Budgetary Position,Regular,base
+1779,account.cash.flow.report.handler,Cash Flow Report Custom Handler,Regular,base
+324,account.cash.rounding,Account Cash Rounding,Regular,base
+356,account.change.lock.date,Change Lock Date,Transient,base
+2007,account.chart.template,Account Chart Template,Regular,base
+2049,account.deferred.expense.report.handler,Deferred Expense Custom Handler,Regular,base
+2048,account.deferred.report.handler,Deferred Expense Report Custom Handler,Regular,base
+2050,account.deferred.revenue.report.handler,Deferred Revenue Custom Handler,Regular,base
+1786,account.ec.sales.report.handler,EC Sales Report Custom Handler,Regular,base
+1759,account.edi.common,Common functions for EDI documents: generate the data; the constraints; etc,Regular,base
+1082,account.edi.document,Electronic Document for an account.move,Regular,base
+1081,account.edi.format,EDI format,Regular,base
+1760,account.edi.xml.cii,Factur-x/XRechnung CII 2.2.0,Regular,base
+1761,account.edi.xml.ubl_20,UBL 2.0,Regular,base
+1762,account.edi.xml.ubl_21,UBL 2.1,Regular,base
+1767,account.edi.xml.ubl_a_nz,A-NZ BIS Billing 3.0,Regular,base
+1763,account.edi.xml.ubl_bis3,UBL BIS Billing 3.0.12,Regular,base
+1764,account.edi.xml.ubl_de,BIS3 DE (XRechnung),Regular,base
+1766,account.edi.xml.ubl_efff,E-FFF (BE),Regular,base
+1765,account.edi.xml.ubl_nl,SI-UBL 2.0 (NLCIUS),Regular,base
+1768,account.edi.xml.ubl_sg,SG BIS Billing 3.0,Regular,base
+335,account.financial.year.op,Opening Balance of Financial Year,Transient,base
+286,account.fiscal.position,Fiscal Position,Regular,base
+288,account.fiscal.position.account,Accounts Mapping of Fiscal Position,Regular,base
+287,account.fiscal.position.tax,Tax Mapping of Fiscal Position,Regular,base
+323,account.fiscal.year,Fiscal Year,Regular,base
+410,account.followup.report,Follow-up Report,Regular,base
+314,account.full.reconcile,Full Reconcile,Regular,base
+1774,account.general.ledger.report.handler,General Ledger Custom Handler,Regular,base
+1775,account.generic.tax.report.handler,Generic Tax Report Custom Handler,Regular,base
+1776,account.generic.tax.report.handler.account.tax,Generic Tax Report Custom Handler (Account -> Tax),Regular,base
+1777,account.generic.tax.report.handler.tax.account,Generic Tax Report Custom Handler (Tax -> Account),Regular,base
+293,account.group,Account Group,Regular,base
+326,account.incoterms,Incoterms,Regular,base
+339,account.invoice.report,Invoices Statistics,Regular,base
+359,account.invoice_extract.words,Extracted words from invoice scan,Regular,base
+296,account.journal,Journal,Regular,base
+295,account.journal.group,Account Journal Group,Regular,base
+1778,account.journal.report.handler,Journal Report Custom Handler,Regular,base
+2037,account.missing.transaction.wizard,Wizard for missing transactions,Transient,base
+311,account.move,Journal Entry,Regular,base
+795,account.move.approval,Bill approval lines,Regular,base
+312,account.move.line,Journal Item,Regular,base
+796,account.move.reject,Vendor Bill Rejection,Transient,base
+331,account.move.reversal,Account Move Reversal,Transient,base
+2010,account.move.send,Account Move Send,Transient,base
+794,account.move.stage,Bill Approval Stages,Regular,base
+1780,account.multicurrency.revaluation.report.handler,Multicurrency Revaluation Report Custom Handler,Regular,base
+1139,account.multicurrency.revaluation.wizard,Multicurrency Revaluation Wizard,Transient,base
+1164,account.online.account,representation of an online bank account,Regular,base
+1165,account.online.link,Bank Connection,Regular,base
+313,account.partial.reconcile,Partial Reconcile,Regular,base
+1785,account.partner.ledger.report.handler,Partner Ledger Custom Handler,Regular,base
+302,account.payment,Payments,Regular,base
+301,account.payment.method,Payment Methods,Regular,base
+1525,account.payment.method.line,Payment Methods,Regular,base
+303,account.payment.register,Register Payment,Transient,base
+304,account.payment.term,Payment Terms,Regular,base
+305,account.payment.term.line,Payment Terms Line,Regular,base
+300,account.reconcile.model,Preset to create journal entries during a invoices and payments matching,Regular,base
+1007,account.reconcile.model.line,Rules for the reconciliation model,Regular,base
+1006,account.reconcile.model.partner.mapping,Partner mapping for reconciliation models,Regular,base
+2021,account.reconcile.wizard,Account reconciliation wizard,Transient,base
+380,account.report,Accounting Report,Regular,base
+1717,account.report.column,Accounting Report Column,Regular,base
+1772,account.report.custom.handler,Account Report Custom Handler,Regular,base
+1716,account.report.expression,Accounting Report Expression,Regular,base
+1718,account.report.external.value,Accounting Report External Value,Regular,base
+2059,account.report.file.download.error.wizard,Manage the file generation errors from report exports.,Transient,base
+379,account.report.footnote,Account Report Footnote,Regular,base
+1770,account.report.horizontal.group,Horizontal group for reports,Regular,base
+1771,account.report.horizontal.group.rule,Horizontal group rule for reports,Regular,base
+1715,account.report.line,Accounting Report Line,Regular,base
+1023,account.resequence.wizard,Remake the sequence of Journal Entries.,Transient,base
+294,account.root,Account codes first 2 digits,Regular,base
+336,account.setup.bank.manual.config,Bank setup manual config,Transient,base
+298,account.tax,Tax,Regular,base
+297,account.tax.group,Tax Group,Regular,base
+299,account.tax.repartition.line,Tax Repartition Line,Regular,base
+2042,account.tax.report.handler,Account Report Handler for Tax Reports,Regular,base
+1590,account.tax.unit,Tax Unit,Regular,base
+1024,account.tour.upload.bill,Account tour upload bill,Transient,base
+1025,account.tour.upload.bill.email.confirm,Account tour upload bill email confirm,Transient,base
+376,account.transfer.model,Account Transfer Model,Regular,base
+377,account.transfer.model.line,Account Transfer Model Line,Regular,base
+1781,account.trial.balance.report.handler,Trial Balance Custom Handler,Regular,base
+328,account.unreconcile,Account Unreconcile,Transient,base
+409,account_followup.followup.line,Follow-up Criteria,Regular,base
+1793,account_followup.manual_reminder,Wizard for sending manual reminders to clients,Transient,base
+2065,account_followup.missing.information.wizard,Followup missing information wizard,Transient,base
+394,account_reports.export.wizard,Export wizard for accounting's reports,Transient,base
+395,account_reports.export.wizard.format,Export format for accounting's reports,Transient,base
+1300,activity.report,Users Activity Analysis,Regular,base
+1660,analytic.mixin,Analytic Mixin,Regular,base
+1353,applicant.get.refuse.reason,Get Refuse Reason,Transient,base
+1723,applicant.send.mail,Send mails to applicants,Transient,base
+2680,appraisal.ask.feedback,Ask Feedback for Appraisal,Transient,base
+797,approval.rule,Vendor Bill Approval Rules,Regular,base
+405,asset.modify,Modify Asset,Transient,base
+1428,auth_totp.device,Authentication Device,Regular,base
+1160,auth_totp.wizard,2-Factor Setup Wizard,Transient,base
+1421,avatar.mixin,Avatar Mixin,Regular,base
+1744,bank.rec.widget,Bank reconciliation widget for a single statement line,Regular,base
+1745,bank.rec.widget.line,Line of the bank reconciliation widget,Regular,base
+128,barcode.nomenclature,Barcode Nomenclature,Regular,base
+129,barcode.rule,Barcode Rule,Regular,base
+130,barcodes.barcode_events_mixin,Barcode Event Mixin,Regular,base
+1,base,Base,Regular,base
+427,base.automation,Automation Rule,Regular,base
+104,base.document.layout,Company Document Layout,Transient,base
+1420,base.enable.profiling.wizard,Enable profiling for some time,Transient,base
+498,base.geo_provider,Geo Provider,Regular,base
+499,base.geocoder,Geo Coder,Regular,base
+426,base.import.module,Import Module,Transient,base
+100,base.language.export,Language Export,Transient,base
+97,base.language.import,Language Import,Transient,base
+96,base.language.install,Install Language,Transient,base
+1796,base.module.install.request,Module Activation Request,Transient,base
+1797,base.module.install.review,Module Activation Review,Transient,base
+99,base.module.uninstall,Module Uninstall,Transient,base
+95,base.module.update,Update Module,Transient,base
+98,base.module.upgrade,Upgrade Module,Transient,base
+103,base.partner.merge.automatic.wizard,Merge Partner Wizard,Transient,base
+102,base.partner.merge.line,Merge Partner Line,Transient,base
+553,base_import.import,Base Import,Transient,base
+552,base_import.mapping,Base Import Mapping,Regular,base
+636,board.board,Board,Regular,base
+468,board.calculator,Board Calculator,Regular,base
+469,board.calculator.line,Board Calculator Line,Regular,base
+131,bus.bus,Communication Bus,Regular,base
+132,bus.presence,User Presence,Regular,base
+182,calendar.alarm,Event Alarm,Regular,base
+181,calendar.alarm_manager,Event Alarm Manager,Regular,base
+180,calendar.attendee,Calendar Attendee Information,Regular,base
+184,calendar.event,Calendar Event,Regular,base
+183,calendar.event.type,Event Meeting Type,Regular,base
+179,calendar.filters,Calendar Filters,Regular,base
+1992,calendar.popover.delete.wizard,Calendar Popover Delete Wizard,Transient,base
+1664,calendar.provider.config,Calendar Provider Configuration Wizard,Transient,base
+932,calendar.recurrence,Event Recurrence Rule,Regular,base
+1622,change.password.own,User; change own password wizard,Transient,base
+92,change.password.user,User; Change Password Wizard,Transient,base
+91,change.password.wizard,Change Password Wizard,Transient,base
+281,change.production.qty,Change Production Qty,Transient,base
+1308,choose.delivery.carrier,Delivery Carrier Selection Wizard,Transient,base
+1307,choose.delivery.package,Delivery Package Selection Wizard,Transient,base
+285,confirm.stock.sms,Confirm Stock SMS,Transient,base
+1206,credit.limit.report,Credit Limit Report,Transient,base
+350,crm.activity.report,CRM Activity Analysis,Regular,base
+1171,crm.iap.lead.helpers,Helper methods for crm_iap_mine modules,Regular,base
+1168,crm.iap.lead.industry,CRM IAP Lead Industry,Regular,base
+1172,crm.iap.lead.mining.request,CRM Lead Mining Request,Regular,base
+1169,crm.iap.lead.role,People Role,Regular,base
+1170,crm.iap.lead.seniority,People Seniority,Regular,base
+344,crm.lead,Lead/Opportunity,Regular,base
+2644,crm.lead.convert2ticket,Lead convert to Ticket,Transient,base
+351,crm.lead.lost,Get Lost Reason,Transient,base
+1532,crm.lead.pls.update,Update the probabilities,Transient,base
+348,crm.lead.scoring.frequency,Lead Scoring Frequency,Regular,base
+349,crm.lead.scoring.frequency.field,Fields that can be used for predictive lead scoring computation,Regular,base
+472,crm.lead.source,Opportunity source description,Regular,base
+353,crm.lead2opportunity.partner,Convert Lead to Opportunity (not in mass),Transient,base
+354,crm.lead2opportunity.partner.mass,Convert Lead to Opportunity (in mass),Transient,base
+347,crm.lost.reason,Opp. Lost Reason,Regular,base
+355,crm.merge.opportunity,Merge Opportunities,Transient,base
+417,crm.quotation.partner,Create new or use existing Customer on new Quotation,Transient,base
+1034,crm.recurring.plan,CRM Recurring revenue plans,Regular,base
+473,crm.specification,Lead Specification,Regular,base
+345,crm.stage,CRM Stages,Regular,base
+346,crm.tag,CRM Tag,Regular,base
+205,crm.team,Sales Team,Regular,base
+1474,crm.team.member,Sales Team Member,Regular,base
+423,crossovered.budget,Budget,Regular,base
+424,crossovered.budget.lines,Budget Line,Regular,base
+93,decimal.precision,Decimal Precision,Regular,base
+1305,delivery.carrier,Shipping Methods,Regular,base
+1306,delivery.price.rule,Delivery Price Rules,Regular,base
+1795,delivery.zip.prefix,Delivery Zip Prefix,Regular,base
+261,digest.digest,Digest,Regular,base
+262,digest.tip,Digest Tips,Regular,base
+164,discuss.channel,Discussion Channel,Regular,base
+162,discuss.channel.member,Channel Member,Regular,base
+1442,discuss.channel.rtc.session,Mail RTC session,Regular,base
+1873,discuss.gif.favorite,Save favorite GIF from Tenor API,Regular,base
+1874,discuss.voice.metadata,Metadata for voice attachments,Regular,base
+823,documents.account.folder.setting,Journal and Folder settings,Regular,base
+814,documents.document,Document,Regular,base
+818,documents.facet,Category,Regular,base
+816,documents.folder,Documents Workspace,Regular,base
+1533,documents.link_to_record_wizard,Documents Link to Record,Transient,base
+815,documents.mixin,Documents creation mixin,Regular,base
+822,documents.request_wizard,Document Request,Transient,base
+817,documents.share,Documents Share,Regular,base
+1975,documents.shared.spreadsheet,Copy of a shared spreadsheet,Regular,base
+819,documents.tag,Tag,Regular,base
+821,documents.workflow.action,Document Workflow Tag Action,Regular,base
+820,documents.workflow.rule,A set of condition and actions which will be available to all attachments matching the conditions,Regular,base
+1905,extract.mixin,Base class to extract data from documents,Regular,base
+185,fetchmail.server,Incoming Mail Server,Regular,base
+75,format.address.mixin,Address Format,Regular,base
+444,gamification.badge,Gamification Badge,Regular,base
+443,gamification.badge.user,Gamification User Badge,Regular,base
+447,gamification.badge.user.wizard,Gamification User Badge Wizard,Transient,base
+441,gamification.challenge,Gamification Challenge,Regular,base
+442,gamification.challenge.line,Gamification generic goal for challenge,Regular,base
+440,gamification.goal,Gamification Goal,Regular,base
+439,gamification.goal.definition,Gamification Goal Definition,Regular,base
+446,gamification.goal.wizard,Gamification Goal Wizard,Transient,base
+445,gamification.karma.rank,Rank based on karma,Regular,base
+941,gamification.karma.tracking,Track Karma Changes,Regular,base
+1205,gen.journal.entry,gen.journal.entry,Transient,base
+1209,google.calendar.account.reset,Google Calendar Account Reset,Transient,base
+1476,google.calendar.credentials,Google Calendar Account Data,Regular,base
+1208,google.calendar.sync,Synchronize a record with Google Calendar,Regular,base
+2628,google.map.view.mixins,Google Map View Mixins,Regular,base
+496,google.service,Google Service,Regular,base
+2638,helpdesk.sla,Helpdesk SLA Policies,Regular,base
+2641,helpdesk.sla.report.analysis,SLA Status Analysis,Regular,base
+2636,helpdesk.sla.status,Ticket SLA Status,Regular,base
+2635,helpdesk.stage,Helpdesk Stage,Regular,base
+2643,helpdesk.stage.delete.wizard,Helpdesk Stage Delete Wizard,Transient,base
+2639,helpdesk.tag,Helpdesk Tags,Regular,base
+2634,helpdesk.team,Helpdesk Team,Regular,base
+2637,helpdesk.ticket,Helpdesk Ticket,Regular,base
+2646,helpdesk.ticket.convert.wizard,Convert Helpdesk Tickets to Tasks,Transient,base
+2642,helpdesk.ticket.report.analysis,Ticket Analysis,Regular,base
+2645,helpdesk.ticket.to.lead,Convert Ticket to Lead,Transient,base
+2640,helpdesk.ticket.type,Helpdesk Ticket Type,Regular,base
+1348,hr.applicant,Applicant,Regular,base
+1349,hr.applicant.category,Category of applicant,Regular,base
+1350,hr.applicant.refuse.reason,Refuse Reason of Applicant,Regular,base
+2674,hr.appraisal,Employee Appraisal,Regular,base
+2675,hr.appraisal.goal,Appraisal Goal,Regular,base
+2677,hr.appraisal.goal.tag,Appraisal Goal Tags,Regular,base
+2676,hr.appraisal.note,Appraisal Assessment Note,Regular,base
+2678,hr.appraisal.report,Appraisal Statistics,Regular,base
+1220,hr.attendance,Attendance,Regular,base
+1477,hr.attendance.overtime,Attendance Overtime,Regular,base
+1665,hr.contract.type,Contract Type,Regular,base
+1214,hr.department,Department,Regular,base
+1464,hr.departure.reason,Departure Reason,Regular,base
+1219,hr.departure.wizard,Departure Wizard,Transient,base
+1211,hr.employee,Employee,Regular,base
+1210,hr.employee.base,Basic Employee,Regular,base
+1212,hr.employee.category,Employee Category,Regular,base
+1213,hr.employee.public,Public Employee,Regular,base
+1674,hr.holidays.cancel.leave,Cancel Time Off Wizard,Transient,base
+1227,hr.holidays.summary.employee,HR Time Off Summary Report By Employee,Transient,base
+1215,hr.job,Job Position,Regular,base
+1221,hr.leave,Time Off,Regular,base
+1480,hr.leave.accrual.level,Accrual Plan Level,Regular,base
+1481,hr.leave.accrual.plan,Accrual Plan,Regular,base
+1222,hr.leave.allocation,Time Off Allocation,Regular,base
+1482,hr.leave.employee.type.report,Time Off Summary / Report,Regular,base
+1673,hr.leave.mandatory.day,Mandatory Day,Regular,base
+1225,hr.leave.report,Time Off Summary / Report,Regular,base
+1226,hr.leave.report.calendar,Time Off Calendar,Regular,base
+1223,hr.leave.type,Time Off Type,Regular,base
+1366,hr.licence,Employee license management,Regular,base
+1347,hr.recruitment.degree,Applicant Degree,Regular,base
+1354,hr.recruitment.report,Recruitment Analysis Report,Regular,base
+1345,hr.recruitment.source,Source of Applicants,Regular,base
+1346,hr.recruitment.stage,Recruitment Stages,Regular,base
+1747,hr.recruitment.stage.report,Recruitment Stage Analysis,Regular,base
+1466,hr.work.location,Work Location,Regular,base
+1882,html.field.history.mixin,Field html History,Regular,base
+145,iap.account,IAP Account,Regular,base
+1844,iap.account.info,IAP Account Info,Transient,base
+1484,iap.autocomplete.api,IAP Partner Autocomplete API,Regular,base
+707,iap.enrich.api,IAP Lead Enrichment API,Regular,base
+70,image.mixin,Image Mixin,Regular,base
+21,ir.actions.act_url,Action URL,Regular,base
+18,ir.actions.act_window,Action Window,Regular,base
+19,ir.actions.act_window.view,Action Window View,Regular,base
+20,ir.actions.act_window_close,Action Window Close,Regular,base
+17,ir.actions.actions,Actions,Regular,base
+25,ir.actions.client,Client Action,Regular,base
+26,ir.actions.report,Report Action,Regular,base
+22,ir.actions.server,Server Action,Regular,base
+24,ir.actions.todo,Configuration Wizards,Regular,base
+1407,ir.asset,Asset,Regular,base
+27,ir.attachment,Attachment,Regular,base
+36,ir.autovacuum,Automatic Vacuum,Regular,base
+1609,ir.binary,File streaming helper model for controllers,Regular,base
+35,ir.config_parameter,System Parameter,Regular,base
+28,ir.cron,Scheduled Actions,Regular,base
+1412,ir.cron.trigger,Triggered actions,Regular,base
+30,ir.default,Default Values,Regular,base
+65,ir.demo,Demo,Transient,base
+66,ir.demo_failure,Demo failure,Transient,base
+67,ir.demo_failure.wizard,Demo Failure wizard,Transient,base
+32,ir.exports,Exports,Regular,base
+33,ir.exports.line,Exports Line,Regular,base
+38,ir.fields.converter,Fields Converter,Regular,base
+29,ir.filters,Filters,Regular,base
+58,ir.http,HTTP Routing,Regular,base
+59,ir.logging,Logging,Regular,base
+37,ir.mail_server,Mail Server,Regular,base
+3,ir.model,Models,Regular,base
+8,ir.model.access,Model Access,Regular,base
+6,ir.model.constraint,Model Constraint,Regular,base
+9,ir.model.data,Model Data,Regular,base
+4,ir.model.fields,Fields,Regular,base
+5,ir.model.fields.selection,Fields Selection,Regular,base
+1809,ir.model.inherit,Model Inheritance Tree,Regular,base
+7,ir.model.relation,Relation Model,Regular,base
+61,ir.module.category,Application,Regular,base
+62,ir.module.module,Module,Regular,base
+63,ir.module.module.dependency,Module dependency,Regular,base
+64,ir.module.module.exclusion,Module exclusion,Regular,base
+1419,ir.profile,Profiling results,Regular,base
+60,ir.property,Company Property,Regular,base
+39,ir.qweb,Qweb,Regular,base
+40,ir.qweb.field,Qweb Field,Regular,base
+55,ir.qweb.field.barcode,Qweb Field Barcode,Regular,base
+56,ir.qweb.field.contact,Qweb Field Contact,Regular,base
+43,ir.qweb.field.date,Qweb Field Date,Regular,base
+44,ir.qweb.field.datetime,Qweb Field Datetime,Regular,base
+53,ir.qweb.field.duration,Qweb Field Duration,Regular,base
+42,ir.qweb.field.float,Qweb Field Float,Regular,base
+52,ir.qweb.field.float_time,Qweb Field Float Time,Regular,base
+49,ir.qweb.field.html,Qweb Field HTML,Regular,base
+50,ir.qweb.field.image,Qweb Field Image,Regular,base
+856,ir.qweb.field.image_url,Qweb Field Image,Regular,base
+41,ir.qweb.field.integer,Qweb Field Integer,Regular,base
+48,ir.qweb.field.many2many,Qweb field many2many,Regular,base
+47,ir.qweb.field.many2one,Qweb Field Many to One,Regular,base
+51,ir.qweb.field.monetary,Qweb Field Monetary,Regular,base
+3095,ir.qweb.field.one2many,Qweb field one2many,Regular,base
+57,ir.qweb.field.qweb,Qweb Field qweb,Regular,base
+54,ir.qweb.field.relative,Qweb Field Relative,Regular,base
+46,ir.qweb.field.selection,Qweb Field Selection,Regular,base
+45,ir.qweb.field.text,Qweb Field Text,Regular,base
+1615,ir.qweb.field.time,QWeb Field Time,Regular,base
+34,ir.rule,Rule,Regular,base
+11,ir.sequence,Sequence,Regular,base
+12,ir.sequence.date_range,Sequence Date Range,Regular,base
+13,ir.ui.menu,Menu,Regular,base
+15,ir.ui.view,View,Regular,base
+14,ir.ui.view.custom,Custom View,Regular,base
+1628,ir.websocket,websocket message handling,Regular,base
+1137,ir_actions_account_report_download,Technical model for accounting report downloads,Regular,base
+3104,kpi.provider,KPI Provider,Regular,base
+1299,lead.closemonth,lead.closemonth,Regular,base
+802,link.tracker,Link Tracker,Regular,base
+804,link.tracker.click,Link Tracker Click,Regular,base
+803,link.tracker.code,Link Tracker Code,Regular,base
+1194,lost.message.parent,Lost Message Parent,Regular,base
+1738,lot.label.layout,Choose the sheet layout to print lot labels,Transient,base
+154,mail.activity,Activity,Regular,base
+155,mail.activity.mixin,Activity Mixin,Regular,base
+1855,mail.activity.plan,Activity Plan,Regular,base
+1856,mail.activity.plan.template,Activity plan template,Regular,base
+1877,mail.activity.schedule,Activity schedule plan Wizard,Transient,base
+1981,mail.activity.todo.create,Create activity and todo at the same time,Transient,base
+153,mail.activity.type,Activity Type,Regular,base
+148,mail.alias,Email Aliases,Regular,base
+1846,mail.alias.domain,Email Domain,Regular,base
+149,mail.alias.mixin,Email Aliases Mixin,Regular,base
+1847,mail.alias.mixin.optional,Email Aliases Mixin (light),Regular,base
+160,mail.blacklist,Mail Blacklist,Regular,base
+920,mail.blacklist.remove,Remove email from blacklist wizard,Transient,base
+169,mail.compose.message,Email composition wizard,Transient,base
+1434,mail.composer.mixin,Mail Composer Mixin,Regular,base
+150,mail.followers,Document Followers,Regular,base
+1636,mail.gateway.allowed,Mail Gateway Allowed,Regular,base
+1491,mail.group,Mail Group,Regular,base
+1492,mail.group.member,Mailing List Member,Regular,base
+1493,mail.group.message,Mailing List Message,Regular,base
+1495,mail.group.message.reject,Reject Group Message,Transient,base
+163,mail.group.moderation,Mailing List black/white list,Regular,base
+1443,mail.guest,Guest,Regular,base
+1444,mail.ice.server,ICE server,Regular,base
+1637,mail.link.preview,Store link preview data,Regular,base
+156,mail.mail,Outgoing Mails,Regular,base
+152,mail.message,Message,Regular,base
+708,mail.message.attach.wizard,Attach Message,Transient,base
+1438,mail.message.reaction,Message Reaction,Regular,base
+1638,mail.message.schedule,Scheduled Messages,Regular,base
+146,mail.message.subtype,Message subtypes,Regular,base
+1857,mail.message.translation,Message Translation,Regular,base
+151,mail.notification,Message Notifications,Regular,base
+1869,mail.notification.web.push,Cron data used for web push notification,Regular,base
+1870,mail.partner.device,Partner Web Push Device,Regular,base
+903,mail.render.mixin,Mail Render Mixin,Regular,base
+171,mail.resend.message,Email resend wizard,Transient,base
+172,mail.resend.partner,Partner with additional information for mail resend,Transient,base
+166,mail.shortcode,Canned Response / Shortcode,Regular,base
+165,mail.template,Email Templates,Regular,base
+923,mail.template.preview,Email Template Preview,Transient,base
+1650,mail.template.reset,Mail Template Reset,Transient,base
+157,mail.thread,Email Thread,Regular,base
+161,mail.thread.blacklist,Mail Blacklist mixin,Regular,base
+158,mail.thread.cc,Email CC management,Regular,base
+1852,mail.thread.main.attachment,Mail Main Attachment management,Regular,base
+190,mail.thread.phone,Phone Blacklist Mixin,Regular,base
+1853,mail.tracking.duration.mixin,Mixin to compute the time a record has spent in each value a many2one field can take,Regular,base
+147,mail.tracking.value,Mail Tracking Value,Regular,base
+168,mail.wizard.invite,Invite wizard,Transient,base
+806,mailing.contact,Mailing Contact,Regular,base
+1729,mailing.contact.import,Mailing Contact Import,Transient,base
+1540,mailing.contact.to.list,Add Contacts to Mailing List,Transient,base
+1726,mailing.filter,Mailing Favorite Filters,Regular,base
+807,mailing.list,Mailing List,Regular,base
+811,mailing.list.merge,Merge Mass Mailing List,Transient,base
+809,mailing.mailing,Mass Mailing,Regular,base
+1541,mailing.mailing.schedule.date,schedule a mailing,Transient,base
+813,mailing.mailing.test,Sample Mail Wizard,Transient,base
+2672,mailing.sms.test,Test SMS Mailing,Transient,base
+805,mailing.subscription,Mailing List Subscription,Regular,base
+1927,mailing.subscription.optout,Mailing Subscription Reason,Regular,base
+808,mailing.trace,Mailing Statistics,Regular,base
+810,mailing.trace.report,Mass Mailing Statistics,Regular,base
+1399,maintenance.equipment,Maintenance Equipment,Regular,base
+1398,maintenance.equipment.category,Maintenance Equipment Category,Regular,base
+1887,maintenance.mixin,Maintenance Maintained Item,Regular,base
+1400,maintenance.request,Maintenance Request,Regular,base
+1397,maintenance.stage,Maintenance Stage,Regular,base
+1401,maintenance.team,Maintenance Teams,Regular,base
+3208,mcp.enabled.model,MCP Enabled Model,Regular,base
+3209,mcp.log,MCP Server Activity Log,Regular,base
+3210,mcp.model.selection.wizard,MCP Model Selection Wizard,Transient,base
+2275,message.edit.history,Mail Message Edit History,Regular,base
+266,mrp.bom,Bill of Material,Regular,base
+268,mrp.bom.byproduct,Byproduct,Regular,base
+267,mrp.bom.line,Bill of Material Line,Regular,base
+1095,mrp.consumption.warning,Wizard in case of consumption in warning/strict and more component has been used for a MO (related to the bom),Transient,base
+1096,mrp.consumption.warning.line,Line of issue consumption,Transient,base
+263,mrp.document,Production Document,Regular,base
+275,mrp.production,Production Order,Regular,base
+1094,mrp.production.backorder,Wizard to mark as done or create back order,Transient,base
+1093,mrp.production.backorder.line,Backorder Confirmation Line,Transient,base
+1750,mrp.production.split,Wizard to Split a Production,Transient,base
+1751,mrp.production.split.line,Split Production Detail,Transient,base
+1749,mrp.production.split.multi,Wizard to Split Multiple Productions,Transient,base
+1596,mrp.report,Manufacturing Report,Regular,base
+270,mrp.routing.workcenter,Work Center Usage,Regular,base
+276,mrp.unbuild,Unbuild Order,Regular,base
+271,mrp.workcenter,Work Center,Regular,base
+1748,mrp.workcenter.capacity,Work Center Capacity,Regular,base
+274,mrp.workcenter.productivity,Workcenter Productivity Log,Regular,base
+273,mrp.workcenter.productivity.loss,Workcenter Productivity Losses,Regular,base
+272,mrp.workcenter.productivity.loss.type,MRP Workorder productivity losses,Regular,base
+1579,mrp.workcenter.tag,Add tag for the workcenter,Regular,base
+277,mrp.workorder,Work Order,Regular,base
+1984,mrp_production.additional.workorder,Additional Workorder,Transient,base
+1141,mrp_workorder.additional.product,Additional Product,Transient,base
+1987,onboarding.onboarding,Onboarding,Regular,base
+1988,onboarding.onboarding.step,Onboarding Step,Regular,base
+1986,onboarding.progress,Onboarding Progress Tracker,Regular,base
+1989,onboarding.progress.step,Onboarding Progress Step Tracker,Regular,base
+754,partner.activity.report,Partner Activity Analysis,Regular,base
+1999,payment.capture.wizard,Payment Capture Wizard,Transient,base
+369,payment.link.wizard,Generate Sales Payment Link,Transient,base
+365,payment.method,Payment Method,Regular,base
+364,payment.provider,Payment Provider,Regular,base
+368,payment.provider.onboarding.wizard,Payment provider onboarding wizard,Transient,base
+1584,payment.refund.wizard,Payment Refund Wizard,Transient,base
+367,payment.token,Payment Token,Regular,base
+366,payment.transaction,Payment Transaction,Regular,base
+764,pending.activity.report,Pending Activity Report,Regular,base
+188,phone.blacklist,Phone Blacklist,Regular,base
+946,phone.blacklist.remove,Remove phone from blacklist,Transient,base
+1737,picking.label.type,Choose whether to print product or lot/sn labels,Transient,base
+1732,planning.analysis.report,Planning Analysis Report,Regular,base
+1245,planning.planning,Schedule,Regular,base
+1242,planning.recurrency,Planning Recurrence,Regular,base
+1244,planning.role,Planning Role,Regular,base
+1247,planning.send,Send Planning,Transient,base
+1243,planning.slot,Planning Shift,Regular,base
+1246,planning.slot.template,Shift Template,Regular,base
+210,portal.mixin,Portal Mixin,Regular,base
+211,portal.share,Portal Sharing,Transient,base
+212,portal.wizard,Grant Portal Access,Transient,base
+213,portal.wizard.user,Portal User Config,Transient,base
+1798,privacy.log,Privacy Log,Regular,base
+1799,privacy.lookup.wizard,Privacy Lookup Wizard,Transient,base
+1800,privacy.lookup.wizard.line,Privacy Lookup Wizard Line,Transient,base
+236,procurement.group,Procurement Group,Regular,base
+196,product.attribute,Product Attribute,Regular,base
+3067,product.attribute.category,product.attribute.category,Regular,base
+396,product.attribute.custom.value,Product Attribute Custom Value,Regular,base
+197,product.attribute.value,Attribute Value,Regular,base
+1889,product.catalog.mixin,Product Catalog Mixin,Regular,base
+192,product.category,Product Category,Regular,base
+1890,product.document,Product Document,Regular,base
+1340,product.image,Product Image,Regular,base
+1473,product.label.layout,Choose the sheet layout to print the labels,Transient,base
+425,product.margin,Product Margin,Transient,base
+1470,product.packaging,Product Packaging,Regular,base
+1231,product.price.report,Product Price Report,Transient,base
+201,product.pricelist,Pricelist,Regular,base
+202,product.pricelist.item,Pricelist Rule,Regular,base
+193,product.product,Product Variant,Regular,base
+1342,product.public.category,Website Product Category,Regular,base
+222,product.removal,Removal Strategy,Regular,base
+256,product.replenish,Product Replenish,Transient,base
+1341,product.ribbon,Product ribbon,Regular,base
+801,product.storage.location,product storage location,Regular,base
+195,product.supplierinfo,Supplier Pricelist,Regular,base
+1669,product.tag,Product Tag,Regular,base
+191,product.template,Product,Regular,base
+200,product.template.attribute.exclusion,Product Template Attribute Exclusion,Regular,base
+198,product.template.attribute.line,Product Template Attribute Line,Regular,base
+199,product.template.attribute.value,Product Template Attribute Value,Regular,base
+1549,project.collaborator,Collaborators in project shared,Regular,base
+1544,project.milestone,Project Milestone,Regular,base
+435,project.project,Project,Regular,base
+1545,project.project.stage,Project Stage,Regular,base
+1937,project.project.stage.delete.wizard,Project Stage Delete Wizard,Transient,base
+1552,project.share.wizard,Project Sharing,Transient,base
+437,project.tags,Project Tags,Regular,base
+436,project.task,Task,Regular,base
+1551,project.task.burndown.chart.report,Burndown Chart,Regular,base
+2647,project.task.convert.wizard,Convert Project Tasks to Tickets,Transient,base
+1049,project.task.recurrence,Task Recurrence,Regular,base
+1546,project.task.stage.personal,Personal Task Stage,Regular,base
+434,project.task.type,Task Stage,Regular,base
+1056,project.task.type.delete.wizard,Project Task Stage Delete Wizard,Transient,base
+1547,project.update,Project Update,Regular,base
+1789,propose.change,Propose a change in the production,Transient,base
+167,publisher_warranty.contract,Publisher Warranty Contract,Regular,base
+373,purchase.bill.union,Purchases & Bills Union,Regular,base
+370,purchase.order,Purchase Order,Regular,base
+371,purchase.order.line,Purchase Order Line,Regular,base
+372,purchase.report,Purchase Report,Regular,base
+763,quality.alert,Quality Alert,Regular,base
+761,quality.alert.stage,Quality Alert Stage,Regular,base
+758,quality.alert.team,Quality Alert Team,Regular,base
+762,quality.check,Quality Check,Regular,base
+2668,quality.check.wizard,Wizard for Quality Check Pop Up,Transient,base
+757,quality.point,Quality Control Point,Regular,base
+756,quality.point.test_type,Quality Control Test Type,Regular,base
+759,quality.reason,Root Cause for Quality Failure,Regular,base
+760,quality.tag,Quality Tag,Regular,base
+433,rating.mixin,Rating Mixin,Regular,base
+432,rating.parent.mixin,Rating Parent Mixin,Regular,base
+431,rating.rating,Rating,Regular,base
+343,report.account.report_hash_integrity,Get hash integrity result as PDF.,Regular,base
+1027,report.account.report_invoice,Account report without payment lines,Regular,base
+340,report.account.report_invoice_with_payments,Account report with payment lines,Regular,base
+799,report.account_batch_payment.print_batch_payment,Batch Deposit Report,Regular,base
+94,report.base.report_irmodulereference,Module Reference Report (base),Regular,base
+1224,report.hr_holidays.report_holidayssummary,Holidays Summary Report,Regular,base
+68,report.layout,Report Layout,Regular,base
+2665,report.maintenance_worksheet.maintenance_worksheet,Maintenance Request Worksheet Custom Report,Regular,base
+283,report.mrp.report_bom_structure,BOM Overview Report,Regular,base
+1980,report.mrp.report_mo_overview,MO Overview Report,Regular,base
+411,report.mrp_account_enterprise.mrp_cost_structure,MRP Cost Structure Report,Regular,base
+412,report.mrp_account_enterprise.product_template_cost_structure,Product Template Cost Structure Report,Regular,base
+69,report.paperformat,Paper Format Config,Regular,base
+203,report.product.report_pricelist,Pricelist Report,Regular,base
+1893,report.product.report_producttemplatelabel2x7,Product Label Report 2x7,Regular,base
+1895,report.product.report_producttemplatelabel4x12,Product Label Report 4x12,Regular,base
+1896,report.product.report_producttemplatelabel4x12noprice,Product Label Report 4x12 No Price,Regular,base
+1894,report.product.report_producttemplatelabel4x7,Product Label Report 4x7,Regular,base
+1472,report.product.report_producttemplatelabel_dymo,Product Label Report,Regular,base
+438,report.project.task.user,Tasks Analysis,Regular,base
+2669,report.quality_control.quality_worksheet,Quality Worksheet Report,Regular,base
+2670,report.quality_control.quality_worksheet_internal,Quality Worksheet Internal Report,Regular,base
+1687,report.sign.green_savings_report,Green Savings Report model,Regular,base
+1561,report.stock.label_lot_template_view,Lot Label Report,Regular,base
+1560,report.stock.label_product_product_view,Product Label Report,Regular,base
+241,report.stock.quantity,Stock Quantity Report,Regular,base
+1559,report.stock.report_reception,Stock Reception Report,Regular,base
+242,report.stock.report_stock_rule,Stock rule report,Regular,base
+2679,request.appraisal,Request an Appraisal,Transient,base
+80,res.bank,Bank,Regular,base
+87,res.company,Companies,Regular,base
+82,res.config,Config,Transient,base
+83,res.config.installer,Config Installer,Transient,base
+84,res.config.settings,Config Settings,Transient,base
+71,res.country,Country,Regular,base
+72,res.country.group,Country Group,Regular,base
+73,res.country.state,Country state,Regular,base
+85,res.currency,Currency,Regular,base
+86,res.currency.rate,Currency Rate,Regular,base
+88,res.groups,Access Groups,Regular,base
+74,res.lang,Languages,Regular,base
+78,res.partner,Contact,Regular,base
+187,res.partner.autocomplete.sync,Partner Autocomplete Sync,Regular,base
+81,res.partner.bank,Bank Accounts,Regular,base
+76,res.partner.category,Partner Tags,Regular,base
+1483,res.partner.iap,Partner IAP,Regular,base
+79,res.partner.industry,Industry,Regular,base
+77,res.partner.title,Partner Title,Regular,base
+90,res.users,User,Regular,base
+882,res.users.apikeys,Users API Keys,Regular,base
+883,res.users.apikeys.description,API Key Description,Transient,base
+884,res.users.apikeys.show,Show API Key,Regular,base
+1626,res.users.deletion,Users Deletion Request,Regular,base
+881,res.users.identitycheck,Password Check Wizard,Transient,base
+89,res.users.log,Users Log,Regular,base
+1445,res.users.settings,User Settings,Regular,base
+1446,res.users.settings.volumes,User Settings Volumes,Regular,base
+16,reset.view.arch.wizard,Reset View Architecture Wizard,Transient,base
+134,resource.calendar,Resource Working Time,Regular,base
+135,resource.calendar.attendance,Work Detail,Regular,base
+137,resource.calendar.leaves,Resource Time Off Detail,Regular,base
+133,resource.mixin,Resource Mixin,Regular,base
+136,resource.resource,Resources,Regular,base
+403,sale.advance.payment.inv,Sales Advance Payment Invoice,Transient,base
+793,sale.discount.report,Sale Discount Report,Transient,base
+2060,sale.mass.cancel.orders,Cancel multiple quotations,Transient,base
+397,sale.order,Sales Order,Regular,base
+1147,sale.order.cancel,Sales Order Cancel,Transient,base
+2062,sale.order.discount,Discount Wizard,Transient,base
+398,sale.order.line,Sales Order Line,Regular,base
+413,sale.order.option,Sale Options,Regular,base
+414,sale.order.template,Quotation Template,Regular,base
+415,sale.order.template.line,Quotation Template Line,Regular,base
+416,sale.order.template.option,Quotation Template Option,Regular,base
+402,sale.payment.provider.onboarding.wizard,Sale Payment provider onboarding wizard,Transient,base
+399,sale.report,Sales Analysis Report,Regular,base
+1233,sale.revision,Sales Quotation Revisions,Regular,base
+1234,sale.revision.line,Sales Quotation Revisions Line,Regular,base
+1161,save.spreadsheet.template,Spreadsheet Template Save Wizard,Transient,base
+996,sequence.mixin,Automatic sequence,Regular,base
+1496,sign.duplicate.template.pdf,Sign Duplicate Template with new PDF,Transient,base
+746,sign.item,Fields to be sign on Document,Regular,base
+745,sign.item.option,Option of a selection Field,Regular,base
+748,sign.item.role,Signature Item Party,Regular,base
+747,sign.item.type,Signature Item Type,Regular,base
+749,sign.log,Sign requests access history,Regular,base
+740,sign.request,Signature Request,Regular,base
+741,sign.request.item,Signature Request Item,Regular,base
+742,sign.request.item.value,Signature Item Value,Regular,base
+750,sign.send.request,Sign send request,Transient,base
+751,sign.send.request.signer,Sign send request signer,Transient,base
+743,sign.template,Signature Template,Regular,base
+744,sign.template.tag,Sign Template Tag,Regular,base
+2656,slide.answer,Slide Question's Answer,Regular,base
+2659,slide.channel,Course,Regular,base
+2663,slide.channel.invite,Channel Invitation Wizard,Transient,base
+2658,slide.channel.partner,Channel / Partners (Members),Regular,base
+2661,slide.channel.tag,Channel/Course Tag,Regular,base
+2660,slide.channel.tag.group,Channel/Course Groups,Regular,base
+2657,slide.embed,Embedded Slides View Counter,Regular,base
+2655,slide.question,Content Quiz Question,Regular,base
+2654,slide.slide,Slides,Regular,base
+2652,slide.slide.partner,Slide / Partner decorated m2m,Regular,base
+2662,slide.slide.resource,Additional resource for a particular slide,Regular,base
+2653,slide.tag,Slide Tag,Regular,base
+218,sms.composer,Send SMS Wizard,Transient,base
+220,sms.resend,SMS Resend,Transient,base
+219,sms.resend.recipient,Resend Notification,Transient,base
+215,sms.sms,Outgoing SMS,Regular,base
+216,sms.template,SMS Templates,Regular,base
+221,sms.template.preview,SMS Template Preview,Transient,base
+1678,sms.template.reset,SMS Template Reset,Transient,base
+1911,sms.tracker,Link SMS to mailing/sms tracking models,Regular,base
+206,snailmail.letter,Snailmail Letter,Regular,base
+208,snailmail.letter.format.error,Format Error Sending a Snailmail Letter,Transient,base
+209,snailmail.letter.missing.required.fields,Update address of partner,Transient,base
+1382,social.account,Social Account,Regular,base
+1689,social.account.revoke.youtube,Revoke YouTube Account,Transient,base
+1384,social.live.post,Social Live Post,Regular,base
+1381,social.media,Social Media,Regular,base
+1383,social.post,Social Post,Regular,base
+1488,social.post.template,Social Post Template,Regular,base
+1756,social.post.to.lead,Convert Social Post to Lead,Transient,base
+1385,social.stream,Social Stream,Regular,base
+1387,social.stream.post,Social Stream Post,Regular,base
+1388,social.stream.post.image,Social Stream Post Image Attachment,Regular,base
+1386,social.stream.type,Social Stream Post,Regular,base
+1389,social.twitter.account,Social Twitter Account,Regular,base
+1162,spreadsheet.contributor,Spreadsheet Contributor,Regular,base
+1802,spreadsheet.dashboard,Spreadsheet Dashboard,Regular,base
+1801,spreadsheet.dashboard.group,Group of dashboards,Regular,base
+1939,spreadsheet.dashboard.share,Copy of a shared dashboard,Regular,base
+1805,spreadsheet.document.to.dashboard,Create a dashboard from a spreadsheet document,Transient,base
+1923,spreadsheet.mixin,Spreadsheet mixin,Regular,base
+1574,spreadsheet.revision,Collaborative spreadsheet revision,Regular,base
+1163,spreadsheet.template,Spreadsheet Template,Regular,base
+244,stock.assign.serial,Stock Assign Serial Numbers,Transient,base
+250,stock.backorder.confirmation,Backorder Confirmation,Transient,base
+1076,stock.backorder.confirmation.line,Backorder Confirmation Line,Transient,base
+247,stock.change.product.qty,Change Product Quantity,Transient,base
+1072,stock.forecasted_product_product,Stock Replenishment Report,Regular,base
+1073,stock.forecasted_product_template,Stock Replenishment Report,Regular,base
+1564,stock.inventory.adjustment.name,Inventory Adjustment Reference / Reason,Transient,base
+1562,stock.inventory.conflict,Conflict in Inventory,Transient,base
+1563,stock.inventory.warning,Inventory Adjustment Warning,Transient,base
+1228,stock.landed.cost,Stock Landed Cost,Regular,base
+1229,stock.landed.cost.lines,Stock Landed Cost Line,Regular,base
+226,stock.location,Inventory Locations,Regular,base
+230,stock.lot,Lot/Serial,Regular,base
+228,stock.move,Stock Move,Regular,base
+229,stock.move.line,Product Moves (Stock Move Line),Regular,base
+1078,stock.orderpoint.snooze,Snooze Orderpoint,Transient,base
+259,stock.package.destination,Stock Package Destination,Transient,base
+194,stock.package.type,Stock package type,Regular,base
+240,stock.package_level,Stock Package Level,Regular,base
+232,stock.picking,Transfer,Regular,base
+231,stock.picking.type,Picking Type,Regular,base
+223,stock.putaway.rule,Putaway Rule,Regular,base
+233,stock.quant,Quants,Regular,base
+234,stock.quant.package,Packages,Regular,base
+1947,stock.quant.relocate,Stock Quantity Relocation,Transient,base
+252,stock.quantity.history,Stock Quantity History,Transient,base
+1566,stock.replenishment.info,Stock supplier replenishment information,Transient,base
+1739,stock.replenishment.option,Stock warehouse replenishment option,Transient,base
+284,stock.report,Stock Report,Regular,base
+1565,stock.request.count,Stock Request an Inventory Count,Transient,base
+246,stock.return.picking,Return Picking,Transient,base
+245,stock.return.picking.line,Return Picking Line,Transient,base
+227,stock.route,Inventory Routes,Regular,base
+235,stock.rule,Stock Rule,Regular,base
+253,stock.rules.report,Stock Rules report,Transient,base
+248,stock.scheduler.compute,Run Scheduler Manually,Transient,base
+239,stock.scrap,Scrap,Regular,base
+1557,stock.storage.category,Storage Category,Regular,base
+1558,stock.storage.category.capacity,Storage Category Capacity,Regular,base
+243,stock.traceability.report,Traceability Report,Transient,base
+257,stock.track.confirmation,Stock Track Confirmation,Transient,base
+258,stock.track.line,Stock Track Line,Transient,base
+1230,stock.valuation.adjustment.lines,Valuation Adjustment Lines,Regular,base
+374,stock.valuation.layer,Stock Valuation Layer,Regular,base
+1115,stock.valuation.layer.revaluation,Wizard model to reavaluate a stock inventory for a product,Transient,base
+237,stock.warehouse,Warehouse,Regular,base
+238,stock.warehouse.orderpoint,Minimum Inventory Rule,Regular,base
+254,stock.warn.insufficient.qty,Warn Insufficient Quantity,Regular,base
+255,stock.warn.insufficient.qty.scrap,Warn Insufficient Scrap Quantity,Transient,base
+282,stock.warn.insufficient.qty.unbuild,Warn Insufficient Unbuild Quantity,Transient,base
+1599,stock_barcode.cancel.operation,Cancel Operation,Transient,base
+994,studio.approval.entry,Studio Approval Entry,Regular,base
+1706,studio.approval.request,Studio Approval Request,Regular,base
+993,studio.approval.rule,Studio Approval Rule,Regular,base
+430,studio.mixin,Studio Mixin,Regular,base
+1360,survey.invite,Survey Invitation Wizard,Transient,base
+1356,survey.question,Survey Question,Regular,base
+1357,survey.question.answer,Survey Label,Regular,base
+1355,survey.survey,Survey,Regular,base
+1358,survey.user_input,Survey User Input,Regular,base
+1359,survey.user_input.line,Survey User Input Line,Regular,base
+1634,template.reset.mixin,Template Reset Mixin,Regular,base
+1571,theme.ir.asset,Theme Asset,Regular,base
+1330,theme.ir.attachment,Theme Attachments,Regular,base
+1329,theme.ir.ui.view,Theme UI View,Regular,base
+1333,theme.utils,Theme Utils,Regular,base
+1331,theme.website.menu,Website Theme Menu,Regular,base
+1332,theme.website.page,Website Theme Page,Regular,base
+1241,timer.mixin,Timer Mixin,Regular,base
+1240,timer.timer,Timer Module,Regular,base
+126,uom.category,Product UoM Categories,Regular,base
+127,uom.uom,Product Unit of Measure,Regular,base
+755,user.activity.report,Users Activity Analysis,Regular,base
+140,utm.campaign,UTM Campaign,Regular,base
+139,utm.medium,UTM Medium,Regular,base
+144,utm.mixin,UTM Mixin,Regular,base
+141,utm.source,UTM Source,Regular,base
+1629,utm.source.mixin,UTM Source Mixin,Regular,base
+142,utm.stage,Campaign Stage,Regular,base
+143,utm.tag,UTM Tag,Regular,base
+329,validate.account.move,Validate Account Move,Transient,base
+1142,vendor.delay.report,Vendor Delay Report,Regular,base
+122,web_editor.assets,Assets Utils,Regular,base
+123,web_editor.converter.test,Web Editor Converter Test,Regular,base
+124,web_editor.converter.test.sub,Web Editor Converter Subtest,Regular,base
+125,web_tour.tour,Tours,Regular,base
+1324,website,Website,Regular,base
+1597,website.base.unit,Unit of Measure for price per unit on eCommerce products.,Regular,base
+1572,website.configurator.feature,Website Configurator Feature,Regular,base
+1973,website.controller.page,Model Page,Regular,base
+1320,website.cover_properties.mixin,Cover Properties Website Mixin,Regular,base
+1325,website.menu,Website Menu,Regular,base
+1321,website.multi.mixin,Multi Website Mixin,Regular,base
+1326,website.page,Page,Regular,base
+1322,website.published.mixin,Website Published Mixin,Regular,base
+1323,website.published.multi.mixin,Multi Website Published Mixin,Regular,base
+1328,website.rewrite,Website rewrite,Regular,base
+1337,website.robots,Robots.txt Editor,Transient,base
+1327,website.route,All Website Route,Regular,base
+1343,website.sale.extra.field,E-Commerce Extra Info Shown on product page,Regular,base
+1569,website.searchable.mixin,Website Searchable Mixin,Regular,base
+1319,website.seo.metadata,SEO metadata,Regular,base
+1336,website.snippet.filter,Website Snippet Filter,Regular,base
+1334,website.track,Visited Pages,Regular,base
+1335,website.visitor,Website Visitor,Regular,base
+1757,website.visitor.push.subscription,Push Subscription for a Website Visitor,Regular,base
+471,wizard.boards.legs.availability,Wizard Show Boards Legs Availability,Transient,base
+470,wizard.import.account.balance,Wizard Import Account Balance,Transient,base
+10,wizard.ir.model.menu.create,Create Menu Wizard,Transient,base
+2664,worksheet.template,Worksheet Template,Regular,base
+711,x_invoice,Invoice,Regular,manual
+2666,x_maintenance_request_worksheet_template_1,Service,Regular,manual
+2681,x_varinat,varinat,Regular,manual

@@ -1,0 +1,641 @@
+Model,Name,Read,Write,Create,Delete,Access_Level
+_unknown,Unknown,Yes,No,No,No,READ-ONLY
+account.account,Account,Yes,No,No,No,READ-ONLY
+account.account.tag,Account Tag,Yes,No,No,No,READ-ONLY
+account.aged.partner.balance.report.handler,Aged Partner Balance Custom Handler,Yes,No,No,No,READ-ONLY
+account.aged.payable.report.handler,Aged Payable Custom Handler,Yes,No,No,No,READ-ONLY
+account.aged.receivable.report.handler,Aged Receivable Custom Handler,Yes,No,No,No,READ-ONLY
+account.analytic.account,Analytic Account,Yes,No,No,No,READ-ONLY
+account.analytic.applicability,Analytic Plan's Applicabilities,Yes,No,No,No,READ-ONLY
+account.analytic.distribution.model,Analytic Distribution Model,Yes,No,No,No,READ-ONLY
+account.analytic.line,Analytic Account,Yes,No,No,No,READ-ONLY
+account.analytic.plan,Analytic Plans,Yes,No,No,No,READ-ONLY
+account.asset,Asset/Revenue Recognition,Yes,No,No,No,READ-ONLY
+account.asset.report.handler,Assets Report Custom Handler,Yes,No,No,No,READ-ONLY
+account.bank.statement,Bank Statement,Yes,No,No,No,READ-ONLY
+account.bank.statement.line,Bank Statement Line,Yes,No,No,No,READ-ONLY
+account.batch.payment,Batch Payment,Yes,No,No,No,READ-ONLY
+account.budget.post,Budgetary Position,Yes,No,No,No,READ-ONLY
+account.cash.flow.report.handler,Cash Flow Report Custom Handler,Yes,No,No,No,READ-ONLY
+account.cash.rounding,Account Cash Rounding,Yes,No,No,No,READ-ONLY
+account.chart.template,Account Chart Template,Yes,No,No,No,READ-ONLY
+account.deferred.expense.report.handler,Deferred Expense Custom Handler,Yes,No,No,No,READ-ONLY
+account.deferred.report.handler,Deferred Expense Report Custom Handler,Yes,No,No,No,READ-ONLY
+account.deferred.revenue.report.handler,Deferred Revenue Custom Handler,Yes,No,No,No,READ-ONLY
+account.ec.sales.report.handler,EC Sales Report Custom Handler,Yes,No,No,No,READ-ONLY
+account.edi.common,"Common functions for EDI documents: generate the data, the constraints, etc",Yes,No,No,No,READ-ONLY
+account.edi.document,Electronic Document for an account.move,Yes,No,No,No,READ-ONLY
+account.edi.format,EDI format,Yes,No,No,No,READ-ONLY
+account.edi.xml.cii,Factur-x/XRechnung CII 2.2.0,Yes,No,No,No,READ-ONLY
+account.edi.xml.ubl_20,UBL 2.0,Yes,No,No,No,READ-ONLY
+account.edi.xml.ubl_21,UBL 2.1,Yes,No,No,No,READ-ONLY
+account.edi.xml.ubl_a_nz,A-NZ BIS Billing 3.0,Yes,No,No,No,READ-ONLY
+account.edi.xml.ubl_bis3,UBL BIS Billing 3.0.12,Yes,No,No,No,READ-ONLY
+account.edi.xml.ubl_de,BIS3 DE (XRechnung),Yes,No,No,No,READ-ONLY
+account.edi.xml.ubl_efff,E-FFF (BE),Yes,No,No,No,READ-ONLY
+account.edi.xml.ubl_nl,SI-UBL 2.0 (NLCIUS),Yes,No,No,No,READ-ONLY
+account.edi.xml.ubl_sg,SG BIS Billing 3.0,Yes,No,No,No,READ-ONLY
+account.fiscal.position,Fiscal Position,Yes,No,No,No,READ-ONLY
+account.fiscal.position.account,Accounts Mapping of Fiscal Position,Yes,No,No,No,READ-ONLY
+account.fiscal.position.tax,Tax Mapping of Fiscal Position,Yes,No,No,No,READ-ONLY
+account.fiscal.year,Fiscal Year,Yes,No,No,No,READ-ONLY
+account.followup.report,Follow-up Report,Yes,No,No,No,READ-ONLY
+account.full.reconcile,Full Reconcile,Yes,No,No,No,READ-ONLY
+account.general.ledger.report.handler,General Ledger Custom Handler,Yes,No,No,No,READ-ONLY
+account.generic.tax.report.handler,Generic Tax Report Custom Handler,Yes,No,No,No,READ-ONLY
+account.generic.tax.report.handler.account.tax,Generic Tax Report Custom Handler (Account -> Tax),Yes,No,No,No,READ-ONLY
+account.generic.tax.report.handler.tax.account,Generic Tax Report Custom Handler (Tax -> Account),Yes,No,No,No,READ-ONLY
+account.group,Account Group,Yes,No,No,No,READ-ONLY
+account.incoterms,Incoterms,Yes,No,No,No,READ-ONLY
+account.invoice.report,Invoices Statistics,Yes,No,No,No,READ-ONLY
+account.invoice_extract.words,Extracted words from invoice scan,Yes,No,No,No,READ-ONLY
+account.journal,Journal,Yes,No,No,No,READ-ONLY
+account.journal.group,Account Journal Group,Yes,No,No,No,READ-ONLY
+account.journal.report.handler,Journal Report Custom Handler,Yes,No,No,No,READ-ONLY
+account.move,Journal Entry,Yes,No,No,No,READ-ONLY
+account.move.approval,Bill approval lines,Yes,Yes,Yes,Yes,FULL (RWCD)
+account.move.line,Journal Item,Yes,No,No,No,READ-ONLY
+account.move.stage,Bill Approval Stages,Yes,Yes,Yes,Yes,FULL (RWCD)
+account.multicurrency.revaluation.report.handler,Multicurrency Revaluation Report Custom Handler,Yes,No,No,No,READ-ONLY
+account.online.account,representation of an online bank account,Yes,No,No,No,READ-ONLY
+account.online.link,Bank Connection,Yes,No,No,No,READ-ONLY
+account.partial.reconcile,Partial Reconcile,Yes,No,No,No,READ-ONLY
+account.partner.ledger.report.handler,Partner Ledger Custom Handler,Yes,No,No,No,READ-ONLY
+account.payment,Payments,Yes,No,No,No,READ-ONLY
+account.payment.method,Payment Methods,Yes,No,No,No,READ-ONLY
+account.payment.method.line,Payment Methods,Yes,No,No,No,READ-ONLY
+account.payment.term,Payment Terms,Yes,No,No,No,READ-ONLY
+account.payment.term.line,Payment Terms Line,Yes,No,No,No,READ-ONLY
+account.reconcile.model,Preset to create journal entries during a invoices and payments matching,Yes,No,No,No,READ-ONLY
+account.reconcile.model.line,Rules for the reconciliation model,Yes,No,No,No,READ-ONLY
+account.reconcile.model.partner.mapping,Partner mapping for reconciliation models,Yes,No,No,No,READ-ONLY
+account.report,Accounting Report,Yes,No,No,No,READ-ONLY
+account.report.column,Accounting Report Column,Yes,No,No,No,READ-ONLY
+account.report.custom.handler,Account Report Custom Handler,Yes,No,No,No,READ-ONLY
+account.report.expression,Accounting Report Expression,Yes,No,No,No,READ-ONLY
+account.report.external.value,Accounting Report External Value,Yes,No,No,No,READ-ONLY
+account.report.footnote,Account Report Footnote,Yes,No,No,No,READ-ONLY
+account.report.horizontal.group,Horizontal group for reports,Yes,No,No,No,READ-ONLY
+account.report.horizontal.group.rule,Horizontal group rule for reports,Yes,No,No,No,READ-ONLY
+account.report.line,Accounting Report Line,Yes,No,No,No,READ-ONLY
+account.root,Account codes first 2 digits,Yes,No,No,No,READ-ONLY
+account.tax,Tax,Yes,No,No,No,READ-ONLY
+account.tax.group,Tax Group,Yes,No,No,No,READ-ONLY
+account.tax.repartition.line,Tax Repartition Line,Yes,No,No,No,READ-ONLY
+account.tax.report.handler,Account Report Handler for Tax Reports,Yes,No,No,No,READ-ONLY
+account.tax.unit,Tax Unit,Yes,No,No,No,READ-ONLY
+account.transfer.model,Account Transfer Model,Yes,No,No,No,READ-ONLY
+account.transfer.model.line,Account Transfer Model Line,Yes,No,No,No,READ-ONLY
+account.trial.balance.report.handler,Trial Balance Custom Handler,Yes,No,No,No,READ-ONLY
+account_followup.followup.line,Follow-up Criteria,Yes,No,No,No,READ-ONLY
+activity.report,Users Activity Analysis,Yes,No,No,No,READ-ONLY
+analytic.mixin,Analytic Mixin,Yes,No,No,No,READ-ONLY
+approval.rule,Vendor Bill Approval Rules,Yes,Yes,Yes,Yes,FULL (RWCD)
+auth_totp.device,Authentication Device,Yes,No,No,No,READ-ONLY
+avatar.mixin,Avatar Mixin,Yes,No,No,No,READ-ONLY
+bank.rec.widget,Bank reconciliation widget for a single statement line,Yes,No,No,No,READ-ONLY
+bank.rec.widget.line,Line of the bank reconciliation widget,Yes,No,No,No,READ-ONLY
+barcode.nomenclature,Barcode Nomenclature,Yes,No,No,No,READ-ONLY
+barcode.rule,Barcode Rule,Yes,No,No,No,READ-ONLY
+barcodes.barcode_events_mixin,Barcode Event Mixin,Yes,No,No,No,READ-ONLY
+base,Base,Yes,No,No,No,READ-ONLY
+base.automation,Automation Rule,Yes,No,No,No,READ-ONLY
+base.geo_provider,Geo Provider,Yes,No,No,No,READ-ONLY
+base.geocoder,Geo Coder,Yes,No,No,No,READ-ONLY
+base_import.mapping,Base Import Mapping,Yes,No,No,No,READ-ONLY
+board.board,Board,Yes,No,No,No,READ-ONLY
+board.calculator,Board Calculator,Yes,Yes,Yes,Yes,FULL (RWCD)
+board.calculator.line,Board Calculator Line,Yes,Yes,Yes,Yes,FULL (RWCD)
+bus.bus,Communication Bus,Yes,No,No,No,READ-ONLY
+bus.presence,User Presence,Yes,No,No,No,READ-ONLY
+calendar.alarm,Event Alarm,Yes,No,No,No,READ-ONLY
+calendar.alarm_manager,Event Alarm Manager,Yes,No,No,No,READ-ONLY
+calendar.attendee,Calendar Attendee Information,Yes,No,No,No,READ-ONLY
+calendar.event,Calendar Event,Yes,No,No,No,READ-ONLY
+calendar.event.type,Event Meeting Type,Yes,No,No,No,READ-ONLY
+calendar.filters,Calendar Filters,Yes,No,No,No,READ-ONLY
+calendar.recurrence,Event Recurrence Rule,Yes,No,No,No,READ-ONLY
+chat.bot.credit.master,credit master,Yes,No,No,No,READ-ONLY
+client.bearer.token,Bearer Token,Yes,No,No,No,READ-ONLY
+copilot.message,Copilot Message,Yes,No,No,No,READ-ONLY
+copilot.response.line,Copilot Response Line,Yes,No,No,No,READ-ONLY
+copilot.session.history,Copilot Session History,Yes,No,No,No,READ-ONLY
+crm.activity.report,CRM Activity Analysis,Yes,No,No,No,READ-ONLY
+crm.iap.lead.helpers,Helper methods for crm_iap_mine modules,Yes,No,No,No,READ-ONLY
+crm.iap.lead.industry,CRM IAP Lead Industry,Yes,No,No,No,READ-ONLY
+crm.iap.lead.mining.request,CRM Lead Mining Request,Yes,No,No,No,READ-ONLY
+crm.iap.lead.role,People Role,Yes,No,No,No,READ-ONLY
+crm.iap.lead.seniority,People Seniority,Yes,No,No,No,READ-ONLY
+crm.lead,Lead/Opportunity,Yes,No,No,No,READ-ONLY
+crm.lead.scoring.frequency,Lead Scoring Frequency,Yes,No,No,No,READ-ONLY
+crm.lead.scoring.frequency.field,Fields that can be used for predictive lead scoring computation,Yes,No,No,No,READ-ONLY
+crm.lead.source,Opportunity source description,Yes,No,No,No,READ-ONLY
+crm.lost.reason,Opp. Lost Reason,Yes,No,No,No,READ-ONLY
+crm.recurring.plan,CRM Recurring revenue plans,Yes,No,No,No,READ-ONLY
+crm.specification,Lead Specification,Yes,No,No,No,READ-ONLY
+crm.stage,CRM Stages,Yes,No,No,No,READ-ONLY
+crm.tag,CRM Tag,Yes,No,No,No,READ-ONLY
+crm.team,Sales Team,Yes,No,No,No,READ-ONLY
+crm.team.member,Sales Team Member,Yes,No,No,No,READ-ONLY
+crossovered.budget,Budget,Yes,No,No,No,READ-ONLY
+crossovered.budget.lines,Budget Line,Yes,No,No,No,READ-ONLY
+decimal.precision,Decimal Precision,Yes,No,No,No,READ-ONLY
+delivery.carrier,Shipping Methods,Yes,No,No,No,READ-ONLY
+delivery.price.rule,Delivery Price Rules,Yes,No,No,No,READ-ONLY
+delivery.zip.prefix,Delivery Zip Prefix,Yes,No,No,No,READ-ONLY
+digest.digest,Digest,Yes,No,No,No,READ-ONLY
+digest.tip,Digest Tips,Yes,No,No,No,READ-ONLY
+discuss.channel,Discussion Channel,Yes,No,No,No,READ-ONLY
+discuss.channel.member,Channel Member,Yes,No,No,No,READ-ONLY
+discuss.channel.rtc.session,Mail RTC session,Yes,No,No,No,READ-ONLY
+discuss.gif.favorite,Save favorite GIF from Tenor API,Yes,No,No,No,READ-ONLY
+discuss.voice.metadata,Metadata for voice attachments,Yes,No,No,No,READ-ONLY
+documents.account.folder.setting,Journal and Folder settings,Yes,No,No,No,READ-ONLY
+documents.document,Document,Yes,No,No,No,READ-ONLY
+documents.facet,Category,Yes,No,No,No,READ-ONLY
+documents.folder,Documents Workspace,Yes,No,No,No,READ-ONLY
+documents.mixin,Documents creation mixin,Yes,No,No,No,READ-ONLY
+documents.share,Documents Share,Yes,No,No,No,READ-ONLY
+documents.shared.spreadsheet,Copy of a shared spreadsheet,Yes,No,No,No,READ-ONLY
+documents.tag,Tag,Yes,No,No,No,READ-ONLY
+documents.workflow.action,Document Workflow Tag Action,Yes,No,No,No,READ-ONLY
+documents.workflow.rule,A set of condition and actions which will be available to all attachments matching the conditions,Yes,No,No,No,READ-ONLY
+extract.mixin,Base class to extract data from documents,Yes,No,No,No,READ-ONLY
+favorite.questions,Favorite Questions,Yes,No,No,No,READ-ONLY
+fetchmail.server,Incoming Mail Server,Yes,No,No,No,READ-ONLY
+format.address.mixin,Address Format,Yes,No,No,No,READ-ONLY
+gamification.badge,Gamification Badge,Yes,No,No,No,READ-ONLY
+gamification.badge.user,Gamification User Badge,Yes,No,No,No,READ-ONLY
+gamification.challenge,Gamification Challenge,Yes,No,No,No,READ-ONLY
+gamification.challenge.line,Gamification generic goal for challenge,Yes,No,No,No,READ-ONLY
+gamification.goal,Gamification Goal,Yes,No,No,No,READ-ONLY
+gamification.goal.definition,Gamification Goal Definition,Yes,No,No,No,READ-ONLY
+gamification.karma.rank,Rank based on karma,Yes,No,No,No,READ-ONLY
+gamification.karma.tracking,Track Karma Changes,Yes,No,No,No,READ-ONLY
+google.calendar.credentials,Google Calendar Account Data,Yes,No,No,No,READ-ONLY
+google.calendar.sync,Synchronize a record with Google Calendar,Yes,No,No,No,READ-ONLY
+google.map.view.mixins,Google Map View Mixins,Yes,No,No,No,READ-ONLY
+google.service,Google Service,Yes,No,No,No,READ-ONLY
+helpdesk.sla,Helpdesk SLA Policies,Yes,No,No,No,READ-ONLY
+helpdesk.sla.report.analysis,SLA Status Analysis,Yes,No,No,No,READ-ONLY
+helpdesk.sla.status,Ticket SLA Status,Yes,No,No,No,READ-ONLY
+helpdesk.stage,Helpdesk Stage,Yes,No,No,No,READ-ONLY
+helpdesk.tag,Helpdesk Tags,Yes,No,No,No,READ-ONLY
+helpdesk.team,Helpdesk Team,Yes,No,No,No,READ-ONLY
+helpdesk.ticket,Helpdesk Ticket,Yes,No,No,No,READ-ONLY
+helpdesk.ticket.report.analysis,Ticket Analysis,Yes,No,No,No,READ-ONLY
+helpdesk.ticket.type,Helpdesk Ticket Type,Yes,No,No,No,READ-ONLY
+hr.applicant,Applicant,Yes,No,No,No,READ-ONLY
+hr.applicant.category,Category of applicant,Yes,No,No,No,READ-ONLY
+hr.applicant.refuse.reason,Refuse Reason of Applicant,Yes,No,No,No,READ-ONLY
+hr.appraisal,Employee Appraisal,Yes,No,No,No,READ-ONLY
+hr.appraisal.goal,Appraisal Goal,Yes,No,No,No,READ-ONLY
+hr.appraisal.goal.tag,Appraisal Goal Tags,Yes,No,No,No,READ-ONLY
+hr.appraisal.note,Appraisal Assessment Note,Yes,No,No,No,READ-ONLY
+hr.appraisal.report,Appraisal Statistics,Yes,No,No,No,READ-ONLY
+hr.attendance,Attendance,Yes,No,No,No,READ-ONLY
+hr.attendance.overtime,Attendance Overtime,Yes,No,No,No,READ-ONLY
+hr.contract.type,Contract Type,Yes,No,No,No,READ-ONLY
+hr.department,Department,Yes,No,No,No,READ-ONLY
+hr.departure.reason,Departure Reason,Yes,No,No,No,READ-ONLY
+hr.employee,Employee,Yes,No,No,No,READ-ONLY
+hr.employee.base,Basic Employee,Yes,No,No,No,READ-ONLY
+hr.employee.category,Employee Category,Yes,No,No,No,READ-ONLY
+hr.employee.public,Public Employee,Yes,No,No,No,READ-ONLY
+hr.job,Job Position,Yes,No,No,No,READ-ONLY
+hr.leave,Time Off,Yes,No,No,No,READ-ONLY
+hr.leave.accrual.level,Accrual Plan Level,Yes,No,No,No,READ-ONLY
+hr.leave.accrual.plan,Accrual Plan,Yes,No,No,No,READ-ONLY
+hr.leave.allocation,Time Off Allocation,Yes,No,No,No,READ-ONLY
+hr.leave.employee.type.report,Time Off Summary / Report,Yes,No,No,No,READ-ONLY
+hr.leave.mandatory.day,Mandatory Day,Yes,No,No,No,READ-ONLY
+hr.leave.report,Time Off Summary / Report,Yes,No,No,No,READ-ONLY
+hr.leave.report.calendar,Time Off Calendar,Yes,No,No,No,READ-ONLY
+hr.leave.type,Time Off Type,Yes,No,No,No,READ-ONLY
+hr.licence,Employee license management,Yes,No,No,No,READ-ONLY
+hr.recruitment.degree,Applicant Degree,Yes,No,No,No,READ-ONLY
+hr.recruitment.report,Recruitment Analysis Report,Yes,No,No,No,READ-ONLY
+hr.recruitment.source,Source of Applicants,Yes,No,No,No,READ-ONLY
+hr.recruitment.stage,Recruitment Stages,Yes,No,No,No,READ-ONLY
+hr.recruitment.stage.report,Recruitment Stage Analysis,Yes,No,No,No,READ-ONLY
+hr.work.location,Work Location,Yes,No,No,No,READ-ONLY
+html.field.history.mixin,Field html History,Yes,No,No,No,READ-ONLY
+iap.account,IAP Account,Yes,No,No,No,READ-ONLY
+iap.autocomplete.api,IAP Partner Autocomplete API,Yes,No,No,No,READ-ONLY
+iap.enrich.api,IAP Lead Enrichment API,Yes,No,No,No,READ-ONLY
+image.mixin,Image Mixin,Yes,No,No,No,READ-ONLY
+ir.actions.act_url,Action URL,Yes,No,No,No,READ-ONLY
+ir.actions.act_window,Action Window,Yes,No,No,No,READ-ONLY
+ir.actions.act_window.view,Action Window View,Yes,No,No,No,READ-ONLY
+ir.actions.act_window_close,Action Window Close,Yes,No,No,No,READ-ONLY
+ir.actions.actions,Actions,Yes,No,No,No,READ-ONLY
+ir.actions.client,Client Action,Yes,No,No,No,READ-ONLY
+ir.actions.report,Report Action,Yes,No,No,No,READ-ONLY
+ir.actions.server,Server Action,Yes,No,No,No,READ-ONLY
+ir.actions.todo,Configuration Wizards,Yes,No,No,No,READ-ONLY
+ir.asset,Asset,Yes,No,No,No,READ-ONLY
+ir.attachment,Attachment,Yes,No,No,No,READ-ONLY
+ir.autovacuum,Automatic Vacuum,Yes,No,No,No,READ-ONLY
+ir.binary,File streaming helper model for controllers,Yes,No,No,No,READ-ONLY
+ir.config_parameter,System Parameter,Yes,No,No,No,READ-ONLY
+ir.cron,Scheduled Actions,Yes,No,No,No,READ-ONLY
+ir.cron.trigger,Triggered actions,Yes,No,No,No,READ-ONLY
+ir.default,Default Values,Yes,No,No,No,READ-ONLY
+ir.exports,Exports,Yes,No,No,No,READ-ONLY
+ir.exports.line,Exports Line,Yes,No,No,No,READ-ONLY
+ir.fields.converter,Fields Converter,Yes,No,No,No,READ-ONLY
+ir.filters,Filters,Yes,No,No,No,READ-ONLY
+ir.http,HTTP Routing,Yes,No,No,No,READ-ONLY
+ir.logging,Logging,Yes,No,No,No,READ-ONLY
+ir.mail_server,Mail Server,Yes,No,No,No,READ-ONLY
+ir.model,Models,Yes,No,No,No,READ-ONLY
+ir.model.access,Model Access,Yes,No,No,No,READ-ONLY
+ir.model.constraint,Model Constraint,Yes,No,No,No,READ-ONLY
+ir.model.data,Model Data,Yes,No,No,No,READ-ONLY
+ir.model.fields,Fields,Yes,No,No,No,READ-ONLY
+ir.model.fields.selection,Fields Selection,Yes,No,No,No,READ-ONLY
+ir.model.inherit,Model Inheritance Tree,Yes,No,No,No,READ-ONLY
+ir.model.relation,Relation Model,Yes,No,No,No,READ-ONLY
+ir.module.category,Application,Yes,No,No,No,READ-ONLY
+ir.module.module,Module,Yes,No,No,No,READ-ONLY
+ir.module.module.dependency,Module dependency,Yes,No,No,No,READ-ONLY
+ir.module.module.exclusion,Module exclusion,Yes,No,No,No,READ-ONLY
+ir.profile,Profiling results,Yes,No,No,No,READ-ONLY
+ir.property,Company Property,Yes,No,No,No,READ-ONLY
+ir.qweb,Qweb,Yes,No,No,No,READ-ONLY
+ir.qweb.field,Qweb Field,Yes,No,No,No,READ-ONLY
+ir.qweb.field.barcode,Qweb Field Barcode,Yes,No,No,No,READ-ONLY
+ir.qweb.field.contact,Qweb Field Contact,Yes,No,No,No,READ-ONLY
+ir.qweb.field.date,Qweb Field Date,Yes,No,No,No,READ-ONLY
+ir.qweb.field.datetime,Qweb Field Datetime,Yes,No,No,No,READ-ONLY
+ir.qweb.field.duration,Qweb Field Duration,Yes,No,No,No,READ-ONLY
+ir.qweb.field.float,Qweb Field Float,Yes,No,No,No,READ-ONLY
+ir.qweb.field.float_time,Qweb Field Float Time,Yes,No,No,No,READ-ONLY
+ir.qweb.field.html,Qweb Field HTML,Yes,No,No,No,READ-ONLY
+ir.qweb.field.image,Qweb Field Image,Yes,No,No,No,READ-ONLY
+ir.qweb.field.image_url,Qweb Field Image,Yes,No,No,No,READ-ONLY
+ir.qweb.field.integer,Qweb Field Integer,Yes,No,No,No,READ-ONLY
+ir.qweb.field.many2many,Qweb field many2many,Yes,No,No,No,READ-ONLY
+ir.qweb.field.many2one,Qweb Field Many to One,Yes,No,No,No,READ-ONLY
+ir.qweb.field.monetary,Qweb Field Monetary,Yes,No,No,No,READ-ONLY
+ir.qweb.field.qweb,Qweb Field qweb,Yes,No,No,No,READ-ONLY
+ir.qweb.field.relative,Qweb Field Relative,Yes,No,No,No,READ-ONLY
+ir.qweb.field.selection,Qweb Field Selection,Yes,No,No,No,READ-ONLY
+ir.qweb.field.text,Qweb Field Text,Yes,No,No,No,READ-ONLY
+ir.qweb.field.time,QWeb Field Time,Yes,No,No,No,READ-ONLY
+ir.rule,Rule,Yes,No,No,No,READ-ONLY
+ir.sequence,Sequence,Yes,No,No,No,READ-ONLY
+ir.sequence.date_range,Sequence Date Range,Yes,No,No,No,READ-ONLY
+ir.ui.menu,Menu,Yes,No,No,No,READ-ONLY
+ir.ui.view,View,Yes,No,No,No,READ-ONLY
+ir.ui.view.custom,Custom View,Yes,No,No,No,READ-ONLY
+ir.websocket,websocket message handling,Yes,No,No,No,READ-ONLY
+ir_actions_account_report_download,Technical model for accounting report downloads,Yes,No,No,No,READ-ONLY
+lead.closemonth,lead.closemonth,Yes,No,No,No,READ-ONLY
+link.tracker,Link Tracker,Yes,No,No,No,READ-ONLY
+link.tracker.click,Link Tracker Click,Yes,No,No,No,READ-ONLY
+link.tracker.code,Link Tracker Code,Yes,No,No,No,READ-ONLY
+lost.message.parent,Lost Message Parent,Yes,No,No,No,READ-ONLY
+mail.activity,Activity,Yes,No,No,No,READ-ONLY
+mail.activity.mixin,Activity Mixin,Yes,No,No,No,READ-ONLY
+mail.activity.plan,Activity Plan,Yes,No,No,No,READ-ONLY
+mail.activity.plan.template,Activity plan template,Yes,No,No,No,READ-ONLY
+mail.activity.type,Activity Type,Yes,No,No,No,READ-ONLY
+mail.alias,Email Aliases,Yes,No,No,No,READ-ONLY
+mail.alias.domain,Email Domain,Yes,No,No,No,READ-ONLY
+mail.alias.mixin,Email Aliases Mixin,Yes,No,No,No,READ-ONLY
+mail.alias.mixin.optional,Email Aliases Mixin (light),Yes,No,No,No,READ-ONLY
+mail.blacklist,Mail Blacklist,Yes,No,No,No,READ-ONLY
+mail.composer.mixin,Mail Composer Mixin,Yes,No,No,No,READ-ONLY
+mail.followers,Document Followers,Yes,No,No,No,READ-ONLY
+mail.gateway.allowed,Mail Gateway Allowed,Yes,No,No,No,READ-ONLY
+mail.group,Mail Group,Yes,No,No,No,READ-ONLY
+mail.group.member,Mailing List Member,Yes,No,No,No,READ-ONLY
+mail.group.message,Mailing List Message,Yes,No,No,No,READ-ONLY
+mail.group.moderation,Mailing List black/white list,Yes,No,No,No,READ-ONLY
+mail.guest,Guest,Yes,No,No,No,READ-ONLY
+mail.ice.server,ICE server,Yes,No,No,No,READ-ONLY
+mail.link.preview,Store link preview data,Yes,No,No,No,READ-ONLY
+mail.mail,Outgoing Mails,Yes,No,No,No,READ-ONLY
+mail.message,Message,Yes,No,No,No,READ-ONLY
+mail.message.reaction,Message Reaction,Yes,No,No,No,READ-ONLY
+mail.message.schedule,Scheduled Messages,Yes,No,No,No,READ-ONLY
+mail.message.subtype,Message subtypes,Yes,No,No,No,READ-ONLY
+mail.message.translation,Message Translation,Yes,No,No,No,READ-ONLY
+mail.notification,Message Notifications,Yes,No,No,No,READ-ONLY
+mail.notification.web.push,Cron data used for web push notification,Yes,No,No,No,READ-ONLY
+mail.partner.device,Partner Web Push Device,Yes,No,No,No,READ-ONLY
+mail.render.mixin,Mail Render Mixin,Yes,No,No,No,READ-ONLY
+mail.shortcode,Canned Response / Shortcode,Yes,No,No,No,READ-ONLY
+mail.template,Email Templates,Yes,No,No,No,READ-ONLY
+mail.thread,Email Thread,Yes,No,No,No,READ-ONLY
+mail.thread.blacklist,Mail Blacklist mixin,Yes,No,No,No,READ-ONLY
+mail.thread.cc,Email CC management,Yes,No,No,No,READ-ONLY
+mail.thread.main.attachment,Mail Main Attachment management,Yes,No,No,No,READ-ONLY
+mail.thread.phone,Phone Blacklist Mixin,Yes,No,No,No,READ-ONLY
+mail.tracking.duration.mixin,Mixin to compute the time a record has spent in each value a many2one field can take,Yes,No,No,No,READ-ONLY
+mail.tracking.value,Mail Tracking Value,Yes,No,No,No,READ-ONLY
+mailing.contact,Mailing Contact,Yes,No,No,No,READ-ONLY
+mailing.filter,Mailing Favorite Filters,Yes,No,No,No,READ-ONLY
+mailing.list,Mailing List,Yes,No,No,No,READ-ONLY
+mailing.mailing,Mass Mailing,Yes,No,No,No,READ-ONLY
+mailing.subscription,Mailing List Subscription,Yes,No,No,No,READ-ONLY
+mailing.subscription.optout,Mailing Subscription Reason,Yes,No,No,No,READ-ONLY
+mailing.trace,Mailing Statistics,Yes,No,No,No,READ-ONLY
+mailing.trace.report,Mass Mailing Statistics,Yes,No,No,No,READ-ONLY
+maintenance.equipment,Maintenance Equipment,Yes,No,No,No,READ-ONLY
+maintenance.equipment.category,Maintenance Equipment Category,Yes,No,No,No,READ-ONLY
+maintenance.mixin,Maintenance Maintained Item,Yes,No,No,No,READ-ONLY
+maintenance.request,Maintenance Request,Yes,No,No,No,READ-ONLY
+maintenance.stage,Maintenance Stage,Yes,No,No,No,READ-ONLY
+maintenance.team,Maintenance Teams,Yes,No,No,No,READ-ONLY
+mcp.enabled.model,MCP Enabled Model,Yes,No,No,No,READ-ONLY
+mcp.log,MCP Server Activity Log,Yes,No,No,No,READ-ONLY
+message.edit.history,Mail Message Edit History,Yes,No,No,No,READ-ONLY
+microsoft.outlook.mixin,Microsoft Outlook Mixin,Yes,No,No,No,READ-ONLY
+mrp.bom,Bill of Material,Yes,No,No,No,READ-ONLY
+mrp.bom.byproduct,Byproduct,Yes,No,No,No,READ-ONLY
+mrp.bom.line,Bill of Material Line,Yes,No,No,No,READ-ONLY
+mrp.document,Production Document,Yes,No,No,No,READ-ONLY
+mrp.production,Production Order,Yes,No,No,No,READ-ONLY
+mrp.report,Manufacturing Report,Yes,No,No,No,READ-ONLY
+mrp.routing.workcenter,Work Center Usage,Yes,No,No,No,READ-ONLY
+mrp.unbuild,Unbuild Order,Yes,No,No,No,READ-ONLY
+mrp.workcenter,Work Center,Yes,No,No,No,READ-ONLY
+mrp.workcenter.capacity,Work Center Capacity,Yes,No,No,No,READ-ONLY
+mrp.workcenter.productivity,Workcenter Productivity Log,Yes,No,No,No,READ-ONLY
+mrp.workcenter.productivity.loss,Workcenter Productivity Losses,Yes,No,No,No,READ-ONLY
+mrp.workcenter.productivity.loss.type,MRP Workorder productivity losses,Yes,No,No,No,READ-ONLY
+mrp.workcenter.tag,Add tag for the workcenter,Yes,No,No,No,READ-ONLY
+mrp.workorder,Work Order,Yes,No,No,No,READ-ONLY
+onboarding.onboarding,Onboarding,Yes,No,No,No,READ-ONLY
+onboarding.onboarding.step,Onboarding Step,Yes,No,No,No,READ-ONLY
+onboarding.progress,Onboarding Progress Tracker,Yes,No,No,No,READ-ONLY
+onboarding.progress.step,Onboarding Progress Step Tracker,Yes,No,No,No,READ-ONLY
+partner.activity.report,Partner Activity Analysis,Yes,No,No,No,READ-ONLY
+payment.method,Payment Method,Yes,No,No,No,READ-ONLY
+payment.provider,Payment Provider,Yes,No,No,No,READ-ONLY
+payment.token,Payment Token,Yes,No,No,No,READ-ONLY
+payment.transaction,Payment Transaction,Yes,No,No,No,READ-ONLY
+pending.activity.report,Pending Activity Report,Yes,No,No,No,READ-ONLY
+phone.blacklist,Phone Blacklist,Yes,No,No,No,READ-ONLY
+planning.analysis.report,Planning Analysis Report,Yes,No,No,No,READ-ONLY
+planning.planning,Schedule,Yes,No,No,No,READ-ONLY
+planning.recurrency,Planning Recurrence,Yes,No,No,No,READ-ONLY
+planning.role,Planning Role,Yes,No,No,No,READ-ONLY
+planning.slot,Planning Shift,Yes,No,No,No,READ-ONLY
+planning.slot.template,Shift Template,Yes,No,No,No,READ-ONLY
+portal.mixin,Portal Mixin,Yes,No,No,No,READ-ONLY
+powerbi.connection,Power BI Connection Configuration,Yes,No,No,No,READ-ONLY
+powerbi.connector.dashboard,PowerBI Connector Dashboard,Yes,No,No,No,READ-ONLY
+powerbi.dashboard,Power BI Dashboards,Yes,No,No,No,READ-ONLY
+powerbi.dataset,Power BI Dataset,Yes,No,No,No,READ-ONLY
+powerbi.eventhouse,Power BI Eventhouse,Yes,No,No,No,READ-ONLY
+powerbi.kql.database,Power BI KQL Database,Yes,No,No,No,READ-ONLY
+powerbi.report,Power BI Reports,Yes,No,No,No,READ-ONLY
+powerbi.table,Powerbi Table,Yes,No,No,No,READ-ONLY
+powerbi.table.column,Power BI Table Columns,Yes,No,No,No,READ-ONLY
+powerbi.workspace,Power BI Workspace/Group,Yes,No,No,No,READ-ONLY
+privacy.log,Privacy Log,Yes,No,No,No,READ-ONLY
+procurement.group,Procurement Group,Yes,No,No,No,READ-ONLY
+product.attribute,Product Attribute,Yes,No,No,No,READ-ONLY
+product.attribute.category,product.attribute.category,Yes,Yes,Yes,Yes,FULL (RWCD)
+product.attribute.custom.value,Product Attribute Custom Value,Yes,No,No,No,READ-ONLY
+product.attribute.value,Attribute Value,Yes,No,No,No,READ-ONLY
+product.catalog.mixin,Product Catalog Mixin,Yes,No,No,No,READ-ONLY
+product.category,Product Category,Yes,No,No,No,READ-ONLY
+product.document,Product Document,Yes,No,No,No,READ-ONLY
+product.image,Product Image,Yes,No,No,No,READ-ONLY
+product.packaging,Product Packaging,Yes,No,No,No,READ-ONLY
+product.pricelist,Pricelist,Yes,No,No,No,READ-ONLY
+product.pricelist.item,Pricelist Rule,Yes,No,No,No,READ-ONLY
+product.product,Product Variant,Yes,No,No,No,READ-ONLY
+product.public.category,Website Product Category,Yes,No,No,No,READ-ONLY
+product.removal,Removal Strategy,Yes,No,No,No,READ-ONLY
+product.ribbon,Product ribbon,Yes,No,No,No,READ-ONLY
+product.storage.location,product storage location,Yes,No,No,No,READ-ONLY
+product.supplierinfo,Supplier Pricelist,Yes,No,No,No,READ-ONLY
+product.tag,Product Tag,Yes,No,No,No,READ-ONLY
+product.template,Product,Yes,No,No,No,READ-ONLY
+product.template.attribute.exclusion,Product Template Attribute Exclusion,Yes,No,No,No,READ-ONLY
+product.template.attribute.line,Product Template Attribute Line,Yes,No,No,No,READ-ONLY
+product.template.attribute.value,Product Template Attribute Value,Yes,No,No,No,READ-ONLY
+project.collaborator,Collaborators in project shared,Yes,No,No,No,READ-ONLY
+project.milestone,Project Milestone,Yes,No,No,No,READ-ONLY
+project.project,Project,Yes,No,No,No,READ-ONLY
+project.project.stage,Project Stage,Yes,No,No,No,READ-ONLY
+project.tags,Project Tags,Yes,No,No,No,READ-ONLY
+project.task,Task,Yes,No,No,No,READ-ONLY
+project.task.burndown.chart.report,Burndown Chart,Yes,No,No,No,READ-ONLY
+project.task.recurrence,Task Recurrence,Yes,No,No,No,READ-ONLY
+project.task.stage.personal,Personal Task Stage,Yes,No,No,No,READ-ONLY
+project.task.type,Task Stage,Yes,No,No,No,READ-ONLY
+project.update,Project Update,Yes,No,No,No,READ-ONLY
+publisher_warranty.contract,Publisher Warranty Contract,Yes,No,No,No,READ-ONLY
+purchase.bill.union,Purchases & Bills Union,Yes,No,No,No,READ-ONLY
+purchase.order,Purchase Order,Yes,No,No,No,READ-ONLY
+purchase.order.line,Purchase Order Line,Yes,No,No,No,READ-ONLY
+purchase.report,Purchase Report,Yes,No,No,No,READ-ONLY
+quality.alert,Quality Alert,Yes,No,No,No,READ-ONLY
+quality.alert.stage,Quality Alert Stage,Yes,No,No,No,READ-ONLY
+quality.alert.team,Quality Alert Team,Yes,No,No,No,READ-ONLY
+quality.check,Quality Check,Yes,No,No,No,READ-ONLY
+quality.point,Quality Control Point,Yes,No,No,No,READ-ONLY
+quality.point.test_type,Quality Control Test Type,Yes,No,No,No,READ-ONLY
+quality.reason,Root Cause for Quality Failure,Yes,No,No,No,READ-ONLY
+quality.tag,Quality Tag,Yes,No,No,No,READ-ONLY
+rating.mixin,Rating Mixin,Yes,No,No,No,READ-ONLY
+rating.parent.mixin,Rating Parent Mixin,Yes,No,No,No,READ-ONLY
+rating.rating,Rating,Yes,No,No,No,READ-ONLY
+report.account.report_hash_integrity,Get hash integrity result as PDF.,Yes,No,No,No,READ-ONLY
+report.account.report_invoice,Account report without payment lines,Yes,No,No,No,READ-ONLY
+report.account.report_invoice_with_payments,Account report with payment lines,Yes,No,No,No,READ-ONLY
+report.account_batch_payment.print_batch_payment,Batch Deposit Report,Yes,No,No,No,READ-ONLY
+report.base.report_irmodulereference,Module Reference Report (base),Yes,No,No,No,READ-ONLY
+report.hr_holidays.report_holidayssummary,Holidays Summary Report,Yes,No,No,No,READ-ONLY
+report.layout,Report Layout,Yes,No,No,No,READ-ONLY
+report.maintenance_worksheet.maintenance_worksheet,Maintenance Request Worksheet Custom Report,Yes,No,No,No,READ-ONLY
+report.mrp.report_bom_structure,BOM Overview Report,Yes,No,No,No,READ-ONLY
+report.mrp.report_mo_overview,MO Overview Report,Yes,No,No,No,READ-ONLY
+report.mrp_account_enterprise.mrp_cost_structure,MRP Cost Structure Report,Yes,No,No,No,READ-ONLY
+report.mrp_account_enterprise.product_template_cost_structure,Product Template Cost Structure Report,Yes,No,No,No,READ-ONLY
+report.paperformat,Paper Format Config,Yes,No,No,No,READ-ONLY
+report.product.report_pricelist,Pricelist Report,Yes,No,No,No,READ-ONLY
+report.product.report_producttemplatelabel2x7,Product Label Report 2x7,Yes,No,No,No,READ-ONLY
+report.product.report_producttemplatelabel4x12,Product Label Report 4x12,Yes,No,No,No,READ-ONLY
+report.product.report_producttemplatelabel4x12noprice,Product Label Report 4x12 No Price,Yes,No,No,No,READ-ONLY
+report.product.report_producttemplatelabel4x7,Product Label Report 4x7,Yes,No,No,No,READ-ONLY
+report.product.report_producttemplatelabel_dymo,Product Label Report,Yes,No,No,No,READ-ONLY
+report.project.task.user,Tasks Analysis,Yes,No,No,No,READ-ONLY
+report.quality_control.quality_worksheet,Quality Worksheet Report,Yes,No,No,No,READ-ONLY
+report.quality_control.quality_worksheet_internal,Quality Worksheet Internal Report,Yes,No,No,No,READ-ONLY
+report.sign.green_savings_report,Green Savings Report model,Yes,No,No,No,READ-ONLY
+report.stock.label_lot_template_view,Lot Label Report,Yes,No,No,No,READ-ONLY
+report.stock.label_product_product_view,Product Label Report,Yes,No,No,No,READ-ONLY
+report.stock.quantity,Stock Quantity Report,Yes,No,No,No,READ-ONLY
+report.stock.report_reception,Stock Reception Report,Yes,No,No,No,READ-ONLY
+report.stock.report_stock_rule,Stock rule report,Yes,No,No,No,READ-ONLY
+res.bank,Bank,Yes,No,No,No,READ-ONLY
+res.company,Companies,Yes,No,No,No,READ-ONLY
+res.country,Country,Yes,No,No,No,READ-ONLY
+res.country.group,Country Group,Yes,No,No,No,READ-ONLY
+res.country.state,Country state,Yes,No,No,No,READ-ONLY
+res.currency,Currency,Yes,No,No,No,READ-ONLY
+res.currency.rate,Currency Rate,Yes,No,No,No,READ-ONLY
+res.groups,Access Groups,Yes,No,No,No,READ-ONLY
+res.lang,Languages,Yes,No,No,No,READ-ONLY
+res.partner,Contact,Yes,No,No,No,READ-ONLY
+res.partner.autocomplete.sync,Partner Autocomplete Sync,Yes,No,No,No,READ-ONLY
+res.partner.bank,Bank Accounts,Yes,No,No,No,READ-ONLY
+res.partner.category,Partner Tags,Yes,No,No,No,READ-ONLY
+res.partner.iap,Partner IAP,Yes,No,No,No,READ-ONLY
+res.partner.industry,Industry,Yes,No,No,No,READ-ONLY
+res.partner.title,Partner Title,Yes,No,No,No,READ-ONLY
+res.users,User,Yes,No,No,No,READ-ONLY
+res.users.apikeys,Users API Keys,Yes,No,No,No,READ-ONLY
+res.users.apikeys.show,Show API Key,Yes,No,No,No,READ-ONLY
+res.users.deletion,Users Deletion Request,Yes,No,No,No,READ-ONLY
+res.users.log,Users Log,Yes,No,No,No,READ-ONLY
+res.users.settings,User Settings,Yes,No,No,No,READ-ONLY
+res.users.settings.volumes,User Settings Volumes,Yes,No,No,No,READ-ONLY
+resource.calendar,Resource Working Time,Yes,No,No,No,READ-ONLY
+resource.calendar.attendance,Work Detail,Yes,No,No,No,READ-ONLY
+resource.calendar.leaves,Resource Time Off Detail,Yes,No,No,No,READ-ONLY
+resource.mixin,Resource Mixin,Yes,No,No,No,READ-ONLY
+resource.resource,Resources,Yes,No,No,No,READ-ONLY
+sale.order,Sales Order,Yes,No,No,No,READ-ONLY
+sale.order.line,Sales Order Line,Yes,No,No,No,READ-ONLY
+sale.order.option,Sale Options,Yes,No,No,No,READ-ONLY
+sale.order.template,Quotation Template,Yes,No,No,No,READ-ONLY
+sale.order.template.line,Quotation Template Line,Yes,No,No,No,READ-ONLY
+sale.order.template.option,Quotation Template Option,Yes,No,No,No,READ-ONLY
+sale.report,Sales Analysis Report,Yes,No,No,No,READ-ONLY
+sale.revision,Sales Quotation Revisions,Yes,Yes,Yes,No,RWC
+sale.revision.line,Sales Quotation Revisions Line,Yes,Yes,Yes,No,RWC
+sequence.mixin,Automatic sequence,Yes,No,No,No,READ-ONLY
+sign.item,Fields to be sign on Document,Yes,No,No,No,READ-ONLY
+sign.item.option,Option of a selection Field,Yes,No,No,No,READ-ONLY
+sign.item.role,Signature Item Party,Yes,No,No,No,READ-ONLY
+sign.item.type,Signature Item Type,Yes,No,No,No,READ-ONLY
+sign.log,Sign requests access history,Yes,No,No,No,READ-ONLY
+sign.request,Signature Request,Yes,No,No,No,READ-ONLY
+sign.request.item,Signature Request Item,Yes,No,No,No,READ-ONLY
+sign.request.item.value,Signature Item Value,Yes,No,No,No,READ-ONLY
+sign.template,Signature Template,Yes,No,No,No,READ-ONLY
+sign.template.tag,Sign Template Tag,Yes,No,No,No,READ-ONLY
+slide.answer,Slide Question's Answer,Yes,No,No,No,READ-ONLY
+slide.channel,Course,Yes,No,No,No,READ-ONLY
+slide.channel.partner,Channel / Partners (Members),Yes,No,No,No,READ-ONLY
+slide.channel.tag,Channel/Course Tag,Yes,No,No,No,READ-ONLY
+slide.channel.tag.group,Channel/Course Groups,Yes,No,No,No,READ-ONLY
+slide.embed,Embedded Slides View Counter,Yes,No,No,No,READ-ONLY
+slide.question,Content Quiz Question,Yes,No,No,No,READ-ONLY
+slide.slide,Slides,Yes,No,No,No,READ-ONLY
+slide.slide.partner,Slide / Partner decorated m2m,Yes,No,No,No,READ-ONLY
+slide.slide.resource,Additional resource for a particular slide,Yes,No,No,No,READ-ONLY
+slide.tag,Slide Tag,Yes,No,No,No,READ-ONLY
+sms.sms,Outgoing SMS,Yes,No,No,No,READ-ONLY
+sms.template,SMS Templates,Yes,No,No,No,READ-ONLY
+sms.tracker,Link SMS to mailing/sms tracking models,Yes,No,No,No,READ-ONLY
+snailmail.letter,Snailmail Letter,Yes,No,No,No,READ-ONLY
+social.account,Social Account,Yes,No,No,No,READ-ONLY
+social.live.post,Social Live Post,Yes,No,No,No,READ-ONLY
+social.media,Social Media,Yes,No,No,No,READ-ONLY
+social.post,Social Post,Yes,No,No,No,READ-ONLY
+social.post.template,Social Post Template,Yes,No,No,No,READ-ONLY
+social.stream,Social Stream,Yes,No,No,No,READ-ONLY
+social.stream.post,Social Stream Post,Yes,No,No,No,READ-ONLY
+social.stream.post.image,Social Stream Post Image Attachment,Yes,No,No,No,READ-ONLY
+social.stream.type,Social Stream Post,Yes,No,No,No,READ-ONLY
+social.twitter.account,Social Twitter Account,Yes,No,No,No,READ-ONLY
+spreadsheet.contributor,Spreadsheet Contributor,Yes,No,No,No,READ-ONLY
+spreadsheet.dashboard,Spreadsheet Dashboard,Yes,No,No,No,READ-ONLY
+spreadsheet.dashboard.group,Group of dashboards,Yes,No,No,No,READ-ONLY
+spreadsheet.dashboard.share,Copy of a shared dashboard,Yes,No,No,No,READ-ONLY
+spreadsheet.mixin,Spreadsheet mixin,Yes,No,No,No,READ-ONLY
+spreadsheet.revision,Collaborative spreadsheet revision,Yes,No,No,No,READ-ONLY
+spreadsheet.template,Spreadsheet Template,Yes,No,No,No,READ-ONLY
+stock.forecasted_product_product,Stock Replenishment Report,Yes,No,No,No,READ-ONLY
+stock.forecasted_product_template,Stock Replenishment Report,Yes,No,No,No,READ-ONLY
+stock.landed.cost,Stock Landed Cost,Yes,No,No,No,READ-ONLY
+stock.landed.cost.lines,Stock Landed Cost Line,Yes,No,No,No,READ-ONLY
+stock.location,Inventory Locations,Yes,No,No,No,READ-ONLY
+stock.lot,Lot/Serial,Yes,No,No,No,READ-ONLY
+stock.move,Stock Move,Yes,No,No,No,READ-ONLY
+stock.move.line,Product Moves (Stock Move Line),Yes,No,No,No,READ-ONLY
+stock.package.type,Stock package type,Yes,No,No,No,READ-ONLY
+stock.package_level,Stock Package Level,Yes,No,No,No,READ-ONLY
+stock.picking,Transfer,Yes,No,No,No,READ-ONLY
+stock.picking.type,Picking Type,Yes,No,No,No,READ-ONLY
+stock.putaway.rule,Putaway Rule,Yes,No,No,No,READ-ONLY
+stock.quant,Quants,Yes,No,No,No,READ-ONLY
+stock.quant.package,Packages,Yes,No,No,No,READ-ONLY
+stock.report,Stock Report,Yes,No,No,No,READ-ONLY
+stock.route,Inventory Routes,Yes,No,No,No,READ-ONLY
+stock.rule,Stock Rule,Yes,No,No,No,READ-ONLY
+stock.scrap,Scrap,Yes,No,No,No,READ-ONLY
+stock.storage.category,Storage Category,Yes,No,No,No,READ-ONLY
+stock.storage.category.capacity,Storage Category Capacity,Yes,No,No,No,READ-ONLY
+stock.valuation.adjustment.lines,Valuation Adjustment Lines,Yes,No,No,No,READ-ONLY
+stock.valuation.layer,Stock Valuation Layer,Yes,No,No,No,READ-ONLY
+stock.warehouse,Warehouse,Yes,No,No,No,READ-ONLY
+stock.warehouse.orderpoint,Minimum Inventory Rule,Yes,No,No,No,READ-ONLY
+stock.warn.insufficient.qty,Warn Insufficient Quantity,Yes,No,No,No,READ-ONLY
+studio.approval.entry,Studio Approval Entry,Yes,No,No,No,READ-ONLY
+studio.approval.request,Studio Approval Request,Yes,No,No,No,READ-ONLY
+studio.approval.rule,Studio Approval Rule,Yes,No,No,No,READ-ONLY
+studio.mixin,Studio Mixin,Yes,No,No,No,READ-ONLY
+survey.question,Survey Question,Yes,No,No,No,READ-ONLY
+survey.question.answer,Survey Label,Yes,No,No,No,READ-ONLY
+survey.survey,Survey,Yes,No,No,No,READ-ONLY
+survey.user_input,Survey User Input,Yes,No,No,No,READ-ONLY
+survey.user_input.line,Survey User Input Line,Yes,No,No,No,READ-ONLY
+template.reset.mixin,Template Reset Mixin,Yes,No,No,No,READ-ONLY
+theme.ir.asset,Theme Asset,Yes,No,No,No,READ-ONLY
+theme.ir.attachment,Theme Attachments,Yes,No,No,No,READ-ONLY
+theme.ir.ui.view,Theme UI View,Yes,No,No,No,READ-ONLY
+theme.utils,Theme Utils,Yes,No,No,No,READ-ONLY
+theme.website.menu,Website Theme Menu,Yes,No,No,No,READ-ONLY
+theme.website.page,Website Theme Page,Yes,No,No,No,READ-ONLY
+timer.mixin,Timer Mixin,Yes,No,No,No,READ-ONLY
+timer.timer,Timer Module,Yes,No,No,No,READ-ONLY
+uom.category,Product UoM Categories,Yes,No,No,No,READ-ONLY
+uom.uom,Product Unit of Measure,Yes,No,No,No,READ-ONLY
+user.activity.report,Users Activity Analysis,Yes,No,No,No,READ-ONLY
+utm.campaign,UTM Campaign,Yes,No,No,No,READ-ONLY
+utm.medium,UTM Medium,Yes,No,No,No,READ-ONLY
+utm.mixin,UTM Mixin,Yes,No,No,No,READ-ONLY
+utm.source,UTM Source,Yes,No,No,No,READ-ONLY
+utm.source.mixin,UTM Source Mixin,Yes,No,No,No,READ-ONLY
+utm.stage,Campaign Stage,Yes,No,No,No,READ-ONLY
+utm.tag,UTM Tag,Yes,No,No,No,READ-ONLY
+vendor.delay.report,Vendor Delay Report,Yes,No,No,No,READ-ONLY
+voip.call,A phone call handled using the VoIP application,Yes,No,No,No,READ-ONLY
+voip.queue.mixin,VOIP Queue support,Yes,No,No,No,READ-ONLY
+web_editor.assets,Assets Utils,Yes,No,No,No,READ-ONLY
+web_editor.converter.test,Web Editor Converter Test,Yes,No,No,No,READ-ONLY
+web_editor.converter.test.sub,Web Editor Converter Subtest,Yes,No,No,No,READ-ONLY
+web_tour.tour,Tours,Yes,No,No,No,READ-ONLY
+website,Website,Yes,No,No,No,READ-ONLY
+website.base.unit,Unit of Measure for price per unit on eCommerce products.,Yes,No,No,No,READ-ONLY
+website.configurator.feature,Website Configurator Feature,Yes,No,No,No,READ-ONLY
+website.controller.page,Model Page,Yes,No,No,No,READ-ONLY
+website.cover_properties.mixin,Cover Properties Website Mixin,Yes,No,No,No,READ-ONLY
+website.menu,Website Menu,Yes,No,No,No,READ-ONLY
+website.multi.mixin,Multi Website Mixin,Yes,No,No,No,READ-ONLY
+website.page,Page,Yes,No,No,No,READ-ONLY
+website.published.mixin,Website Published Mixin,Yes,No,No,No,READ-ONLY
+website.published.multi.mixin,Multi Website Published Mixin,Yes,No,No,No,READ-ONLY
+website.rewrite,Website rewrite,Yes,No,No,No,READ-ONLY
+website.route,All Website Route,Yes,No,No,No,READ-ONLY
+website.sale.extra.field,E-Commerce Extra Info Shown on product page,Yes,No,No,No,READ-ONLY
+website.searchable.mixin,Website Searchable Mixin,Yes,No,No,No,READ-ONLY
+website.seo.metadata,SEO metadata,Yes,No,No,No,READ-ONLY
+website.snippet.filter,Website Snippet Filter,Yes,No,No,No,READ-ONLY
+website.track,Visited Pages,Yes,No,No,No,READ-ONLY
+website.visitor,Website Visitor,Yes,No,No,No,READ-ONLY
+website.visitor.push.subscription,Push Subscription for a Website Visitor,Yes,No,No,No,READ-ONLY
+worksheet.template,Worksheet Template,Yes,No,No,No,READ-ONLY
+x_invoice,Invoice,Yes,No,No,No,READ-ONLY
+x_maintenance_request_worksheet_template_1,Service,Yes,No,No,No,READ-ONLY
+x_varinat,varinat,Yes,No,No,No,READ-ONLY

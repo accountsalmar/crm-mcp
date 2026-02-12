@@ -1,0 +1,2985 @@
+{
+  "user": "accounting@qagroup.com.au",
+  "uid": 105,
+  "database": "26_01_06",
+  "total_models": 836,
+  "models_with_access": 372,
+  "permissions": [
+    {
+      "model": "account.account",
+      "name": "Account",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.account.tag",
+      "name": "Account Tag",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.analytic.account",
+      "name": "Analytic Account",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "account.analytic.applicability",
+      "name": "Analytic Plan's Applicabilities",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "account.analytic.distribution.model",
+      "name": "Analytic Distribution Model",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "account.analytic.line",
+      "name": "Analytic Account",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "account.analytic.plan",
+      "name": "Analytic Plans",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "account.edi.document",
+      "name": "Electronic Document for an account.move",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.edi.format",
+      "name": "EDI format",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.fiscal.position",
+      "name": "Fiscal Position",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.fiscal.position.account",
+      "name": "Accounts Mapping of Fiscal Position",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.fiscal.position.tax",
+      "name": "Tax Mapping of Fiscal Position",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.incoterms",
+      "name": "Incoterms",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.invoice_extract.words",
+      "name": "Extracted words from invoice scan",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "account.journal",
+      "name": "Journal",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.move",
+      "name": "Journal Entry",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.move.approval",
+      "name": "Bill approval lines",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "account.move.line",
+      "name": "Journal Item",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.move.reject",
+      "name": "Vendor Bill Rejection",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "account.move.send",
+      "name": "Account Move Send",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.move.stage",
+      "name": "Bill Approval Stages",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "account.partial.reconcile",
+      "name": "Partial Reconcile",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.payment.method",
+      "name": "Payment Methods",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.payment.method.line",
+      "name": "Payment Methods",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.payment.term",
+      "name": "Payment Terms",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.payment.term.line",
+      "name": "Payment Terms Line",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.tax",
+      "name": "Tax",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.tax.group",
+      "name": "Tax Group",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "account.tax.repartition.line",
+      "name": "Tax Repartition Line",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "activity.report",
+      "name": "Users Activity Analysis",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "appraisal.ask.feedback",
+      "name": "Ask Feedback for Appraisal",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "approval.rule",
+      "name": "Vendor Bill Approval Rules",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "auth_totp.device",
+      "name": "Authentication Device",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "auth_totp.wizard",
+      "name": "2-Factor Setup Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "barcode.nomenclature",
+      "name": "Barcode Nomenclature",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "barcode.rule",
+      "name": "Barcode Rule",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "base.geo_provider",
+      "name": "Geo Provider",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "base.language.export",
+      "name": "Language Export",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "base.module.install.request",
+      "name": "Module Activation Request",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "base.partner.merge.automatic.wizard",
+      "name": "Merge Partner Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "base.partner.merge.line",
+      "name": "Merge Partner Line",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "base_import.import",
+      "name": "Base Import",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "base_import.mapping",
+      "name": "Base Import Mapping",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "board.board",
+      "name": "Board",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "board.calculator",
+      "name": "Board Calculator",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "board.calculator.line",
+      "name": "Board Calculator Line",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "bus.presence",
+      "name": "User Presence",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "business.response.line.wizard",
+      "name": "Business Response Line Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "calendar.alarm",
+      "name": "Event Alarm",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "calendar.alarm_manager",
+      "name": "Event Alarm Manager",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "calendar.attendee",
+      "name": "Calendar Attendee Information",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "calendar.event",
+      "name": "Calendar Event",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "calendar.event.type",
+      "name": "Event Meeting Type",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "calendar.filters",
+      "name": "Calendar Filters",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "calendar.popover.delete.wizard",
+      "name": "Calendar Popover Delete Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "calendar.recurrence",
+      "name": "Event Recurrence Rule",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "change.password.own",
+      "name": "User, change own password wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "chat.bot.credit.master",
+      "name": "credit master",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "choose.delivery.carrier",
+      "name": "Delivery Carrier Selection Wizard",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "client.bearer.token",
+      "name": "Bearer Token",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "copilot.message",
+      "name": "Copilot Message",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "copilot.session.history",
+      "name": "Copilot Session History",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "credit.limit.report",
+      "name": "Credit Limit Report",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "crm.activity.report",
+      "name": "CRM Activity Analysis",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.lead",
+      "name": "Lead/Opportunity",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.lead.convert2ticket",
+      "name": "Lead convert to Ticket",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.lead.lost",
+      "name": "Get Lost Reason",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.lead.scoring.frequency",
+      "name": "Lead Scoring Frequency",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.lead.scoring.frequency.field",
+      "name": "Fields that can be used for predictive lead scoring computation",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.lead.source",
+      "name": "Opportunity source description",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "crm.lead2opportunity.partner",
+      "name": "Convert Lead to Opportunity (not in mass)",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.lead2opportunity.partner.mass",
+      "name": "Convert Lead to Opportunity (in mass)",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.lost.reason",
+      "name": "Opp. Lost Reason",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.merge.opportunity",
+      "name": "Merge Opportunities",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.quotation.partner",
+      "name": "Create new or use existing Customer on new Quotation",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.recurring.plan",
+      "name": "CRM Recurring revenue plans",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.specification",
+      "name": "Lead Specification",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "crm.stage",
+      "name": "CRM Stages",
+      "read": true,
+      "write": true,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.tag",
+      "name": "CRM Tag",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.team",
+      "name": "Sales Team",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crm.team.member",
+      "name": "Sales Team Member",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "crossovered.budget.lines",
+      "name": "Budget Line",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "delivery.carrier",
+      "name": "Shipping Methods",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "delivery.price.rule",
+      "name": "Delivery Price Rules",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "delivery.zip.prefix",
+      "name": "Delivery Zip Prefix",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "digest.digest",
+      "name": "Digest",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "digest.tip",
+      "name": "Digest Tips",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "discuss.channel",
+      "name": "Discussion Channel",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "discuss.channel.member",
+      "name": "Channel Member",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "discuss.gif.favorite",
+      "name": "Save favorite GIF from Tenor API",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "documents.document",
+      "name": "Document",
+      "read": true,
+      "write": true,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "documents.facet",
+      "name": "Category",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "documents.folder",
+      "name": "Documents Workspace",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "documents.share",
+      "name": "Documents Share",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "documents.tag",
+      "name": "Tag",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "documents.workflow.action",
+      "name": "Document Workflow Tag Action",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "documents.workflow.rule",
+      "name": "A set of condition and actions which will be available to all attachments matching the conditions",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "gamification.badge",
+      "name": "Gamification Badge",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "gamification.badge.user",
+      "name": "Gamification User Badge",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "gamification.badge.user.wizard",
+      "name": "Gamification User Badge Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "gamification.challenge",
+      "name": "Gamification Challenge",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "gamification.challenge.line",
+      "name": "Gamification generic goal for challenge",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "gamification.goal",
+      "name": "Gamification Goal",
+      "read": true,
+      "write": true,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "gamification.goal.definition",
+      "name": "Gamification Goal Definition",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "gamification.goal.wizard",
+      "name": "Gamification Goal Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "gamification.karma.rank",
+      "name": "Rank based on karma",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "gen.journal.entry",
+      "name": "gen.journal.entry",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "google.calendar.credentials",
+      "name": "Google Calendar Account Data",
+      "read": true,
+      "write": true,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "helpdesk.sla",
+      "name": "Helpdesk SLA Policies",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "helpdesk.sla.status",
+      "name": "Ticket SLA Status",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "helpdesk.stage",
+      "name": "Helpdesk Stage",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "helpdesk.tag",
+      "name": "Helpdesk Tags",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "helpdesk.team",
+      "name": "Helpdesk Team",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "helpdesk.ticket",
+      "name": "Helpdesk Ticket",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "helpdesk.ticket.type",
+      "name": "Helpdesk Ticket Type",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "hr.applicant.category",
+      "name": "Category of applicant",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "hr.appraisal",
+      "name": "Employee Appraisal",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "hr.appraisal.goal",
+      "name": "Appraisal Goal",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "hr.appraisal.goal.tag",
+      "name": "Appraisal Goal Tags",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "hr.appraisal.note",
+      "name": "Appraisal Assessment Note",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "hr.department",
+      "name": "Department",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "hr.employee.category",
+      "name": "Employee Category",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "hr.employee.public",
+      "name": "Public Employee",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "hr.holidays.cancel.leave",
+      "name": "Cancel Time Off Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "hr.job",
+      "name": "Job Position",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "hr.leave",
+      "name": "Time Off",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "hr.leave.allocation",
+      "name": "Time Off Allocation",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "hr.leave.employee.type.report",
+      "name": "Time Off Summary / Report",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "hr.leave.mandatory.day",
+      "name": "Mandatory Day",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "hr.leave.report",
+      "name": "Time Off Summary / Report",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "hr.leave.report.calendar",
+      "name": "Time Off Calendar",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "hr.leave.type",
+      "name": "Time Off Type",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "hr.licence",
+      "name": "Employee license management",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "hr.recruitment.source",
+      "name": "Source of Applicants",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "hr.work.location",
+      "name": "Work Location",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "iap.account",
+      "name": "IAP Account",
+      "read": true,
+      "write": false,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "iap.account.info",
+      "name": "IAP Account Info",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "ir.actions.report",
+      "name": "Report Action",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "ir.attachment",
+      "name": "Attachment",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "ir.cron",
+      "name": "Scheduled Actions",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "ir.default",
+      "name": "Default Values",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "ir.exports.line",
+      "name": "Exports Line",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "ir.filters",
+      "name": "Filters",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "ir.model",
+      "name": "Models",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "ir.module.category",
+      "name": "Application",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "ir.module.module",
+      "name": "Module",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "ir.sequence",
+      "name": "Sequence",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "ir.sequence.date_range",
+      "name": "Sequence Date Range",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "ir.ui.menu",
+      "name": "Menu",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "ir.ui.view",
+      "name": "View",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "lead.closemonth",
+      "name": "lead.closemonth",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "link.tracker",
+      "name": "Link Tracker",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "link.tracker.click",
+      "name": "Link Tracker Click",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "link.tracker.code",
+      "name": "Link Tracker Code",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "mail.activity",
+      "name": "Activity",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "mail.activity.plan",
+      "name": "Activity Plan",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "mail.activity.plan.template",
+      "name": "Activity plan template",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "mail.activity.schedule",
+      "name": "Activity schedule plan Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "mail.activity.todo.create",
+      "name": "Create activity and todo at the same time",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "mail.activity.type",
+      "name": "Activity Type",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "mail.alias",
+      "name": "Email Aliases",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "mail.alias.domain",
+      "name": "Email Domain",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "mail.compose.message",
+      "name": "Email composition wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "mail.followers",
+      "name": "Document Followers",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "mail.group",
+      "name": "Mail Group",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "mail.group.member",
+      "name": "Mailing List Member",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "mail.group.message",
+      "name": "Mailing List Message",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "mail.group.message.reject",
+      "name": "Reject Group Message",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "mail.group.moderation",
+      "name": "Mailing List black/white list",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "mail.guest",
+      "name": "Guest",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "mail.message",
+      "name": "Message",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "mail.message.subtype",
+      "name": "Message subtypes",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "mail.notification",
+      "name": "Message Notifications",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "mail.resend.message",
+      "name": "Email resend wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "mail.resend.partner",
+      "name": "Partner with additional information for mail resend",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "mail.shortcode",
+      "name": "Canned Response / Shortcode",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "mail.template",
+      "name": "Email Templates",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "mail.template.preview",
+      "name": "Email Template Preview",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "mail.template.reset",
+      "name": "Mail Template Reset",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "mail.wizard.invite",
+      "name": "Invite wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "maintenance.equipment",
+      "name": "Maintenance Equipment",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "maintenance.equipment.category",
+      "name": "Maintenance Equipment Category",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "maintenance.request",
+      "name": "Maintenance Request",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "maintenance.stage",
+      "name": "Maintenance Stage",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "maintenance.team",
+      "name": "Maintenance Teams",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "message.edit.history",
+      "name": "Mail Message Edit History",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "message.query.view.wizard",
+      "name": "Query View Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "mrp.bom",
+      "name": "Bill of Material",
+      "read": true,
+      "write": true,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "mrp.bom.line",
+      "name": "Bill of Material Line",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "mrp.production",
+      "name": "Production Order",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "mrp.workorder",
+      "name": "Work Order",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "partner.activity.report",
+      "name": "Partner Activity Analysis",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "payment.capture.wizard",
+      "name": "Payment Capture Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "payment.link.wizard",
+      "name": "Generate Sales Payment Link",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "payment.method",
+      "name": "Payment Method",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "payment.token",
+      "name": "Payment Token",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "pending.activity.report",
+      "name": "Pending Activity Report",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "planning.recurrency",
+      "name": "Planning Recurrence",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "planning.role",
+      "name": "Planning Role",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "planning.slot",
+      "name": "Planning Shift",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "planning.slot.template",
+      "name": "Shift Template",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "portal.share",
+      "name": "Portal Sharing",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "portal.wizard",
+      "name": "Grant Portal Access",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "portal.wizard.user",
+      "name": "Portal User Config",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.connection",
+      "name": "Power BI Connection Configuration",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.connector.dashboard",
+      "name": "PowerBI Connector Dashboard",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.credentials.wizard",
+      "name": "Powerbi Credentials Wizard",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.dashboard",
+      "name": "Power BI Dashboards",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.dataset",
+      "name": "Power BI Dataset",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.eventhouse",
+      "name": "Power BI Eventhouse",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.kql.database",
+      "name": "Power BI KQL Database",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.message.wizard",
+      "name": "Powerbi Message Wizard",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.report",
+      "name": "Power BI Reports",
+      "read": true,
+      "write": true,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.synchronization",
+      "name": "Power BI Synchronization",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.table",
+      "name": "Powerbi Table",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.table.column",
+      "name": "Power BI Table Columns",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.wizard",
+      "name": "Powerbi Wizard",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "powerbi.workspace",
+      "name": "Power BI Workspace/Group",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "procurement.group",
+      "name": "Procurement Group",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "product.attribute",
+      "name": "Product Attribute",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.attribute.category",
+      "name": "product.attribute.category",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "product.attribute.custom.value",
+      "name": "Product Attribute Custom Value",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.attribute.value",
+      "name": "Attribute Value",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.category",
+      "name": "Product Category",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.document",
+      "name": "Product Document",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "product.image",
+      "name": "Product Image",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "product.label.layout",
+      "name": "Choose the sheet layout to print the labels",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "product.packaging",
+      "name": "Product Packaging",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.price.report",
+      "name": "Product Price Report",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "product.pricelist",
+      "name": "Pricelist",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.pricelist.item",
+      "name": "Pricelist Rule",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.product",
+      "name": "Product Variant",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.public.category",
+      "name": "Website Product Category",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.removal",
+      "name": "Removal Strategy",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.ribbon",
+      "name": "Product ribbon",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.storage.location",
+      "name": "product storage location",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "product.supplierinfo",
+      "name": "Supplier Pricelist",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.tag",
+      "name": "Product Tag",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.template",
+      "name": "Product",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.template.attribute.exclusion",
+      "name": "Product Template Attribute Exclusion",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.template.attribute.line",
+      "name": "Product Template Attribute Line",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "product.template.attribute.value",
+      "name": "Product Template Attribute Value",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "project.milestone",
+      "name": "Project Milestone",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "project.project",
+      "name": "Project",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "project.project.stage",
+      "name": "Project Stage",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "project.tags",
+      "name": "Project Tags",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "project.task",
+      "name": "Task",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "project.task.stage.personal",
+      "name": "Personal Task Stage",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "project.task.type",
+      "name": "Task Stage",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "project.update",
+      "name": "Project Update",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "rating.rating",
+      "name": "Rating",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "report.layout",
+      "name": "Report Layout",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "report.paperformat",
+      "name": "Paper Format Config",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "report.stock.quantity",
+      "name": "Stock Quantity Report",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "request.appraisal",
+      "name": "Request an Appraisal",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "res.bank",
+      "name": "Bank",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "res.company",
+      "name": "Companies",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "res.country",
+      "name": "Country",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "res.country.group",
+      "name": "Country Group",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "res.country.state",
+      "name": "Country state",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "res.currency",
+      "name": "Currency",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "res.currency.rate",
+      "name": "Currency Rate",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "res.groups",
+      "name": "Access Groups",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "res.lang",
+      "name": "Languages",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "res.partner",
+      "name": "Contact",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "res.partner.autocomplete.sync",
+      "name": "Partner Autocomplete Sync",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "res.partner.bank",
+      "name": "Bank Accounts",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "res.partner.category",
+      "name": "Partner Tags",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "res.partner.industry",
+      "name": "Industry",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "res.partner.title",
+      "name": "Partner Title",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "res.users",
+      "name": "User",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "res.users.apikeys",
+      "name": "Users API Keys",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "res.users.apikeys.description",
+      "name": "API Key Description",
+      "read": true,
+      "write": false,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "res.users.apikeys.show",
+      "name": "Show API Key",
+      "read": true,
+      "write": false,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "res.users.identitycheck",
+      "name": "Password Check Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "res.users.settings",
+      "name": "User Settings",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "res.users.settings.volumes",
+      "name": "User Settings Volumes",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "resource.calendar",
+      "name": "Resource Working Time",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "resource.calendar.attendance",
+      "name": "Work Detail",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "resource.calendar.leaves",
+      "name": "Resource Time Off Detail",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "resource.resource",
+      "name": "Resources",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sale.advance.payment.inv",
+      "name": "Sales Advance Payment Invoice",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sale.discount.report",
+      "name": "Sale Discount Report",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "sale.mass.cancel.orders",
+      "name": "Cancel multiple quotations",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sale.order",
+      "name": "Sales Order",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sale.order.cancel",
+      "name": "Sales Order Cancel",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sale.order.discount",
+      "name": "Discount Wizard",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sale.order.line",
+      "name": "Sales Order Line",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sale.order.option",
+      "name": "Sale Options",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sale.order.template",
+      "name": "Quotation Template",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sale.order.template.line",
+      "name": "Quotation Template Line",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sale.order.template.option",
+      "name": "Quotation Template Option",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sale.report",
+      "name": "Sales Analysis Report",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sale.revision",
+      "name": "Sales Quotation Revisions",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "sale.revision.line",
+      "name": "Sales Quotation Revisions Line",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "slide.channel",
+      "name": "Course",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "slide.channel.invite",
+      "name": "Channel Invitation Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "slide.channel.tag",
+      "name": "Channel/Course Tag",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "slide.channel.tag.group",
+      "name": "Channel/Course Groups",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "slide.embed",
+      "name": "Embedded Slides View Counter",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "slide.question",
+      "name": "Content Quiz Question",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "slide.slide",
+      "name": "Slides",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "slide.slide.resource",
+      "name": "Additional resource for a particular slide",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "slide.tag",
+      "name": "Slide Tag",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sms.composer",
+      "name": "Send SMS Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "sms.resend",
+      "name": "SMS Resend",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "sms.resend.recipient",
+      "name": "Resend Notification",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "sms.template",
+      "name": "SMS Templates",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "sms.template.preview",
+      "name": "SMS Template Preview",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "sms.template.reset",
+      "name": "SMS Template Reset",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "snailmail.letter",
+      "name": "Snailmail Letter",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "snailmail.letter.format.error",
+      "name": "Format Error Sending a Snailmail Letter",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "snailmail.letter.missing.required.fields",
+      "name": "Update address of partner",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "social.account",
+      "name": "Social Account",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "social.live.post",
+      "name": "Social Live Post",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "social.media",
+      "name": "Social Media",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "social.post",
+      "name": "Social Post",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "social.post.template",
+      "name": "Social Post Template",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "social.post.to.lead",
+      "name": "Convert Social Post to Lead",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "social.stream",
+      "name": "Social Stream",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "social.stream.post",
+      "name": "Social Stream Post",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "social.stream.post.image",
+      "name": "Social Stream Post Image Attachment",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "social.stream.type",
+      "name": "Social Stream Post",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "social.twitter.account",
+      "name": "Social Twitter Account",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "spreadsheet.contributor",
+      "name": "Spreadsheet Contributor",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "spreadsheet.dashboard",
+      "name": "Spreadsheet Dashboard",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "spreadsheet.dashboard.group",
+      "name": "Group of dashboards",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "spreadsheet.dashboard.share",
+      "name": "Copy of a shared dashboard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "stock.location",
+      "name": "Inventory Locations",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.move",
+      "name": "Stock Move",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.move.line",
+      "name": "Product Moves (Stock Move Line)",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "stock.package.type",
+      "name": "Stock package type",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.package_level",
+      "name": "Stock Package Level",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.picking",
+      "name": "Transfer",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.picking.type",
+      "name": "Picking Type",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.putaway.rule",
+      "name": "Putaway Rule",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.quant",
+      "name": "Quants",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.quant.package",
+      "name": "Packages",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.route",
+      "name": "Inventory Routes",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.rule",
+      "name": "Stock Rule",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.storage.category",
+      "name": "Storage Category",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.storage.category.capacity",
+      "name": "Storage Category Capacity",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.warehouse",
+      "name": "Warehouse",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "stock.warehouse.orderpoint",
+      "name": "Minimum Inventory Rule",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "studio.approval.entry",
+      "name": "Studio Approval Entry",
+      "read": true,
+      "write": false,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "survey.question",
+      "name": "Survey Question",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "survey.survey",
+      "name": "Survey",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "survey.user_input",
+      "name": "Survey User Input",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "survey.user_input.line",
+      "name": "Survey User Input Line",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "timer.timer",
+      "name": "Timer Module",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "unpublish.message.wizard",
+      "name": "Unpublish Message Wizard",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "uom.category",
+      "name": "Product UoM Categories",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "uom.uom",
+      "name": "Product Unit of Measure",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "user.assign.wizard",
+      "name": "User Assign Wizard",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "utm.campaign",
+      "name": "UTM Campaign",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "utm.medium",
+      "name": "UTM Medium",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "utm.source",
+      "name": "UTM Source",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "utm.stage",
+      "name": "Campaign Stage",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "utm.tag",
+      "name": "UTM Tag",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "voip.call",
+      "name": "A phone call handled using the VoIP application",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": false
+    },
+    {
+      "model": "web_tour.tour",
+      "name": "Tours",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "website",
+      "name": "Website",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "website.base.unit",
+      "name": "Unit of Measure for price per unit on eCommerce products.",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "website.menu",
+      "name": "Website Menu",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "website.sale.extra.field",
+      "name": "E-Commerce Extra Info Shown on product page",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "website.seo.metadata",
+      "name": "SEO metadata",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "website.track",
+      "name": "Visited Pages",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "website.visitor",
+      "name": "Website Visitor",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "website.visitor.push.subscription",
+      "name": "Push Subscription for a Website Visitor",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "worksheet.template",
+      "name": "Worksheet Template",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    },
+    {
+      "model": "x_invoice",
+      "name": "Invoice",
+      "read": true,
+      "write": false,
+      "create": false,
+      "unlink": false
+    },
+    {
+      "model": "x_maintenance_request_worksheet_template_1",
+      "name": "Service",
+      "read": true,
+      "write": true,
+      "create": true,
+      "unlink": true
+    }
+  ]
+}

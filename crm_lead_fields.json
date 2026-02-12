@@ -1,0 +1,1220 @@
+[
+  {
+    "field_name": "duration_tracking",
+    "label": "Status time",
+    "type": "json",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "campaign_id",
+    "label": "Campaign",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "source_id",
+    "label": "Source",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "medium_id",
+    "label": "Medium",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "activity_ids",
+    "label": "Activities",
+    "type": "one2many",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "activity_state",
+    "label": "Activity State",
+    "type": "selection",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "activity_user_id",
+    "label": "Responsible User",
+    "type": "many2one",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "activity_type_id",
+    "label": "Next Activity Type",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "activity_type_icon",
+    "label": "Activity Type Icon",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "activity_date_deadline",
+    "label": "Next Activity Deadline",
+    "type": "date",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "my_activity_date_deadline",
+    "label": "My Activity Deadline",
+    "type": "date",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "activity_summary",
+    "label": "Next Activity Summary",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "activity_exception_decoration",
+    "label": "Activity Exception Decoration",
+    "type": "selection",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "activity_exception_icon",
+    "label": "Icon",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "activity_calendar_event_id",
+    "label": "Next Activity Calendar Event",
+    "type": "many2one",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "message_is_follower",
+    "label": "Is Follower",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "message_follower_ids",
+    "label": "Followers",
+    "type": "one2many",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "message_partner_ids",
+    "label": "Followers (Partners)",
+    "type": "many2many",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "message_ids",
+    "label": "Messages",
+    "type": "one2many",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "has_message",
+    "label": "Has Message",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "message_needaction",
+    "label": "Action Needed",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "message_needaction_counter",
+    "label": "Number of Actions",
+    "type": "integer",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "message_has_error",
+    "label": "Message Delivery error",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "message_has_error_counter",
+    "label": "Number of errors",
+    "type": "integer",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "message_attachment_count",
+    "label": "Attachment Count",
+    "type": "integer",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "rating_ids",
+    "label": "Ratings",
+    "type": "one2many",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "website_message_ids",
+    "label": "Website Messages",
+    "type": "one2many",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "message_has_sms_error",
+    "label": "SMS Delivery error",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "phone_sanitized",
+    "label": "Sanitized Number",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "phone_sanitized_blacklisted",
+    "label": "Phone Blacklisted",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "phone_blacklisted",
+    "label": "Blacklisted Phone is Phone",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "mobile_blacklisted",
+    "label": "Blacklisted Phone Is Mobile",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "phone_mobile_search",
+    "label": "Phone/Mobile",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "email_normalized",
+    "label": "Normalized Email",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "is_blacklisted",
+    "label": "Blacklist",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "message_bounce",
+    "label": "Bounce",
+    "type": "integer",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "email_cc",
+    "label": "Email cc",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "name",
+    "label": "Opportunity",
+    "type": "char",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "field_name": "user_id",
+    "label": "Salesperson",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "user_company_ids",
+    "label": "User Company",
+    "type": "many2many",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "team_id",
+    "label": "Sales Team",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "lead_properties",
+    "label": "Properties",
+    "type": "properties",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "company_id",
+    "label": "Company",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "referred",
+    "label": "Referred By",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "description",
+    "label": "Notes",
+    "type": "html",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "active",
+    "label": "Active",
+    "type": "boolean",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "type",
+    "label": "Type",
+    "type": "selection",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "field_name": "priority",
+    "label": "Priority",
+    "type": "selection",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "stage_id",
+    "label": "Stage",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "kanban_state",
+    "label": "Kanban State",
+    "type": "selection",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "tag_ids",
+    "label": "Tags",
+    "type": "many2many",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "color",
+    "label": "Color Index",
+    "type": "integer",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "expected_revenue",
+    "label": "Expected Revenue",
+    "type": "monetary",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "prorated_revenue",
+    "label": "Prorated Revenue",
+    "type": "monetary",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "recurring_revenue",
+    "label": "Recurring Revenues",
+    "type": "monetary",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "recurring_plan",
+    "label": "Recurring Plan",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "recurring_revenue_monthly",
+    "label": "Expected MRR",
+    "type": "monetary",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "recurring_revenue_monthly_prorated",
+    "label": "Prorated MRR",
+    "type": "monetary",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "recurring_revenue_prorated",
+    "label": "Prorated Recurring Revenues",
+    "type": "monetary",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "company_currency",
+    "label": "Currency",
+    "type": "many2one",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "date_closed",
+    "label": "Closed Date",
+    "type": "datetime",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "date_automation_last",
+    "label": "Last Action",
+    "type": "datetime",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "date_open",
+    "label": "Assignment Date",
+    "type": "datetime",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "day_open",
+    "label": "Days to Assign",
+    "type": "float",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "day_close",
+    "label": "Days to Close",
+    "type": "float",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "date_last_stage_update",
+    "label": "Last Stage Update",
+    "type": "datetime",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "date_conversion",
+    "label": "Conversion Date",
+    "type": "datetime",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "date_deadline",
+    "label": "Expected Closing",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "partner_id",
+    "label": "Customer",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "partner_is_blacklisted",
+    "label": "Partner is blacklisted",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "contact_name",
+    "label": "Contact Name",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "partner_name",
+    "label": "Company Name",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "function",
+    "label": "Job Position",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "title",
+    "label": "Title",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "email_from",
+    "label": "Email",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "email_domain_criterion",
+    "label": "Email Domain Criterion",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "phone",
+    "label": "Phone",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "mobile",
+    "label": "Mobile",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "phone_state",
+    "label": "Phone Quality",
+    "type": "selection",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "email_state",
+    "label": "Email Quality",
+    "type": "selection",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "website",
+    "label": "Website",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "lang_id",
+    "label": "Language",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "lang_code",
+    "label": "Locale Code",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "lang_active_count",
+    "label": "Lang Active Count",
+    "type": "integer",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "street",
+    "label": "Street",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "street2",
+    "label": "Street2",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "zip",
+    "label": "Zip",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "city",
+    "label": "City",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "state_id",
+    "label": "State",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "country_id",
+    "label": "Country",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "probability",
+    "label": "Probability",
+    "type": "float",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "automated_probability",
+    "label": "Automated Probability",
+    "type": "float",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "is_automated_probability",
+    "label": "Is automated probability?",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "lost_reason_id",
+    "label": "Lost Reason",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "calendar_event_ids",
+    "label": "Meetings",
+    "type": "one2many",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "duplicate_lead_ids",
+    "label": "Potential Duplicate Lead",
+    "type": "many2many",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "duplicate_lead_count",
+    "label": "Potential Duplicate Lead Count",
+    "type": "integer",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "meeting_display_date",
+    "label": "Meeting Display Date",
+    "type": "date",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "meeting_display_label",
+    "label": "Meeting Display Label",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "partner_email_update",
+    "label": "Partner Email will Update",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "partner_phone_update",
+    "label": "Partner Phone will Update",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "is_partner_visible",
+    "label": "Is Partner Visible",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "id",
+    "label": "ID",
+    "type": "integer",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "display_name",
+    "label": "Display Name",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "create_uid",
+    "label": "Created by",
+    "type": "many2one",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "create_date",
+    "label": "Created on",
+    "type": "datetime",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "write_uid",
+    "label": "Last Updated by",
+    "type": "many2one",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "write_date",
+    "label": "Last Updated on",
+    "type": "datetime",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "won_status",
+    "label": "Is Won",
+    "type": "selection",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "days_to_convert",
+    "label": "Days To Convert",
+    "type": "float",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "days_exceeding_closing",
+    "label": "Exceeded Closing Days",
+    "type": "float",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "customer_latitude",
+    "label": "Customer latitude",
+    "type": "float",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "customer_longitude",
+    "label": "Customer longitude",
+    "type": "float",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "customer_address",
+    "label": "Complete Address",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "marker_color",
+    "label": "Marker color",
+    "type": "integer",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "probability_by_stage",
+    "label": "{probability} by stage",
+    "type": "float",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "reveal_id",
+    "label": "Reveal ID",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "visitor_ids",
+    "label": "Web Visitors",
+    "type": "many2many",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "visitor_page_count",
+    "label": "# Page Views",
+    "type": "integer",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "iap_enrich_done",
+    "label": "Enrichment done",
+    "type": "boolean",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "show_enrich_button",
+    "label": "Allow manual enrich",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "lead_mining_request_id",
+    "label": "Lead Mining Request",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "sale_amount_total",
+    "label": "Sum of Orders",
+    "type": "monetary",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "quotation_count",
+    "label": "Number of Quotations",
+    "type": "integer",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "sale_order_count",
+    "label": "Number of Sale Orders",
+    "type": "integer",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "order_ids",
+    "label": "Orders",
+    "type": "one2many",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "is_onhold",
+    "label": "Is Onhold",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "credit_rating",
+    "label": "Credit Rating",
+    "type": "selection",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "opportunity_type",
+    "label": "Opportunity Type",
+    "type": "selection",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "architect_id",
+    "label": "Architect",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "estimator_id",
+    "label": "Estimator",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "estimator_phone",
+    "label": "Phone",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "estimator_mobile",
+    "label": "Mobile",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "estimator_email",
+    "label": "Email",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "project_manager_id",
+    "label": "Project Manager",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "client_id",
+    "label": "Site Contact",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "project_address",
+    "label": "Project Address",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "tender_close_date",
+    "label": "Tender Close",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "lead_source_id",
+    "label": "Lead Source",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "specification_id",
+    "label": "Specification",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "lost_reason_id_custom",
+    "label": "Lost Reason",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "sector",
+    "label": "Sector",
+    "type": "selection",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "lead_create",
+    "label": "Lead Create",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "spec_rep_id",
+    "label": "Spec Rep",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "assign_date",
+    "label": "Assign Date",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "access_right",
+    "label": "Access Right",
+    "type": "boolean",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "design_date",
+    "label": "In specification Date",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "tender_rfq_date",
+    "label": "Tender RFQ Date",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "tender_estimate_date",
+    "label": "Tender Estimate Date",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "const_rfq_date",
+    "label": "Construction RFQ Date",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "const_estimate_date",
+    "label": "Construction Estimate Date",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "negotiate_date",
+    "label": "Negotiate Date",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "awaiting_date",
+    "label": "Awaiting Details Date",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "oc_sent_date",
+    "label": "OC sent date",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "sign_oc_date",
+    "label": "Signed OC/In Production Date",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "cpm_date",
+    "label": "Construction Proposal Date",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "pm_date",
+    "label": "Proposal Date",
+    "type": "date",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "close_month_id",
+    "label": "Close Month",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "invoice_month_id",
+    "label": "Invoice Month",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "quote",
+    "label": "Latest Quote",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "address_note",
+    "label": "Address Note",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "accurate_opp",
+    "label": "Accurate Opp",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "design",
+    "label": "Design",
+    "type": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "design_ids",
+    "label": "Attachments",
+    "type": "one2many",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "x_studio_quote_contact_phone",
+    "label": "Quote Contact Phone",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "x_studio_quote_contact_email_address",
+    "label": "Quote Contact Email Address",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "x_studio_field_wPEAQ",
+    "label": "Contact",
+    "type": "many2many",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "x_currency_id",
+    "label": "Currency",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "x_studio_building_owner",
+    "label": "Building Owner",
+    "type": "many2one",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "x_studio_netsuite_id",
+    "label": "Netsuite ID",
+    "type": "char",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "field_name": "x_studio_quote_contact_ph",
+    "label": "Quote Contact Ph#",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "x_studio_field_0g3dU",
+    "label": "Quote Contact Ph#",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "x_studio_field_RaTm4",
+    "label": "New Related Field",
+    "type": "many2one",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "field_name": "x_studio_field_UoG7g",
+    "label": "New Related Field",
+    "type": "char",
+    "required": false,
+    "readonly": true
+  }
+]

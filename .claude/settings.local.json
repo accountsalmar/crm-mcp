@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(dir /s /b \"C:\\\\Users\\\\KasunJ\\\\MCP\\\\odoo-crm-mcp-server\\\\odoo-crm-mcp-server\\\\src\")",
+      "Bash(dir /s /b \"C:\\\\Users\\\\KasunJ\\\\MCP\\\\odoo-crm-mcp-server\\\\odoo-crm-mcp-server\\\\src\\\\*.ts\")",
+      "Bash(npm run build:*)",
+      "Bash(npx tsx test-stage-filter.ts)",
+      "Bash(git push)",
+      "Bash(node:*)",
+      "Bash(timeout 10 npm start)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(claude config list:*)",
+      "Bash(cat:*)",
+      "Bash(dir \"C:\\\\Users\\\\KasunJ\\\\MCP\\\\odoo-crm-mcp-server\\\\odoo-crm-mcp-server\\\\src\" /B /S)",
+      "Bash(cmd //c \"ren odoo-crm-mcp-server odoo-crm-mcp-server-old\")",
+      "Bash(npm install)",
+      "Bash(timeout 30 node:*)",
+      "Bash(echo:*)",
+      "Bash(TRANSPORT=stdio echo:*)",
+      "Bash(TRANSPORT=stdio timeout 30 node:*)",
+      "Bash(printf:*)",
+      "Bash(python:*)",
+      "Bash(git diff:*)",
+      "Bash(git -c user.email=\"accounts@duracube.com.au\" commit -m \"$\\(cat <<''EOF''\nchore: add data extracts, scripts, docs, and working files\n\nAdd field extraction data \\(CSV, JSON, XLSX\\), ACL setup scripts,\nAPI restriction docs, and project working notes.\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "nexsus",
+    "odoo-crm",
+    "google-workspace"
+  ]
+}

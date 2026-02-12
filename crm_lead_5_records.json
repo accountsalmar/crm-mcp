@@ -1,0 +1,1305 @@
+[
+  {
+    "id": 56805,
+    "duration_tracking": {
+      "1": 9988063,
+      "34": 11713078
+    },
+    "campaign_id": false,
+    "source_id": false,
+    "medium_id": false,
+    "activity_ids": [
+      288943,
+      288981
+    ],
+    "activity_state": "overdue",
+    "activity_user_id": [
+      191,
+      "Matthew Ponza"
+    ],
+    "activity_type_id": [
+      4,
+      "To Do"
+    ],
+    "activity_type_icon": "fa-tasks",
+    "activity_date_deadline": "2025-04-28",
+    "my_activity_date_deadline": false,
+    "activity_summary": "Follow Up",
+    "activity_exception_decoration": false,
+    "activity_exception_icon": false,
+    "activity_calendar_event_id": false,
+    "message_is_follower": false,
+    "message_follower_ids": [],
+    "message_partner_ids": [],
+    "message_ids": [
+      2546224,
+      2537015,
+      2537008
+    ],
+    "has_message": true,
+    "message_needaction": false,
+    "message_needaction_counter": 0,
+    "message_has_error": false,
+    "message_has_error_counter": 0,
+    "message_attachment_count": 0,
+    "rating_ids": [],
+    "website_message_ids": [
+      2537015
+    ],
+    "message_has_sms_error": false,
+    "phone_sanitized": "08 8111 6600",
+    "phone_sanitized_blacklisted": false,
+    "phone_blacklisted": false,
+    "mobile_blacklisted": false,
+    "phone_mobile_search": false,
+    "email_normalized": false,
+    "is_blacklisted": false,
+    "message_bounce": 0,
+    "email_cc": false,
+    "name": "Noarlunga Hospital",
+    "user_id": [
+      191,
+      "Matthew Ponza"
+    ],
+    "user_company_ids": [
+      1
+    ],
+    "team_id": [
+      6,
+      "NSW Sales Team"
+    ],
+    "lead_properties": [],
+    "company_id": [
+      1,
+      "Duracube"
+    ],
+    "referred": false,
+    "description": "<p data-last-history-steps=\"695351441251200,1793498836523436,3566145891677500,539982754089339,1499733100875146\">Maria's Notes:&nbsp;</p><p>Specified System =&nbsp;</p><p>Specified Colours =&nbsp;</p>",
+    "active": true,
+    "type": "opportunity",
+    "priority": "4",
+    "stage_id": [
+      1,
+      "Project Awaiting Plans"
+    ],
+    "kanban_state": "red",
+    "tag_ids": [],
+    "color": 0,
+    "expected_revenue": 0,
+    "prorated_revenue": 0,
+    "recurring_revenue": 0,
+    "recurring_plan": false,
+    "recurring_revenue_monthly": 0,
+    "recurring_revenue_monthly_prorated": 0,
+    "recurring_revenue_prorated": 0,
+    "company_currency": [
+      21,
+      "AUD"
+    ],
+    "date_closed": false,
+    "date_automation_last": false,
+    "date_open": "2025-04-07 00:10:31",
+    "day_open": 0,
+    "day_close": 0,
+    "date_last_stage_update": "2025-08-20 13:48:29",
+    "date_conversion": false,
+    "date_deadline": false,
+    "partner_id": false,
+    "partner_is_blacklisted": false,
+    "contact_name": false,
+    "partner_name": "GHD - Adelaide Studio",
+    "function": false,
+    "title": false,
+    "email_from": false,
+    "email_domain_criterion": false,
+    "phone": "08 8111 6600",
+    "mobile": false,
+    "phone_state": false,
+    "email_state": false,
+    "website": "http://ghd.com",
+    "lang_id": false,
+    "lang_code": false,
+    "lang_active_count": 1,
+    "street": "Noarlunga Centre Access Rd",
+    "street2": false,
+    "zip": "5168",
+    "city": "Noarlunga Centre",
+    "state_id": [
+      5,
+      "South Australia (AU)"
+    ],
+    "country_id": [
+      13,
+      "Australia"
+    ],
+    "probability": 2.39,
+    "automated_probability": 2.39,
+    "is_automated_probability": true,
+    "lost_reason_id": false,
+    "calendar_event_ids": [],
+    "duplicate_lead_ids": [
+      56805
+    ],
+    "duplicate_lead_count": 0,
+    "meeting_display_date": false,
+    "meeting_display_label": "No Meeting",
+    "partner_email_update": false,
+    "partner_phone_update": false,
+    "is_partner_visible": true,
+    "display_name": "Noarlunga Hospital",
+    "create_uid": [
+      191,
+      "Matthew Ponza"
+    ],
+    "create_date": "2025-04-07 00:10:31",
+    "write_uid": [
+      86,
+      "Jatin Vamja"
+    ],
+    "write_date": "2025-08-20 13:48:29",
+    "won_status": "pending",
+    "days_to_convert": 0,
+    "days_exceeding_closing": 0,
+    "customer_latitude": 0,
+    "customer_longitude": 0,
+    "customer_address": "Noarlunga Centre Access Rd\n\nNoarlunga Centre SA 5168\nAustralia",
+    "marker_color": 0,
+    "probability_by_stage": 1,
+    "reveal_id": false,
+    "visitor_ids": [],
+    "visitor_page_count": 0,
+    "iap_enrich_done": false,
+    "show_enrich_button": false,
+    "lead_mining_request_id": false,
+    "sale_amount_total": 0,
+    "quotation_count": 0,
+    "sale_order_count": 0,
+    "order_ids": [],
+    "is_onhold": false,
+    "credit_rating": false,
+    "opportunity_type": "unknown",
+    "architect_id": [
+      27054,
+      "GHD - Adelaide Studio"
+    ],
+    "estimator_id": false,
+    "estimator_phone": false,
+    "estimator_mobile": false,
+    "estimator_email": false,
+    "project_manager_id": false,
+    "client_id": false,
+    "project_address": "Noarlunga Centre Access Rd, Noarlunga Centre SA 5168, Australia",
+    "tender_close_date": false,
+    "lead_source_id": false,
+    "specification_id": false,
+    "lost_reason_id_custom": false,
+    "sector": false,
+    "lead_create": false,
+    "spec_rep_id": false,
+    "assign_date": false,
+    "access_right": false,
+    "design_date": false,
+    "tender_rfq_date": false,
+    "tender_estimate_date": false,
+    "const_rfq_date": false,
+    "const_estimate_date": false,
+    "negotiate_date": false,
+    "awaiting_date": false,
+    "oc_sent_date": false,
+    "sign_oc_date": false,
+    "cpm_date": false,
+    "pm_date": false,
+    "close_month_id": [
+      36,
+      "July 2025"
+    ],
+    "invoice_month_id": false,
+    "quote": false,
+    "address_note": false,
+    "accurate_opp": "Accurate",
+    "design": false,
+    "design_ids": [],
+    "x_studio_quote_contact_phone": false,
+    "x_studio_quote_contact_email_address": false,
+    "x_studio_field_wPEAQ": [],
+    "x_currency_id": [
+      21,
+      "AUD"
+    ],
+    "x_studio_building_owner": false,
+    "x_studio_netsuite_id": false,
+    "x_studio_quote_contact_ph": false,
+    "x_studio_field_0g3dU": false,
+    "x_studio_field_RaTm4": false,
+    "x_studio_field_UoG7g": false
+  },
+  {
+    "id": 56804,
+    "duration_tracking": {
+      "24": 21701745,
+      "35": 70
+    },
+    "campaign_id": false,
+    "source_id": false,
+    "medium_id": false,
+    "activity_ids": [
+      288937
+    ],
+    "activity_state": "overdue",
+    "activity_user_id": [
+      161,
+      "Alicia Woodbury"
+    ],
+    "activity_type_id": [
+      29,
+      "Pre-Quote Call - Tender"
+    ],
+    "activity_type_icon": false,
+    "activity_date_deadline": "2025-04-07",
+    "my_activity_date_deadline": false,
+    "activity_summary": "Pre-Quote Call",
+    "activity_exception_decoration": false,
+    "activity_exception_icon": false,
+    "activity_calendar_event_id": false,
+    "message_is_follower": false,
+    "message_follower_ids": [],
+    "message_partner_ids": [],
+    "message_ids": [
+      2552739,
+      2552659,
+      2536964,
+      2536963,
+      2536956,
+      2536952
+    ],
+    "has_message": true,
+    "message_needaction": false,
+    "message_needaction_counter": 0,
+    "message_has_error": false,
+    "message_has_error_counter": 0,
+    "message_attachment_count": 1,
+    "rating_ids": [],
+    "website_message_ids": [
+      2536956
+    ],
+    "message_has_sms_error": false,
+    "phone_sanitized": "+61 1300 955 002",
+    "phone_sanitized_blacklisted": false,
+    "phone_blacklisted": false,
+    "mobile_blacklisted": false,
+    "phone_mobile_search": false,
+    "email_normalized": "finance@litecorp.com.au",
+    "is_blacklisted": false,
+    "message_bounce": 0,
+    "email_cc": false,
+    "name": "Cut to Size",
+    "user_id": [
+      161,
+      "Alicia Woodbury"
+    ],
+    "user_company_ids": [
+      1
+    ],
+    "team_id": [
+      1,
+      "Interstate Sales Team"
+    ],
+    "lead_properties": [],
+    "company_id": [
+      1,
+      "Duracube"
+    ],
+    "referred": false,
+    "description": "<p data-last-history-steps=\"695351441251200,1793498836523436,3566145891677500,539982754089339,1499733100875146\">Maria's Notes:&nbsp;</p><p>Specified System =&nbsp;</p><p>Specified Colours =&nbsp;</p>",
+    "active": true,
+    "type": "opportunity",
+    "priority": "0",
+    "stage_id": [
+      24,
+      "Tender RFQ"
+    ],
+    "kanban_state": "red",
+    "tag_ids": [],
+    "color": 0,
+    "expected_revenue": 0,
+    "prorated_revenue": 0,
+    "recurring_revenue": 0,
+    "recurring_plan": false,
+    "recurring_revenue_monthly": 0,
+    "recurring_revenue_monthly_prorated": 0,
+    "recurring_revenue_prorated": 0,
+    "company_currency": [
+      21,
+      "AUD"
+    ],
+    "date_closed": false,
+    "date_automation_last": "2025-04-07 00:00:28",
+    "date_open": "2025-11-20 23:44:15",
+    "day_open": 227,
+    "day_close": 0,
+    "date_last_stage_update": "2025-04-07 00:00:27",
+    "date_conversion": false,
+    "date_deadline": false,
+    "partner_id": [
+      301127,
+      "Lite Corp Pty Ltd"
+    ],
+    "partner_is_blacklisted": false,
+    "contact_name": false,
+    "partner_name": "Lite Corp Pty Ltd",
+    "function": false,
+    "title": false,
+    "email_from": "finance@litecorp.com.au",
+    "email_domain_criterion": "@litecorp.com.au",
+    "phone": "+61 1300 955 002",
+    "mobile": false,
+    "phone_state": false,
+    "email_state": "correct",
+    "website": false,
+    "lang_id": [
+      1,
+      "English (US)"
+    ],
+    "lang_code": "en_US",
+    "lang_active_count": 1,
+    "street": false,
+    "street2": false,
+    "zip": false,
+    "city": "Sydney",
+    "state_id": [
+      2,
+      "New South Wales (AU)"
+    ],
+    "country_id": [
+      13,
+      "Australia"
+    ],
+    "probability": 48.33,
+    "automated_probability": 48.33,
+    "is_automated_probability": true,
+    "lost_reason_id": false,
+    "calendar_event_ids": [],
+    "duplicate_lead_ids": [
+      56804
+    ],
+    "duplicate_lead_count": 0,
+    "meeting_display_date": false,
+    "meeting_display_label": "No Meeting",
+    "partner_email_update": false,
+    "partner_phone_update": false,
+    "is_partner_visible": true,
+    "display_name": "Cut to Size",
+    "create_uid": [
+      161,
+      "Alicia Woodbury"
+    ],
+    "create_date": "2025-04-06 23:59:17",
+    "write_uid": [
+      161,
+      "Alicia Woodbury"
+    ],
+    "write_date": "2025-11-20 23:44:15",
+    "won_status": "pending",
+    "days_to_convert": 0,
+    "days_exceeding_closing": 0,
+    "customer_latitude": 0,
+    "customer_longitude": 0,
+    "customer_address": "\n\nSydney NSW \nAustralia",
+    "marker_color": 0,
+    "probability_by_stage": 5,
+    "reveal_id": false,
+    "visitor_ids": [],
+    "visitor_page_count": 0,
+    "iap_enrich_done": false,
+    "show_enrich_button": true,
+    "lead_mining_request_id": false,
+    "sale_amount_total": 0,
+    "quotation_count": 0,
+    "sale_order_count": 0,
+    "order_ids": [],
+    "is_onhold": false,
+    "credit_rating": false,
+    "opportunity_type": "unknown",
+    "architect_id": [
+      307658,
+      "Unknown Architect"
+    ],
+    "estimator_id": [
+      316419,
+      "Lite Corp Pty Ltd, Martin Baker"
+    ],
+    "estimator_phone": "0428 248 977",
+    "estimator_mobile": false,
+    "estimator_email": "martin.baker@litecorp.com.au",
+    "project_manager_id": false,
+    "client_id": false,
+    "project_address": false,
+    "tender_close_date": false,
+    "lead_source_id": [
+      74,
+      "Referral"
+    ],
+    "specification_id": [
+      38,
+      "No spec"
+    ],
+    "lost_reason_id_custom": false,
+    "sector": "Commercial",
+    "lead_create": false,
+    "spec_rep_id": false,
+    "assign_date": "2025-04-07",
+    "access_right": false,
+    "design_date": false,
+    "tender_rfq_date": "2025-04-07",
+    "tender_estimate_date": false,
+    "const_rfq_date": false,
+    "const_estimate_date": false,
+    "negotiate_date": false,
+    "awaiting_date": false,
+    "oc_sent_date": false,
+    "sign_oc_date": false,
+    "cpm_date": false,
+    "pm_date": false,
+    "close_month_id": [
+      36,
+      "July 2025"
+    ],
+    "invoice_month_id": false,
+    "quote": false,
+    "address_note": false,
+    "accurate_opp": "Accurate",
+    "design": false,
+    "design_ids": [],
+    "x_studio_quote_contact_phone": false,
+    "x_studio_quote_contact_email_address": "finance@litecorp.com.au",
+    "x_studio_field_wPEAQ": [],
+    "x_currency_id": [
+      21,
+      "AUD"
+    ],
+    "x_studio_building_owner": false,
+    "x_studio_netsuite_id": false,
+    "x_studio_quote_contact_ph": false,
+    "x_studio_field_0g3dU": "+61 1300 955 002",
+    "x_studio_field_RaTm4": false,
+    "x_studio_field_UoG7g": false
+  },
+  {
+    "id": 56803,
+    "duration_tracking": {
+      "2": 564,
+      "24": 21701602
+    },
+    "campaign_id": false,
+    "source_id": false,
+    "medium_id": false,
+    "activity_ids": [
+      288938
+    ],
+    "activity_state": "overdue",
+    "activity_user_id": [
+      170,
+      "Damian Torrie"
+    ],
+    "activity_type_id": [
+      29,
+      "Pre-Quote Call - Tender"
+    ],
+    "activity_type_icon": false,
+    "activity_date_deadline": "2025-04-16",
+    "my_activity_date_deadline": false,
+    "activity_summary": "Pre-Quote Call",
+    "activity_exception_decoration": false,
+    "activity_exception_icon": false,
+    "activity_calendar_event_id": false,
+    "message_is_follower": false,
+    "message_follower_ids": [],
+    "message_partner_ids": [],
+    "message_ids": [
+      2536977,
+      2536976,
+      2536973,
+      2536962,
+      2536959,
+      2536931,
+      2536920
+    ],
+    "has_message": true,
+    "message_needaction": false,
+    "message_needaction_counter": 0,
+    "message_has_error": false,
+    "message_has_error_counter": 0,
+    "message_attachment_count": 5,
+    "rating_ids": [],
+    "website_message_ids": [
+      2536977,
+      2536962,
+      2536931
+    ],
+    "message_has_sms_error": false,
+    "phone_sanitized": "+61 7 3393 7700",
+    "phone_sanitized_blacklisted": false,
+    "phone_blacklisted": false,
+    "mobile_blacklisted": false,
+    "phone_mobile_search": false,
+    "email_normalized": "enquiries@totalconstruction.com.au",
+    "is_blacklisted": false,
+    "message_bounce": 0,
+    "email_cc": false,
+    "name": "Golden Circle Beverage Amenities",
+    "user_id": [
+      170,
+      "Damian Torrie"
+    ],
+    "user_company_ids": [
+      1
+    ],
+    "team_id": [
+      1,
+      "Interstate Sales Team"
+    ],
+    "lead_properties": [],
+    "company_id": [
+      1,
+      "Duracube"
+    ],
+    "referred": false,
+    "description": "<p data-last-history-steps=\"1499733100875146,3723677534234682,2743239440271793,52946387465113,919805726340888,4265788238609914,1219541206837470,3239180788175708,3001466488174458,1953994252187337,4500222542653866,1684508082668335,648982185227964,2977774282009173,2471238286694154,2458046119839880,3367818998711933,1214617526750480,2171706059001607,4299517513542244,3324584505762582,742003051991556,1574209565598027,4157644640123771,3542063011282078,462395754028755,818089497564725,3983206807528750,1837873759416270,1471894338875144,1331350440246140,554676251531433,2196759893680725,3662143969718737,2005859179572376,2396967285490910,3447403453020796,383154052945302,16319178841088,786321122727211,2814607336169235,1126279984793902,1599179275363148,3629713278253636,4251657057811008,2197290376956420,3351665884908754,455536502959497,4079452414822876,3047404025142101,4336857043959747,2353072924767024,2257167958753300,3100029392199354,3010025076039477,3504964358021131,491501813122440,2105340714609932,872939414636070,2732344304490280,3895136156448853,1394049229580877,3437140202877504,2039838104975628,1072012857417579,393561999174950,3939626375461283,2901371433540908,3923243589427771,410148129984337,168030801490247,669056165915400,4099232094016438,3078660139611152,1826787100890372,3844278699318170,1235059175382817,1227133815755141,3986049561542477,1228724583379780,4369887294476449,3930778255549272,300009822791089,434315317435383,3176500226797717,3487137320344806,3385866439084085,3297454559052475,2913919955154433,311639101191411,819520349406291,3069329963449202,1697184715278321,3572587093446270,4080322171063322,3123085262501564,4240771065521279,2991502658680827,3207893854417501,2094575781453339,3859956956932528,821196410753021,2596118429615970,3757859306502900,3158035743745240,2339628075723579,1487307655793198,1885006241359051,86150188965057,1398539667607956,669108889864102,3279923621975089,605785671523394,4428862574021571,4346306044872323,3307128923142666\">Maria's Notes:&nbsp; 16 x cubl ???</p><p>Specified System = ABP \"Sturt\" Blade Mounted Overhead Bracket toilet Partition Front and Doors</p><p>Specified Colours = Elegant Oak</p>",
+    "active": true,
+    "type": "opportunity",
+    "priority": "0",
+    "stage_id": [
+      24,
+      "Tender RFQ"
+    ],
+    "kanban_state": "red",
+    "tag_ids": [
+      22,
+      28
+    ],
+    "color": 0,
+    "expected_revenue": 28160,
+    "prorated_revenue": 1408,
+    "recurring_revenue": 0,
+    "recurring_plan": false,
+    "recurring_revenue_monthly": 0,
+    "recurring_revenue_monthly_prorated": 0,
+    "recurring_revenue_prorated": 0,
+    "company_currency": [
+      21,
+      "AUD"
+    ],
+    "date_closed": false,
+    "date_automation_last": "2025-04-07 00:02:51",
+    "date_open": "2025-04-07 00:01:22",
+    "day_open": 0,
+    "day_close": 0,
+    "date_last_stage_update": "2025-04-07 00:02:51",
+    "date_conversion": false,
+    "date_deadline": false,
+    "partner_id": [
+      298136,
+      "Total Construction QLD - Brisbane"
+    ],
+    "partner_is_blacklisted": false,
+    "contact_name": false,
+    "partner_name": "Total Construction QLD - Brisbane",
+    "function": false,
+    "title": false,
+    "email_from": "enquiries@totalconstruction.com.au",
+    "email_domain_criterion": "@totalconstruction.com.au",
+    "phone": "+61 7 3393 7700",
+    "mobile": false,
+    "phone_state": false,
+    "email_state": "correct",
+    "website": "http://www.totalconstruction.com.au",
+    "lang_id": [
+      1,
+      "English (US)"
+    ],
+    "lang_code": "en_US",
+    "lang_active_count": 1,
+    "street": "260 Earnshaw Rd",
+    "street2": false,
+    "zip": "4013",
+    "city": "Northgate",
+    "state_id": [
+      4,
+      "Queensland (AU)"
+    ],
+    "country_id": [
+      13,
+      "Australia"
+    ],
+    "probability": 23.32,
+    "automated_probability": 23.32,
+    "is_automated_probability": true,
+    "lost_reason_id": false,
+    "calendar_event_ids": [],
+    "duplicate_lead_ids": [
+      56059,
+      55317,
+      53909,
+      53551,
+      53262,
+      51004,
+      50658,
+      50168,
+      49647,
+      49548,
+      49437,
+      47610,
+      47557,
+      47524,
+      42992,
+      41908,
+      56803
+    ],
+    "duplicate_lead_count": 16,
+    "meeting_display_date": false,
+    "meeting_display_label": "No Meeting",
+    "partner_email_update": false,
+    "partner_phone_update": false,
+    "is_partner_visible": true,
+    "display_name": "Golden Circle Beverage Amenities",
+    "create_uid": [
+      152,
+      "Claudette Maitre"
+    ],
+    "create_date": "2025-04-06 23:53:26",
+    "write_uid": [
+      152,
+      "Claudette Maitre"
+    ],
+    "write_date": "2025-04-07 00:02:51",
+    "won_status": "pending",
+    "days_to_convert": 0,
+    "days_exceeding_closing": 0,
+    "customer_latitude": 0,
+    "customer_longitude": 0,
+    "customer_address": "260 Earnshaw Rd\n\nNorthgate QLD 4013\nAustralia",
+    "marker_color": 0,
+    "probability_by_stage": 5,
+    "reveal_id": false,
+    "visitor_ids": [],
+    "visitor_page_count": 0,
+    "iap_enrich_done": false,
+    "show_enrich_button": true,
+    "lead_mining_request_id": false,
+    "sale_amount_total": 0,
+    "quotation_count": 0,
+    "sale_order_count": 0,
+    "order_ids": [],
+    "is_onhold": false,
+    "credit_rating": false,
+    "opportunity_type": "unknown",
+    "architect_id": [
+      286842,
+      "Carolyn McLean Architects, Carolyn Mclean"
+    ],
+    "estimator_id": [
+      313977,
+      "Total Construction QLD - Brisbane, Flynn Reynolds"
+    ],
+    "estimator_phone": "+61 7 3393 7700",
+    "estimator_mobile": false,
+    "estimator_email": "flynnr@totalconstruction.com.au",
+    "project_manager_id": false,
+    "client_id": false,
+    "project_address": "260 Earnshaw Rd, Northgate QLD 4013, Australia",
+    "tender_close_date": false,
+    "lead_source_id": [
+      3,
+      "Estimate 1"
+    ],
+    "specification_id": [
+      34,
+      "ABP"
+    ],
+    "lost_reason_id_custom": false,
+    "sector": "Hospitality",
+    "lead_create": [
+      152,
+      "Claudette Maitre"
+    ],
+    "spec_rep_id": false,
+    "assign_date": "2025-04-07",
+    "access_right": false,
+    "design_date": false,
+    "tender_rfq_date": "2025-04-07",
+    "tender_estimate_date": false,
+    "const_rfq_date": false,
+    "const_estimate_date": false,
+    "negotiate_date": false,
+    "awaiting_date": false,
+    "oc_sent_date": false,
+    "sign_oc_date": false,
+    "cpm_date": false,
+    "pm_date": false,
+    "close_month_id": [
+      36,
+      "July 2025"
+    ],
+    "invoice_month_id": false,
+    "quote": false,
+    "address_note": false,
+    "accurate_opp": "Accurate",
+    "design": false,
+    "design_ids": [],
+    "x_studio_quote_contact_phone": false,
+    "x_studio_quote_contact_email_address": "enquiries@totalconstruction.com.au",
+    "x_studio_field_wPEAQ": [],
+    "x_currency_id": [
+      21,
+      "AUD"
+    ],
+    "x_studio_building_owner": false,
+    "x_studio_netsuite_id": false,
+    "x_studio_quote_contact_ph": false,
+    "x_studio_field_0g3dU": "+61 7 3393 7700",
+    "x_studio_field_RaTm4": false,
+    "x_studio_field_UoG7g": false
+  },
+  {
+    "id": 56802,
+    "duration_tracking": {
+      "2": 3586,
+      "24": 21702129
+    },
+    "campaign_id": false,
+    "source_id": false,
+    "medium_id": false,
+    "activity_ids": [
+      288930
+    ],
+    "activity_state": "overdue",
+    "activity_user_id": [
+      88,
+      "Rick Kennard"
+    ],
+    "activity_type_id": [
+      29,
+      "Pre-Quote Call - Tender"
+    ],
+    "activity_type_icon": false,
+    "activity_date_deadline": "2025-04-11",
+    "my_activity_date_deadline": false,
+    "activity_summary": "Pre-Quote Call",
+    "activity_exception_decoration": false,
+    "activity_exception_icon": false,
+    "activity_calendar_event_id": false,
+    "message_is_follower": false,
+    "message_follower_ids": [],
+    "message_partner_ids": [],
+    "message_ids": [
+      2536934,
+      2536927,
+      2536925,
+      2536924,
+      2536782,
+      2536780
+    ],
+    "has_message": true,
+    "message_needaction": false,
+    "message_needaction_counter": 0,
+    "message_has_error": false,
+    "message_has_error_counter": 0,
+    "message_attachment_count": 3,
+    "rating_ids": [],
+    "website_message_ids": [
+      2536934,
+      2536927,
+      2536925
+    ],
+    "message_has_sms_error": false,
+    "phone_sanitized": "+61 420 748 464",
+    "phone_sanitized_blacklisted": false,
+    "phone_blacklisted": false,
+    "mobile_blacklisted": false,
+    "phone_mobile_search": false,
+    "email_normalized": "kieran@halbuild.com.au",
+    "is_blacklisted": false,
+    "message_bounce": 0,
+    "email_cc": false,
+    "name": "NSWPF - Gosford FETS Internal Reconfiguration",
+    "user_id": [
+      88,
+      "Rick Kennard"
+    ],
+    "user_company_ids": [
+      1
+    ],
+    "team_id": [
+      1,
+      "Interstate Sales Team"
+    ],
+    "lead_properties": [],
+    "company_id": [
+      1,
+      "Duracube"
+    ],
+    "referred": false,
+    "description": "<p data-last-history-steps=\"1499733100875146,2196463545210560,1774509779071077,3854029141645767,2538789628257112,984735202626249,3060157947822870,1733964181232194,3583999357954012,2000707352921949,2474631958453721,2610781454525364,3352172394200822,3300821721235836,4307964911000614,919765893841717,3074435267802747,1684436961098288,1726058489908946,2964648196636087,962503236764584,4490047598440736,3862159184406460,1062120768511383,3648288651147828,1995989150429081,650785580733038,2812062615630509,3922699608624123,2218480126862768,2614078267640854,4287194531876200,3305932353819977,1817678039841530,3256047669450861,4340692140638393,4167100019963590,3818276264944563,3004504642389817,1146616353397483,3683844575221461,2961712391269082,1606543863563230,1553561970867486,3551644711110563,810547703965547,1041593383037972,2151781533406480,2210992383161718,282776938842861\">Maria's Notes:&nbsp; 0 cl tpns / lockers in steel mat'l, tbc</p><p>Specified System =&nbsp;</p><p>Specified Colours =&nbsp;</p>",
+    "active": true,
+    "type": "opportunity",
+    "priority": "0",
+    "stage_id": [
+      24,
+      "Tender RFQ"
+    ],
+    "kanban_state": "red",
+    "tag_ids": [
+      28,
+      34
+    ],
+    "color": 0,
+    "expected_revenue": 0,
+    "prorated_revenue": 0,
+    "recurring_revenue": 0,
+    "recurring_plan": false,
+    "recurring_revenue_monthly": 0,
+    "recurring_revenue_monthly_prorated": 0,
+    "recurring_revenue_prorated": 0,
+    "company_currency": [
+      21,
+      "AUD"
+    ],
+    "date_closed": false,
+    "date_automation_last": "2025-04-06 23:54:03",
+    "date_open": "2025-04-06 23:54:03",
+    "day_open": 0,
+    "day_close": 0,
+    "date_last_stage_update": "2025-04-06 23:54:03",
+    "date_conversion": false,
+    "date_deadline": false,
+    "partner_id": [
+      300288,
+      "Halbuild"
+    ],
+    "partner_is_blacklisted": false,
+    "contact_name": false,
+    "partner_name": "Halbuild",
+    "function": false,
+    "title": false,
+    "email_from": "kieran@halbuild.com.au",
+    "email_domain_criterion": "@halbuild.com.au",
+    "phone": "+61 420 748 464",
+    "mobile": false,
+    "phone_state": false,
+    "email_state": "correct",
+    "website": false,
+    "lang_id": [
+      1,
+      "English (US)"
+    ],
+    "lang_code": "en_US",
+    "lang_active_count": 1,
+    "street": "9-11 Mann St",
+    "street2": false,
+    "zip": "2250",
+    "city": "Gosford",
+    "state_id": [
+      2,
+      "New South Wales (AU)"
+    ],
+    "country_id": [
+      13,
+      "Australia"
+    ],
+    "probability": 48.34,
+    "automated_probability": 48.34,
+    "is_automated_probability": true,
+    "lost_reason_id": false,
+    "calendar_event_ids": [],
+    "duplicate_lead_ids": [
+      54885,
+      56635,
+      56132,
+      56122,
+      55126,
+      54961,
+      50170,
+      56802
+    ],
+    "duplicate_lead_count": 7,
+    "meeting_display_date": false,
+    "meeting_display_label": "No Meeting",
+    "partner_email_update": false,
+    "partner_phone_update": false,
+    "is_partner_visible": true,
+    "display_name": "NSWPF - Gosford FETS Internal Reconfiguration",
+    "create_uid": [
+      106,
+      "Maria Cortez"
+    ],
+    "create_date": "2025-04-06 22:54:16",
+    "write_uid": [
+      106,
+      "Maria Cortez"
+    ],
+    "write_date": "2025-04-06 23:54:03",
+    "won_status": "pending",
+    "days_to_convert": 0,
+    "days_exceeding_closing": 0,
+    "customer_latitude": 0,
+    "customer_longitude": 0,
+    "customer_address": "9-11 Mann St\n\nGosford NSW 2250\nAustralia",
+    "marker_color": 0,
+    "probability_by_stage": 5,
+    "reveal_id": false,
+    "visitor_ids": [],
+    "visitor_page_count": 0,
+    "iap_enrich_done": false,
+    "show_enrich_button": true,
+    "lead_mining_request_id": false,
+    "sale_amount_total": 0,
+    "quotation_count": 0,
+    "sale_order_count": 0,
+    "order_ids": [],
+    "is_onhold": false,
+    "credit_rating": false,
+    "opportunity_type": "unknown",
+    "architect_id": [
+      314013,
+      "CCG Architects - Sydney Studio"
+    ],
+    "estimator_id": [
+      316142,
+      "Halbuild, Samantha Rogerson"
+    ],
+    "estimator_phone": false,
+    "estimator_mobile": false,
+    "estimator_email": "samantha@halbuild.com.au",
+    "project_manager_id": false,
+    "client_id": false,
+    "project_address": "9-11 Mann St, Gosford NSW 2250, Australia",
+    "tender_close_date": false,
+    "lead_source_id": [
+      34,
+      "Tender List"
+    ],
+    "specification_id": [
+      38,
+      "No spec"
+    ],
+    "lost_reason_id_custom": false,
+    "sector": "Community",
+    "lead_create": false,
+    "spec_rep_id": false,
+    "assign_date": "2025-04-07",
+    "access_right": false,
+    "design_date": false,
+    "tender_rfq_date": "2025-04-07",
+    "tender_estimate_date": false,
+    "const_rfq_date": false,
+    "const_estimate_date": false,
+    "negotiate_date": false,
+    "awaiting_date": false,
+    "oc_sent_date": false,
+    "sign_oc_date": false,
+    "cpm_date": false,
+    "pm_date": false,
+    "close_month_id": [
+      36,
+      "July 2025"
+    ],
+    "invoice_month_id": [
+      38,
+      "September 2025"
+    ],
+    "quote": false,
+    "address_note": false,
+    "accurate_opp": "estimator_phone missing",
+    "design": false,
+    "design_ids": [],
+    "x_studio_quote_contact_phone": false,
+    "x_studio_quote_contact_email_address": "kieran@halbuild.com.au",
+    "x_studio_field_wPEAQ": [],
+    "x_currency_id": [
+      21,
+      "AUD"
+    ],
+    "x_studio_building_owner": false,
+    "x_studio_netsuite_id": false,
+    "x_studio_quote_contact_ph": false,
+    "x_studio_field_0g3dU": "+61 420 748 464",
+    "x_studio_field_RaTm4": false,
+    "x_studio_field_UoG7g": false
+  },
+  {
+    "id": 56801,
+    "duration_tracking": {
+      "24": 21706234
+    },
+    "campaign_id": false,
+    "source_id": false,
+    "medium_id": false,
+    "activity_ids": [
+      288905
+    ],
+    "activity_state": "overdue",
+    "activity_user_id": [
+      180,
+      "Leo Halesh"
+    ],
+    "activity_type_id": [
+      29,
+      "Pre-Quote Call - Tender"
+    ],
+    "activity_type_icon": false,
+    "activity_date_deadline": "2025-04-07",
+    "my_activity_date_deadline": false,
+    "activity_summary": "Pre-Quote Call",
+    "activity_exception_decoration": false,
+    "activity_exception_icon": false,
+    "activity_calendar_event_id": false,
+    "message_is_follower": false,
+    "message_follower_ids": [],
+    "message_partner_ids": [],
+    "message_ids": [
+      2536759,
+      2536756,
+      2536750
+    ],
+    "has_message": true,
+    "message_needaction": false,
+    "message_needaction_counter": 0,
+    "message_has_error": false,
+    "message_has_error_counter": 0,
+    "message_attachment_count": 5,
+    "rating_ids": [],
+    "website_message_ids": [
+      2536759,
+      2536756
+    ],
+    "message_has_sms_error": false,
+    "phone_sanitized": "+61 2 9712 3456",
+    "phone_sanitized_blacklisted": false,
+    "phone_blacklisted": false,
+    "mobile_blacklisted": false,
+    "phone_mobile_search": false,
+    "email_normalized": "max@ubw.com.au",
+    "is_blacklisted": false,
+    "message_bounce": 0,
+    "email_cc": false,
+    "name": "Watsons Bay Tea Garden",
+    "user_id": [
+      180,
+      "Leo Halesh"
+    ],
+    "user_company_ids": [
+      1
+    ],
+    "team_id": [
+      6,
+      "NSW Sales Team"
+    ],
+    "lead_properties": [],
+    "company_id": [
+      1,
+      "Duracube"
+    ],
+    "referred": false,
+    "description": "<p data-last-history-steps=\"1499733100875146,133379106335889,2646968227760200,693567256104264,3437648040319302,3397154926489912,199494807619894,1645509126694858,3501679089175020,1728023168017745,4145264765107737,2949236027546040,1762397501349079,2935540566119139,1887288979523219,3866034327718060,3945160035514341,4283121313077558,4020037948545762,775874286208208,683430087914894,1299173166886198,2967273212717333,2802557391219472,2873697431427303,2601260733252209,1634474727933785,4239885544652686,929812422460011,3295463710227114,3801862821297361,892825624504812,978999315190178\">Maria's Notes: Fenale=8, Male=7</p><p>Specified System = FOB, tbc</p><p>Specified Colours =&nbsp;Not Specified TBC</p>",
+    "active": true,
+    "type": "opportunity",
+    "priority": "0",
+    "stage_id": [
+      24,
+      "Tender RFQ"
+    ],
+    "kanban_state": "red",
+    "tag_ids": [
+      2,
+      31
+    ],
+    "color": 0,
+    "expected_revenue": 27300,
+    "prorated_revenue": 1365,
+    "recurring_revenue": 0,
+    "recurring_plan": false,
+    "recurring_revenue_monthly": 0,
+    "recurring_revenue_monthly_prorated": 0,
+    "recurring_revenue_prorated": 0,
+    "company_currency": [
+      21,
+      "AUD"
+    ],
+    "date_closed": false,
+    "date_automation_last": "2025-04-06 22:45:40",
+    "date_open": "2025-04-06 22:45:39",
+    "day_open": 0,
+    "day_close": 0,
+    "date_last_stage_update": "2025-04-06 22:45:39",
+    "date_conversion": false,
+    "date_deadline": false,
+    "partner_id": [
+      39244,
+      "Ultra Building Works Pty Ltd"
+    ],
+    "partner_is_blacklisted": false,
+    "contact_name": false,
+    "partner_name": "Ultra Building Works Pty Ltd",
+    "function": false,
+    "title": false,
+    "email_from": "max@ubw.com.au",
+    "email_domain_criterion": "@ubw.com.au",
+    "phone": "+61 2 9712 3456",
+    "mobile": false,
+    "phone_state": false,
+    "email_state": "correct",
+    "website": false,
+    "lang_id": [
+      1,
+      "English (US)"
+    ],
+    "lang_code": "en_US",
+    "lang_active_count": 1,
+    "street": false,
+    "street2": false,
+    "zip": "2030",
+    "city": "Watsons Bay",
+    "state_id": [
+      2,
+      "New South Wales (AU)"
+    ],
+    "country_id": [
+      13,
+      "Australia"
+    ],
+    "probability": 38.82,
+    "automated_probability": 38.82,
+    "is_automated_probability": true,
+    "lost_reason_id": false,
+    "calendar_event_ids": [],
+    "duplicate_lead_ids": [
+      55008,
+      55007,
+      46011,
+      55990,
+      55888,
+      55792,
+      55775,
+      55509,
+      55331,
+      55330,
+      55329,
+      55251,
+      54079,
+      53408,
+      53348,
+      53329,
+      52439,
+      49934,
+      49360,
+      46756,
+      46755,
+      44984,
+      56801
+    ],
+    "duplicate_lead_count": 22,
+    "meeting_display_date": false,
+    "meeting_display_label": "No Meeting",
+    "partner_email_update": false,
+    "partner_phone_update": false,
+    "is_partner_visible": true,
+    "display_name": "Watsons Bay Tea Garden",
+    "create_uid": [
+      106,
+      "Maria Cortez"
+    ],
+    "create_date": "2025-04-06 22:45:39",
+    "write_uid": [
+      106,
+      "Maria Cortez"
+    ],
+    "write_date": "2025-04-06 22:45:39",
+    "won_status": "pending",
+    "days_to_convert": 0,
+    "days_exceeding_closing": 0,
+    "customer_latitude": 0,
+    "customer_longitude": 0,
+    "customer_address": "\n\nWatsons Bay NSW 2030\nAustralia",
+    "marker_color": 0,
+    "probability_by_stage": 5,
+    "reveal_id": false,
+    "visitor_ids": [],
+    "visitor_page_count": 0,
+    "iap_enrich_done": false,
+    "show_enrich_button": true,
+    "lead_mining_request_id": false,
+    "sale_amount_total": 0,
+    "quotation_count": 0,
+    "sale_order_count": 0,
+    "order_ids": [],
+    "is_onhold": false,
+    "credit_rating": false,
+    "opportunity_type": "unknown",
+    "architect_id": [
+      307658,
+      "Unknown Architect"
+    ],
+    "estimator_id": [
+      307388,
+      "Ultra Building Works Pty Ltd, Brandon Jbarah"
+    ],
+    "estimator_phone": "+61 2 9712 3456",
+    "estimator_mobile": false,
+    "estimator_email": "brandon@ubw.com.au",
+    "project_manager_id": false,
+    "client_id": false,
+    "project_address": "Watsons Bay NSW 2030, Australia",
+    "tender_close_date": false,
+    "lead_source_id": [
+      5,
+      "Existing Customer"
+    ],
+    "specification_id": [
+      38,
+      "No spec"
+    ],
+    "lost_reason_id_custom": false,
+    "sector": "Community",
+    "lead_create": false,
+    "spec_rep_id": false,
+    "assign_date": "2025-04-07",
+    "access_right": false,
+    "design_date": false,
+    "tender_rfq_date": false,
+    "tender_estimate_date": false,
+    "const_rfq_date": false,
+    "const_estimate_date": false,
+    "negotiate_date": false,
+    "awaiting_date": false,
+    "oc_sent_date": false,
+    "sign_oc_date": false,
+    "cpm_date": false,
+    "pm_date": false,
+    "close_month_id": [
+      36,
+      "July 2025"
+    ],
+    "invoice_month_id": [
+      38,
+      "September 2025"
+    ],
+    "quote": false,
+    "address_note": false,
+    "accurate_opp": "Accurate",
+    "design": false,
+    "design_ids": [],
+    "x_studio_quote_contact_phone": false,
+    "x_studio_quote_contact_email_address": "max@ubw.com.au",
+    "x_studio_field_wPEAQ": [],
+    "x_currency_id": [
+      21,
+      "AUD"
+    ],
+    "x_studio_building_owner": false,
+    "x_studio_netsuite_id": false,
+    "x_studio_quote_contact_ph": false,
+    "x_studio_field_0g3dU": "+61 2 9712 3456",
+    "x_studio_field_RaTm4": false,
+    "x_studio_field_UoG7g": false
+  }
+]
