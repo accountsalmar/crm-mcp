@@ -82,6 +82,8 @@ export declare const LeadSearchSchema: z.ZodObject<{
     lead_source_id: z.ZodOptional<z.ZodNumber>;
     sector: z.ZodOptional<z.ZodString>;
     specification_id: z.ZodOptional<z.ZodNumber>;
+    architect_id: z.ZodOptional<z.ZodNumber>;
+    building_owner_id: z.ZodOptional<z.ZodNumber>;
     state_id: z.ZodOptional<z.ZodNumber>;
     state_name: z.ZodOptional<z.ZodString>;
     city: z.ZodOptional<z.ZodString>;
@@ -107,6 +109,7 @@ export declare const LeadSearchSchema: z.ZodObject<{
     specification_id?: number | undefined;
     city?: string | undefined;
     state_id?: number | undefined;
+    architect_id?: number | undefined;
     type?: "lead" | "opportunity" | undefined;
     stage_name?: string | undefined;
     fields?: string[] | "basic" | "extended" | "full" | undefined;
@@ -118,6 +121,7 @@ export declare const LeadSearchSchema: z.ZodObject<{
     date_to?: string | undefined;
     date_closed_from?: string | undefined;
     date_closed_to?: string | undefined;
+    building_owner_id?: number | undefined;
     state_name?: string | undefined;
     days_inactive?: number | undefined;
 }, {
@@ -129,6 +133,7 @@ export declare const LeadSearchSchema: z.ZodObject<{
     specification_id?: number | undefined;
     city?: string | undefined;
     state_id?: number | undefined;
+    architect_id?: number | undefined;
     type?: "lead" | "opportunity" | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
@@ -145,6 +150,7 @@ export declare const LeadSearchSchema: z.ZodObject<{
     date_closed_from?: string | undefined;
     date_closed_to?: string | undefined;
     date_field?: "create_date" | "date_closed" | undefined;
+    building_owner_id?: number | undefined;
     state_name?: string | undefined;
     order_by?: "name" | "expected_revenue" | "probability" | "create_date" | "date_closed" | undefined;
     order_dir?: "asc" | "desc" | undefined;
@@ -297,31 +303,37 @@ export declare const LostAnalysisSchema: z.ZodObject<{
     lost_reason_name: z.ZodOptional<z.ZodString>;
     stage_id: z.ZodOptional<z.ZodNumber>;
     min_revenue: z.ZodOptional<z.ZodNumber>;
-    group_by: z.ZodDefault<z.ZodEnum<["reason", "salesperson", "team", "stage", "month", "sector", "specification", "lead_source", "state", "city"]>>;
+    architect_id: z.ZodOptional<z.ZodNumber>;
+    building_owner_id: z.ZodOptional<z.ZodNumber>;
+    group_by: z.ZodDefault<z.ZodEnum<["reason", "salesperson", "team", "stage", "month", "sector", "specification", "lead_source", "state", "city", "architect", "building_owner"]>>;
     include_top_lost: z.ZodDefault<z.ZodNumber>;
     response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
 }, "strict", z.ZodTypeAny, {
-    group_by: "sector" | "city" | "state" | "month" | "reason" | "salesperson" | "team" | "stage" | "specification" | "lead_source";
+    group_by: "sector" | "city" | "state" | "month" | "reason" | "salesperson" | "team" | "stage" | "specification" | "lead_source" | "architect" | "building_owner";
     response_format: ResponseFormat;
     include_top_lost: number;
     stage_id?: number | undefined;
     user_id?: number | undefined;
     team_id?: number | undefined;
+    architect_id?: number | undefined;
     lost_reason_id?: number | undefined;
     min_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
+    building_owner_id?: number | undefined;
     lost_reason_name?: string | undefined;
 }, {
     stage_id?: number | undefined;
     user_id?: number | undefined;
     team_id?: number | undefined;
+    architect_id?: number | undefined;
     lost_reason_id?: number | undefined;
-    group_by?: "sector" | "city" | "state" | "month" | "reason" | "salesperson" | "team" | "stage" | "specification" | "lead_source" | undefined;
+    group_by?: "sector" | "city" | "state" | "month" | "reason" | "salesperson" | "team" | "stage" | "specification" | "lead_source" | "architect" | "building_owner" | undefined;
     response_format?: ResponseFormat | undefined;
     min_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
+    building_owner_id?: number | undefined;
     lost_reason_name?: string | undefined;
     include_top_lost?: number | undefined;
 }>;
@@ -343,6 +355,8 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     lead_source_id: z.ZodOptional<z.ZodNumber>;
     sector: z.ZodOptional<z.ZodString>;
     specification_id: z.ZodOptional<z.ZodNumber>;
+    architect_id: z.ZodOptional<z.ZodNumber>;
+    building_owner_id: z.ZodOptional<z.ZodNumber>;
     state_id: z.ZodOptional<z.ZodNumber>;
     state_name: z.ZodOptional<z.ZodString>;
     city: z.ZodOptional<z.ZodString>;
@@ -363,6 +377,7 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     specification_id?: number | undefined;
     city?: string | undefined;
     state_id?: number | undefined;
+    architect_id?: number | undefined;
     lost_reason_id?: number | undefined;
     fields?: string[] | "basic" | "extended" | "full" | undefined;
     query?: string | undefined;
@@ -370,6 +385,7 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     max_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
+    building_owner_id?: number | undefined;
     state_name?: string | undefined;
     lost_reason_name?: string | undefined;
 }, {
@@ -381,6 +397,7 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     specification_id?: number | undefined;
     city?: string | undefined;
     state_id?: number | undefined;
+    architect_id?: number | undefined;
     lost_reason_id?: number | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
@@ -391,6 +408,7 @@ export declare const LostOpportunitiesSearchSchema: z.ZodObject<{
     max_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
+    building_owner_id?: number | undefined;
     state_name?: string | undefined;
     order_by?: "name" | "expected_revenue" | "create_date" | "date_closed" | undefined;
     order_dir?: "asc" | "desc" | undefined;
@@ -437,6 +455,8 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     lead_source_id: z.ZodOptional<z.ZodNumber>;
     sector: z.ZodOptional<z.ZodString>;
     specification_id: z.ZodOptional<z.ZodNumber>;
+    architect_id: z.ZodOptional<z.ZodNumber>;
+    building_owner_id: z.ZodOptional<z.ZodNumber>;
     state_id: z.ZodOptional<z.ZodNumber>;
     state_name: z.ZodOptional<z.ZodString>;
     city: z.ZodOptional<z.ZodString>;
@@ -457,12 +477,14 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     specification_id?: number | undefined;
     city?: string | undefined;
     state_id?: number | undefined;
+    architect_id?: number | undefined;
     fields?: string[] | "basic" | "extended" | "full" | undefined;
     query?: string | undefined;
     min_revenue?: number | undefined;
     max_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
+    building_owner_id?: number | undefined;
     state_name?: string | undefined;
 }, {
     stage_id?: number | undefined;
@@ -473,6 +495,7 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     specification_id?: number | undefined;
     city?: string | undefined;
     state_id?: number | undefined;
+    architect_id?: number | undefined;
     offset?: number | undefined;
     limit?: number | undefined;
     fields?: string[] | "basic" | "extended" | "full" | undefined;
@@ -482,38 +505,45 @@ export declare const WonOpportunitiesSearchSchema: z.ZodObject<{
     max_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
+    building_owner_id?: number | undefined;
     state_name?: string | undefined;
     order_by?: "name" | "expected_revenue" | "create_date" | "date_closed" | undefined;
     order_dir?: "asc" | "desc" | undefined;
 }>;
 export declare const WonAnalysisSchema: z.ZodObject<{
-    group_by: z.ZodDefault<z.ZodEnum<["salesperson", "team", "stage", "month", "source", "sector", "specification", "lead_source", "state", "city"]>>;
+    group_by: z.ZodDefault<z.ZodEnum<["salesperson", "team", "stage", "month", "source", "sector", "specification", "lead_source", "state", "city", "architect", "building_owner"]>>;
     date_from: z.ZodOptional<z.ZodString>;
     date_to: z.ZodOptional<z.ZodString>;
     user_id: z.ZodOptional<z.ZodNumber>;
     team_id: z.ZodOptional<z.ZodNumber>;
     min_revenue: z.ZodOptional<z.ZodNumber>;
+    architect_id: z.ZodOptional<z.ZodNumber>;
+    building_owner_id: z.ZodOptional<z.ZodNumber>;
     include_top_won: z.ZodDefault<z.ZodNumber>;
     include_conversion_rates: z.ZodDefault<z.ZodBoolean>;
     response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
 }, "strict", z.ZodTypeAny, {
-    group_by: "sector" | "city" | "state" | "month" | "salesperson" | "team" | "stage" | "specification" | "lead_source" | "source";
+    group_by: "sector" | "city" | "state" | "month" | "salesperson" | "team" | "stage" | "specification" | "lead_source" | "architect" | "building_owner" | "source";
     response_format: ResponseFormat;
     include_top_won: number;
     include_conversion_rates: boolean;
     user_id?: number | undefined;
     team_id?: number | undefined;
+    architect_id?: number | undefined;
     min_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
+    building_owner_id?: number | undefined;
 }, {
     user_id?: number | undefined;
     team_id?: number | undefined;
-    group_by?: "sector" | "city" | "state" | "month" | "salesperson" | "team" | "stage" | "specification" | "lead_source" | "source" | undefined;
+    architect_id?: number | undefined;
+    group_by?: "sector" | "city" | "state" | "month" | "salesperson" | "team" | "stage" | "specification" | "lead_source" | "architect" | "building_owner" | "source" | undefined;
     response_format?: ResponseFormat | undefined;
     min_revenue?: number | undefined;
     date_from?: string | undefined;
     date_to?: string | undefined;
+    building_owner_id?: number | undefined;
     include_top_won?: number | undefined;
     include_conversion_rates?: boolean | undefined;
 }>;

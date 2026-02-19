@@ -48,6 +48,8 @@ export interface CrmLead extends OdooRecord {
   lead_source_id?: [number, string];
   sector?: string;
   specification_id?: [number, string];
+  architect_id?: [number, string];
+  x_studio_building_owener?: [number, string];
 }
 
 // CRM Lead with activity recency fields (enriched)
@@ -320,6 +322,22 @@ export interface LostAnalysisSummary {
     lost_revenue: number;
     avg_deal: number;
   }>;
+  by_architect?: Array<{
+    architect_id: number;
+    architect_name: string;
+    count: number;
+    percentage: number;
+    lost_revenue: number;
+    avg_deal: number;
+  }>;
+  by_building_owner?: Array<{
+    building_owner_id: number;
+    building_owner_name: string;
+    count: number;
+    percentage: number;
+    lost_revenue: number;
+    avg_deal: number;
+  }>;
   // Top lost opportunities
   top_lost?: Array<{
     id: number;
@@ -452,6 +470,22 @@ export interface WonAnalysisSummary {
   }>;
   by_city?: Array<{
     city: string;
+    count: number;
+    percentage: number;
+    won_revenue: number;
+    avg_deal: number;
+  }>;
+  by_architect?: Array<{
+    architect_id: number;
+    architect_name: string;
+    count: number;
+    percentage: number;
+    won_revenue: number;
+    avg_deal: number;
+  }>;
+  by_building_owner?: Array<{
+    building_owner_id: number;
+    building_owner_name: string;
     count: number;
     percentage: number;
     won_revenue: number;

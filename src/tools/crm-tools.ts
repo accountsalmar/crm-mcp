@@ -225,6 +225,14 @@ Returns paginated list with: name, contact, email, stage, revenue, probability (
           domain.push(['specification_id', '=', params.specification_id]);
         }
 
+        if (params.architect_id) {
+          domain.push(['architect_id', '=', params.architect_id]);
+        }
+
+        if (params.building_owner_id) {
+          domain.push(['x_studio_building_owener', '=', params.building_owner_id]);
+        }
+
         // State/Territory filters (direct field on crm.lead)
         if (params.state_id) {
           domain.push(['state_id', '=', params.state_id]);
@@ -1351,6 +1359,12 @@ Returns summary statistics including total lost count and revenue, breakdown by 
         if (params.min_revenue !== undefined) {
           domain.push(['expected_revenue', '>=', params.min_revenue]);
         }
+        if (params.architect_id) {
+          domain.push(['architect_id', '=', params.architect_id]);
+        }
+        if (params.building_owner_id) {
+          domain.push(['x_studio_building_owener', '=', params.building_owner_id]);
+        }
 
         // Get total lost count and revenue
         const lostTotals = await client.readGroup(
@@ -1572,6 +1586,42 @@ Returns summary statistics including total lost count and revenue, breakdown by 
           })).sort((a, b) => b.count - a.count);
         }
 
+        if (params.group_by === 'architect') {
+          const byArchitect = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['architect_id', 'expected_revenue:sum', 'id:count'],
+            ['architect_id']
+          );
+
+          analysis.by_architect = byArchitect.map(a => ({
+            architect_id: Array.isArray(a.architect_id) ? a.architect_id[0] : 0,
+            architect_name: Array.isArray(a.architect_id) ? a.architect_id[1] as string : 'Not Specified',
+            count: (a.id as number) || 0,
+            percentage: totalLost > 0 ? ((a.id as number) / totalLost) * 100 : 0,
+            lost_revenue: (a.expected_revenue as number) || 0,
+            avg_deal: (a.id as number) > 0 ? ((a.expected_revenue as number) || 0) / (a.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'building_owner') {
+          const byBuildingOwner = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['x_studio_building_owener', 'expected_revenue:sum', 'id:count'],
+            ['x_studio_building_owener']
+          );
+
+          analysis.by_building_owner = byBuildingOwner.map(b => ({
+            building_owner_id: Array.isArray(b.x_studio_building_owener) ? b.x_studio_building_owener[0] : 0,
+            building_owner_name: Array.isArray(b.x_studio_building_owener) ? b.x_studio_building_owener[1] as string : 'Not Specified',
+            count: (b.id as number) || 0,
+            percentage: totalLost > 0 ? ((b.id as number) / totalLost) * 100 : 0,
+            lost_revenue: (b.expected_revenue as number) || 0,
+            avg_deal: (b.id as number) > 0 ? ((b.expected_revenue as number) || 0) / (b.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
         // Get top lost opportunities
         if (params.include_top_lost > 0) {
           const topLost = await client.searchRead<LostOpportunity>(
@@ -1708,6 +1758,14 @@ Returns a paginated list of lost opportunities with details including the lost r
 
         if (params.specification_id) {
           domain.push(['specification_id', '=', params.specification_id]);
+        }
+
+        if (params.architect_id) {
+          domain.push(['architect_id', '=', params.architect_id]);
+        }
+
+        if (params.building_owner_id) {
+          domain.push(['x_studio_building_owener', '=', params.building_owner_id]);
         }
 
         // State/Territory filters (direct field on crm.lead)
@@ -2114,6 +2172,14 @@ Returns a paginated list of won opportunities with details including revenue, sa
           domain.push(['specification_id', '=', params.specification_id]);
         }
 
+        if (params.architect_id) {
+          domain.push(['architect_id', '=', params.architect_id]);
+        }
+
+        if (params.building_owner_id) {
+          domain.push(['x_studio_building_owener', '=', params.building_owner_id]);
+        }
+
         // State/Territory filters (direct field on crm.lead)
         if (params.state_id) {
           domain.push(['state_id', '=', params.state_id]);
@@ -2230,6 +2296,12 @@ Returns summary statistics including total won count and revenue, breakdown by t
         }
         if (params.min_revenue !== undefined) {
           domain.push(['expected_revenue', '>=', params.min_revenue]);
+        }
+        if (params.architect_id) {
+          domain.push(['architect_id', '=', params.architect_id]);
+        }
+        if (params.building_owner_id) {
+          domain.push(['x_studio_building_owener', '=', params.building_owner_id]);
         }
 
         // Get total won count and revenue
@@ -2451,6 +2523,42 @@ Returns summary statistics including total won count and revenue, breakdown by t
             percentage: totalWon > 0 ? ((c.id as number) / totalWon) * 100 : 0,
             won_revenue: (c.expected_revenue as number) || 0,
             avg_deal: (c.id as number) > 0 ? ((c.expected_revenue as number) || 0) / (c.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'architect') {
+          const byArchitect = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['architect_id', 'expected_revenue:sum', 'id:count'],
+            ['architect_id']
+          );
+
+          analysis.by_architect = byArchitect.map(a => ({
+            architect_id: Array.isArray(a.architect_id) ? a.architect_id[0] : 0,
+            architect_name: Array.isArray(a.architect_id) ? a.architect_id[1] as string : 'Not Specified',
+            count: (a.id as number) || 0,
+            percentage: totalWon > 0 ? ((a.id as number) / totalWon) * 100 : 0,
+            won_revenue: (a.expected_revenue as number) || 0,
+            avg_deal: (a.id as number) > 0 ? ((a.expected_revenue as number) || 0) / (a.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'building_owner') {
+          const byBuildingOwner = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['x_studio_building_owener', 'expected_revenue:sum', 'id:count'],
+            ['x_studio_building_owener']
+          );
+
+          analysis.by_building_owner = byBuildingOwner.map(b => ({
+            building_owner_id: Array.isArray(b.x_studio_building_owener) ? b.x_studio_building_owener[0] : 0,
+            building_owner_name: Array.isArray(b.x_studio_building_owener) ? b.x_studio_building_owener[1] as string : 'Not Specified',
+            count: (b.id as number) || 0,
+            percentage: totalWon > 0 ? ((b.id as number) / totalWon) * 100 : 0,
+            won_revenue: (b.expected_revenue as number) || 0,
+            avg_deal: (b.id as number) > 0 ? ((b.expected_revenue as number) || 0) / (b.id as number) : 0
           })).sort((a, b) => b.count - a.count);
         }
 

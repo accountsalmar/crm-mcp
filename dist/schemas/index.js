@@ -146,6 +146,16 @@ export const LeadSearchSchema = PaginationSchema.extend({
         .positive()
         .optional()
         .describe('Filter by specification ID'),
+    architect_id: z.number()
+        .int()
+        .positive()
+        .optional()
+        .describe('Filter by architect ID'),
+    building_owner_id: z.number()
+        .int()
+        .positive()
+        .optional()
+        .describe('Filter by building owner ID'),
     state_id: z.number()
         .int()
         .positive()
@@ -355,9 +365,19 @@ export const LostAnalysisSchema = z.object({
         .min(0)
         .optional()
         .describe('Minimum revenue threshold'),
-    group_by: z.enum(['reason', 'salesperson', 'team', 'stage', 'month', 'sector', 'specification', 'lead_source', 'state', 'city'])
+    architect_id: z.number()
+        .int()
+        .positive()
+        .optional()
+        .describe('Filter by architect ID'),
+    building_owner_id: z.number()
+        .int()
+        .positive()
+        .optional()
+        .describe('Filter by building owner ID'),
+    group_by: z.enum(['reason', 'salesperson', 'team', 'stage', 'month', 'sector', 'specification', 'lead_source', 'state', 'city', 'architect', 'building_owner'])
         .default('reason')
-        .describe("Group results by: 'reason', 'salesperson', 'team', 'stage', 'month', 'sector', 'specification', 'lead_source', 'state', or 'city'"),
+        .describe("Group results by: 'reason', 'salesperson', 'team', 'stage', 'month', 'sector', 'specification', 'lead_source', 'state', 'city', 'architect', or 'building_owner'"),
     include_top_lost: z.number()
         .int()
         .min(0)
@@ -426,6 +446,16 @@ export const LostOpportunitiesSearchSchema = PaginationSchema.extend({
         .positive()
         .optional()
         .describe('Filter by specification ID'),
+    architect_id: z.number()
+        .int()
+        .positive()
+        .optional()
+        .describe('Filter by architect ID'),
+    building_owner_id: z.number()
+        .int()
+        .positive()
+        .optional()
+        .describe('Filter by building owner ID'),
     state_id: z.number()
         .int()
         .positive()
@@ -527,6 +557,16 @@ export const WonOpportunitiesSearchSchema = PaginationSchema.extend({
         .positive()
         .optional()
         .describe('Filter by specification ID'),
+    architect_id: z.number()
+        .int()
+        .positive()
+        .optional()
+        .describe('Filter by architect ID'),
+    building_owner_id: z.number()
+        .int()
+        .positive()
+        .optional()
+        .describe('Filter by building owner ID'),
     state_id: z.number()
         .int()
         .positive()
@@ -550,9 +590,9 @@ export const WonOpportunitiesSearchSchema = PaginationSchema.extend({
 }).strict();
 // Won analysis schema
 export const WonAnalysisSchema = z.object({
-    group_by: z.enum(['salesperson', 'team', 'stage', 'month', 'source', 'sector', 'specification', 'lead_source', 'state', 'city'])
+    group_by: z.enum(['salesperson', 'team', 'stage', 'month', 'source', 'sector', 'specification', 'lead_source', 'state', 'city', 'architect', 'building_owner'])
         .default('salesperson')
-        .describe("Group results by: 'salesperson', 'team', 'stage', 'month', 'source', 'sector', 'specification', 'lead_source', 'state', or 'city'"),
+        .describe("Group results by: 'salesperson', 'team', 'stage', 'month', 'source', 'sector', 'specification', 'lead_source', 'state', 'city', 'architect', or 'building_owner'"),
     date_from: z.string()
         .regex(/^\d{4}-\d{2}-\d{2}$/)
         .optional()
@@ -575,6 +615,16 @@ export const WonAnalysisSchema = z.object({
         .min(0)
         .optional()
         .describe('Minimum revenue threshold'),
+    architect_id: z.number()
+        .int()
+        .positive()
+        .optional()
+        .describe('Filter by architect ID'),
+    building_owner_id: z.number()
+        .int()
+        .positive()
+        .optional()
+        .describe('Filter by building owner ID'),
     include_top_won: z.number()
         .int()
         .min(0)
