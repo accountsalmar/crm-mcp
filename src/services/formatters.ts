@@ -54,7 +54,7 @@ export function formatLeadListItem(lead: CrmLead): string {
   Contact: ${getContactName(lead)} | ${lead.email_from || '-'}
   Stage: ${getRelationName(lead.stage_id)} | Revenue: ${formatCurrency(lead.expected_revenue)} | Prob: ${formatPercent(lead.probability)}
   Sector: ${lead.sector || '-'} | Lead Source: ${getRelationName(lead.lead_source_id)} | Spec: ${getRelationName(lead.specification_id)}
-  Architect: ${getRelationName(lead.architect_id)} | Building Owner: ${getRelationName(lead.x_studio_building_owener)}
+  Architect: ${getRelationName(lead.architect_id)} | Building Owner: ${getRelationName(lead.x_studio_building_owner)}
   Location: ${location || '-'}`;
 }
 
@@ -96,7 +96,7 @@ export function formatLeadDetail(lead: CrmLead): string {
 - **Lead Source:** ${getRelationName(lead.lead_source_id)}
 - **Specification:** ${getRelationName(lead.specification_id)}
 - **Architect:** ${getRelationName(lead.architect_id)}
-- **Building Owner:** ${getRelationName(lead.x_studio_building_owener)}
+- **Building Owner:** ${getRelationName(lead.x_studio_building_owner)}
 
 ${lead.description ? `### Notes\n${truncateText(stripHtml(lead.description), 500)}` : ''}`;
 }
@@ -479,7 +479,7 @@ export function formatLostOpportunitiesList(data: PaginatedResponse<LostOpportun
       output += `   - Revenue: ${formatCurrency(opp.expected_revenue)} | Stage: ${getRelationName(opp.stage_id)}\n`;
       output += `   - Salesperson: ${getRelationName(opp.user_id)} | Lost: ${formatDate(opp.date_closed)}\n`;
       output += `   - Sector: ${opp.sector || '-'} | Lead Source: ${getRelationName(opp.lead_source_id)} | Spec: ${getRelationName(opp.specification_id)}\n`;
-      output += `   - Architect: ${getRelationName(opp.architect_id)} | Building Owner: ${getRelationName(opp.x_studio_building_owener)}\n`;
+      output += `   - Architect: ${getRelationName(opp.architect_id)} | Building Owner: ${getRelationName(opp.x_studio_building_owner)}\n`;
       const location = [opp.city, getRelationName(opp.state_id)].filter(x => x && x !== '-').join(', ');
       if (location) {
         output += `   - Location: ${location}\n`;
@@ -575,7 +575,7 @@ export function formatWonOpportunitiesList(data: PaginatedResponse<WonOpportunit
       output += `   - Revenue: ${formatCurrency(opp.expected_revenue)} | Stage: ${getRelationName(opp.stage_id)}\n`;
       output += `   - Salesperson: ${getRelationName(opp.user_id)} | Won: ${formatDate(opp.date_closed)}\n`;
       output += `   - Sector: ${opp.sector || '-'} | Lead Source: ${getRelationName(opp.lead_source_id)} | Spec: ${getRelationName(opp.specification_id)}\n`;
-      output += `   - Architect: ${getRelationName(opp.architect_id)} | Building Owner: ${getRelationName(opp.x_studio_building_owener)}\n`;
+      output += `   - Architect: ${getRelationName(opp.architect_id)} | Building Owner: ${getRelationName(opp.x_studio_building_owner)}\n`;
       const location = [opp.city, getRelationName(opp.state_id)].filter(x => x && x !== '-').join(', ');
       if (location) {
         output += `   - Location: ${location}\n`;

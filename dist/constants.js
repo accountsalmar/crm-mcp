@@ -37,7 +37,7 @@ export const CRM_FIELDS = {
         'user_id', 'team_id',
         'lead_source_id', 'sector', 'specification_id',
         'city', 'state_id',
-        'architect_id', 'x_studio_building_owener'
+        'architect_id', 'x_studio_building_owner'
     ],
     // Extended fields for lead list (includes address, source, tags)
     LEAD_LIST_EXTENDED: [
@@ -47,7 +47,7 @@ export const CRM_FIELDS = {
         'source_id', 'medium_id', 'campaign_id', 'tag_ids',
         'date_deadline', 'partner_id', 'description',
         'lead_source_id', 'sector', 'specification_id',
-        'architect_id', 'x_studio_building_owener'
+        'architect_id', 'x_studio_building_owner'
     ],
     // Detailed fields for single record views
     LEAD_DETAIL: [
@@ -58,7 +58,7 @@ export const CRM_FIELDS = {
         'date_deadline', 'date_closed', 'lost_reason_id', 'tag_ids',
         'partner_id', 'company_id', 'priority', 'type', 'active',
         'lead_source_id', 'sector', 'specification_id',
-        'architect_id', 'x_studio_building_owener'
+        'architect_id', 'x_studio_building_owner'
     ],
     // Fields for pipeline analysis
     PIPELINE_SUMMARY: [
@@ -78,7 +78,7 @@ export const CRM_FIELDS = {
         'stage_id', 'user_id', 'lost_reason_id', 'date_closed', 'create_date',
         'lead_source_id', 'sector', 'specification_id',
         'city', 'state_id',
-        'architect_id', 'x_studio_building_owener'
+        'architect_id', 'x_studio_building_owner'
     ],
     // Lost opportunity detail fields (includes feedback if available)
     LOST_OPPORTUNITY_DETAIL: [
@@ -87,7 +87,7 @@ export const CRM_FIELDS = {
         'date_closed', 'create_date', 'description',
         'lead_source_id', 'sector', 'specification_id',
         'city', 'state_id',
-        'architect_id', 'x_studio_building_owener'
+        'architect_id', 'x_studio_building_owner'
     ],
     // Lost reason fields
     LOST_REASON: [
@@ -99,7 +99,7 @@ export const CRM_FIELDS = {
         'stage_id', 'user_id', 'team_id', 'date_closed', 'create_date',
         'lead_source_id', 'sector', 'specification_id',
         'city', 'state_id',
-        'architect_id', 'x_studio_building_owener'
+        'architect_id', 'x_studio_building_owner'
     ],
     // Won opportunity detail fields
     WON_OPPORTUNITY_DETAIL: [
@@ -108,7 +108,7 @@ export const CRM_FIELDS = {
         'date_closed', 'create_date', 'description',
         'lead_source_id', 'sector', 'specification_id',
         'city', 'state_id',
-        'architect_id', 'x_studio_building_owener'
+        'architect_id', 'x_studio_building_owner'
     ],
     // Activity detail fields
     ACTIVITY_DETAIL: [

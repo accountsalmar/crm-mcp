@@ -43,7 +43,7 @@ export interface CrmLead extends OdooRecord {
     sector?: string;
     specification_id?: [number, string];
     architect_id?: [number, string];
-    x_studio_building_owener?: [number, string];
+    x_studio_building_owner?: [number, string];
 }
 export interface CrmLeadWithActivity extends CrmLead {
     last_activity_date?: string | null;
