@@ -33,6 +33,7 @@ import {
   formatColorTrends,
   formatRfqByColorList,
   formatNotesAnalysis,
+  formatPipelineAnalysis,
   type FieldInfo,
   type NotesAnalysisResult
 } from '../services/formatters.js';
@@ -90,10 +91,12 @@ import {
   RfqByColorSearchSchema,
   type RfqByColorSearchInput,
   AnalyzeNotesSchema,
-  type AnalyzeNotesInput
+  type AnalyzeNotesInput,
+  PipelineAnalysisSchema,
+  type PipelineAnalysisInput
 } from '../schemas/index.js';
 import { CRM_FIELDS, CONTEXT_LIMITS, ResponseFormat, EXPORT_CONFIG, FIELD_PRESETS, resolveFields } from '../constants.js';
-import type { CrmLead, CrmLeadWithActivity, CrmStage, ResPartner, PaginatedResponse, PipelineSummary, SalesAnalytics, StageDuration, VelocityMetrics, TargetTracking, ActivitySummary, CrmLostReason, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, ConversionFunnel, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, WeightedPipelineTotals, CrmTeam, ResUsers, OdooRecord, ExportFormat, ResCountryState, StateWithStats, StateComparison, ColorTrendsSummary, LeadWithColor, RfqSearchResult } from '../types.js';
+import type { CrmLead, CrmLeadWithActivity, CrmStage, ResPartner, PaginatedResponse, PipelineSummary, SalesAnalytics, StageDuration, VelocityMetrics, TargetTracking, ActivitySummary, CrmLostReason, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, ConversionFunnel, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, WeightedPipelineTotals, CrmTeam, ResUsers, OdooRecord, ExportFormat, ResCountryState, StateWithStats, StateComparison, ColorTrendsSummary, LeadWithColor, RfqSearchResult, PipelineAnalysisSummary } from '../types.js';
 import { enrichLeadsWithColor, enrichLeadsWithEnhancedColor, buildColorTrendsSummary, filterLeadsByColor } from '../services/color-service.js';
 import { ExportWriter, generateExportFilename, getOutputDirectory, getMimeType } from '../utils/export-writer.js';
 import { convertDateToUtc, getDaysAgoUtc } from '../utils/timezone.js';
@@ -559,6 +562,340 @@ Returns all available fields for the lead including description/notes.`,
         return {
           isError: true,
           content: [{ type: 'text', text: `Error fetching pipeline summary: ${message}` }]
+        };
+      }
+    }
+  );
+
+  // ============================================
+  // TOOL: Pipeline Analysis (Active Opportunities)
+  // ============================================
+  server.registerTool(
+    'odoo_crm_get_pipeline_analysis',
+    {
+      title: 'Get Pipeline Analysis (Active Opportunities)',
+      description: `Get aggregated analytics on active/open pipeline opportunities - the primary tool for understanding your current pipeline by any dimension.
+
+Returns summary statistics including total active count, pipeline revenue, average deal size, average probability, breakdown by the selected grouping, and optionally the top largest active opportunities.
+
+**Supported groupings (group_by):**
+- 'salesperson' - Which salesperson has the most active deals?
+- 'team' - Pipeline by sales team
+- 'stage' - Pipeline by stage (default)
+- 'month' - Pipeline by creation month
+- 'sector' - Pipeline by sector/industry
+- 'specification' - Pipeline by specification
+- 'lead_source' - Pipeline by lead source
+- 'state' - Pipeline by state/territory
+- 'city' - Pipeline by city
+- 'architect' - How much pipeline does each architect have?
+- 'building_owner' - Open opportunities by building owner
+
+**Handles queries like:**
+- "Summarize open opportunities by architect" → group_by='architect'
+- "Pipeline by building owner" → group_by='building_owner'
+- "Which salesperson has the most active deals?" → group_by='salesperson'
+- "Active pipeline by state?" → group_by='state'
+- "Open opportunities by sector" → group_by='sector'
+
+**Best Practices:**
+- Start with group_by='stage' for overall pipeline view
+- Use group_by='architect' or 'building_owner' for stakeholder analysis
+- Combine with date filters for time-bound analysis`,
+      inputSchema: PipelineAnalysisSchema,
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true
+      }
+    },
+    async (params: PipelineAnalysisInput) => {
+      try {
+        const client = getOdooClient();
+
+        // Build domain for active pipeline opportunities
+        // Active = active=True AND probability<100 (open deals, not yet won)
+        const domain: unknown[] = [
+          ['type', '=', 'opportunity'],
+          ['active', '=', true],
+          ['probability', '<', 100]
+        ];
+
+        // Apply filters (convert Sydney time to UTC) - use create_date since active deals have no date_closed
+        if (params.date_from) {
+          domain.push(['create_date', '>=', convertDateToUtc(params.date_from, false)]);
+        }
+        if (params.date_to) {
+          domain.push(['create_date', '<=', convertDateToUtc(params.date_to, true)]);
+        }
+        if (params.user_id) {
+          domain.push(['user_id', '=', params.user_id]);
+        }
+        if (params.team_id) {
+          domain.push(['team_id', '=', params.team_id]);
+        }
+        if (params.stage_id) {
+          domain.push(['stage_id', '=', params.stage_id]);
+        }
+        if (params.min_revenue !== undefined) {
+          domain.push(['expected_revenue', '>=', params.min_revenue]);
+        }
+        if (params.architect_id) {
+          domain.push(['architect_id', '=', params.architect_id]);
+        }
+        if (params.building_owner_id) {
+          domain.push(['x_studio_building_owner', '=', params.building_owner_id]);
+        }
+
+        // Get total active count, revenue, and average probability
+        const activeTotals = await client.readGroup(
+          'crm.lead',
+          domain,
+          ['expected_revenue:sum', 'probability:avg', 'id:count'],
+          []
+        );
+
+        const totalActive = (activeTotals[0]?.id as number) || 0;
+        const totalPipelineRevenue = (activeTotals[0]?.expected_revenue as number) || 0;
+        const avgProbability = (activeTotals[0]?.probability as number) || 0;
+
+        // Build analysis summary
+        const analysis: PipelineAnalysisSummary = {
+          period: params.date_from || params.date_to
+            ? `${params.date_from || 'Start'} to ${params.date_to || 'Now'}`
+            : 'All Time',
+          total_active: totalActive,
+          total_pipeline_revenue: totalPipelineRevenue,
+          avg_deal_size: totalActive > 0 ? totalPipelineRevenue / totalActive : 0,
+          avg_probability: avgProbability
+        };
+
+        // Get grouped data based on group_by parameter
+        if (params.group_by === 'salesperson') {
+          const byUser = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['user_id', 'expected_revenue:sum', 'id:count'],
+            ['user_id']
+          );
+
+          analysis.by_salesperson = byUser.map(u => ({
+            user_id: Array.isArray(u.user_id) ? u.user_id[0] : 0,
+            user_name: Array.isArray(u.user_id) ? u.user_id[1] as string : 'Unassigned',
+            count: (u.id as number) || 0,
+            percentage: totalActive > 0 ? ((u.id as number) / totalActive) * 100 : 0,
+            pipeline_revenue: (u.expected_revenue as number) || 0,
+            avg_deal: (u.id as number) > 0 ? ((u.expected_revenue as number) || 0) / (u.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'team') {
+          const byTeam = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['team_id', 'expected_revenue:sum', 'id:count'],
+            ['team_id']
+          );
+
+          analysis.by_team = byTeam.map(t => ({
+            team_id: Array.isArray(t.team_id) ? t.team_id[0] : 0,
+            team_name: Array.isArray(t.team_id) ? t.team_id[1] as string : 'No Team',
+            count: (t.id as number) || 0,
+            percentage: totalActive > 0 ? ((t.id as number) / totalActive) * 100 : 0,
+            pipeline_revenue: (t.expected_revenue as number) || 0,
+            avg_deal: (t.id as number) > 0 ? ((t.expected_revenue as number) || 0) / (t.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'stage') {
+          const byStage = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['stage_id', 'expected_revenue:sum', 'id:count'],
+            ['stage_id']
+          );
+
+          analysis.by_stage = byStage.map(s => ({
+            stage_id: Array.isArray(s.stage_id) ? s.stage_id[0] : 0,
+            stage_name: Array.isArray(s.stage_id) ? s.stage_id[1] as string : 'Unknown',
+            count: (s.id as number) || 0,
+            percentage: totalActive > 0 ? ((s.id as number) / totalActive) * 100 : 0,
+            pipeline_revenue: (s.expected_revenue as number) || 0,
+            avg_deal: (s.id as number) > 0 ? ((s.expected_revenue as number) || 0) / (s.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'month') {
+          const byMonth = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['expected_revenue:sum', 'id:count'],
+            ['create_date:month']
+          );
+
+          analysis.by_month = byMonth.map(m => ({
+            month: (m['create_date:month'] as string) || 'Unknown',
+            count: (m.id as number) || 0,
+            pipeline_revenue: (m.expected_revenue as number) || 0
+          }));
+        }
+
+        if (params.group_by === 'sector') {
+          const bySector = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['sector', 'expected_revenue:sum', 'id:count'],
+            ['sector']
+          );
+
+          analysis.by_sector = bySector.map(s => ({
+            sector: (s.sector as string) || 'Not Specified',
+            count: (s.id as number) || 0,
+            percentage: totalActive > 0 ? ((s.id as number) / totalActive) * 100 : 0,
+            pipeline_revenue: (s.expected_revenue as number) || 0,
+            avg_deal: (s.id as number) > 0 ? ((s.expected_revenue as number) || 0) / (s.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'specification') {
+          const bySpec = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['specification_id', 'expected_revenue:sum', 'id:count'],
+            ['specification_id']
+          );
+
+          analysis.by_specification = bySpec.map(s => ({
+            specification_id: Array.isArray(s.specification_id) ? s.specification_id[0] : 0,
+            specification_name: Array.isArray(s.specification_id) ? s.specification_id[1] as string : 'Not Specified',
+            count: (s.id as number) || 0,
+            percentage: totalActive > 0 ? ((s.id as number) / totalActive) * 100 : 0,
+            pipeline_revenue: (s.expected_revenue as number) || 0,
+            avg_deal: (s.id as number) > 0 ? ((s.expected_revenue as number) || 0) / (s.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'lead_source') {
+          const byLeadSource = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['lead_source_id', 'expected_revenue:sum', 'id:count'],
+            ['lead_source_id']
+          );
+
+          analysis.by_lead_source = byLeadSource.map(s => ({
+            lead_source_id: Array.isArray(s.lead_source_id) ? s.lead_source_id[0] : 0,
+            lead_source_name: Array.isArray(s.lead_source_id) ? s.lead_source_id[1] as string : 'Not Specified',
+            count: (s.id as number) || 0,
+            percentage: totalActive > 0 ? ((s.id as number) / totalActive) * 100 : 0,
+            pipeline_revenue: (s.expected_revenue as number) || 0,
+            avg_deal: (s.id as number) > 0 ? ((s.expected_revenue as number) || 0) / (s.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'state') {
+          const byState = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['state_id', 'expected_revenue:sum', 'id:count'],
+            ['state_id']
+          );
+
+          analysis.by_state = byState.map(s => ({
+            state_id: Array.isArray(s.state_id) ? s.state_id[0] : 0,
+            state_name: Array.isArray(s.state_id) ? s.state_id[1] as string : 'Not Specified',
+            count: (s.id as number) || 0,
+            percentage: totalActive > 0 ? ((s.id as number) / totalActive) * 100 : 0,
+            pipeline_revenue: (s.expected_revenue as number) || 0,
+            avg_deal: (s.id as number) > 0 ? ((s.expected_revenue as number) || 0) / (s.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'city') {
+          const byCity = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['city', 'expected_revenue:sum', 'id:count'],
+            ['city']
+          );
+
+          analysis.by_city = byCity.map(c => ({
+            city: (c.city as string) || 'Not Specified',
+            count: (c.id as number) || 0,
+            percentage: totalActive > 0 ? ((c.id as number) / totalActive) * 100 : 0,
+            pipeline_revenue: (c.expected_revenue as number) || 0,
+            avg_deal: (c.id as number) > 0 ? ((c.expected_revenue as number) || 0) / (c.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'architect') {
+          const byArchitect = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['architect_id', 'expected_revenue:sum', 'id:count'],
+            ['architect_id']
+          );
+
+          analysis.by_architect = byArchitect.map(a => ({
+            architect_id: Array.isArray(a.architect_id) ? a.architect_id[0] : 0,
+            architect_name: Array.isArray(a.architect_id) ? a.architect_id[1] as string : 'Not Specified',
+            count: (a.id as number) || 0,
+            percentage: totalActive > 0 ? ((a.id as number) / totalActive) * 100 : 0,
+            pipeline_revenue: (a.expected_revenue as number) || 0,
+            avg_deal: (a.id as number) > 0 ? ((a.expected_revenue as number) || 0) / (a.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        if (params.group_by === 'building_owner') {
+          const byBuildingOwner = await client.readGroup(
+            'crm.lead',
+            domain,
+            ['x_studio_building_owner', 'expected_revenue:sum', 'id:count'],
+            ['x_studio_building_owner']
+          );
+
+          analysis.by_building_owner = byBuildingOwner.map(b => ({
+            building_owner_id: Array.isArray(b.x_studio_building_owner) ? b.x_studio_building_owner[0] : 0,
+            building_owner_name: Array.isArray(b.x_studio_building_owner) ? b.x_studio_building_owner[1] as string : 'Not Specified',
+            count: (b.id as number) || 0,
+            percentage: totalActive > 0 ? ((b.id as number) / totalActive) * 100 : 0,
+            pipeline_revenue: (b.expected_revenue as number) || 0,
+            avg_deal: (b.id as number) > 0 ? ((b.expected_revenue as number) || 0) / (b.id as number) : 0
+          })).sort((a, b) => b.count - a.count);
+        }
+
+        // Get top active opportunities
+        if (params.include_top_opportunities > 0) {
+          const topOpps = await client.searchRead<CrmLead>(
+            'crm.lead',
+            domain,
+            ['id', 'name', 'expected_revenue', 'probability', 'user_id', 'stage_id'],
+            { limit: params.include_top_opportunities, order: 'expected_revenue desc' }
+          );
+
+          analysis.top_opportunities = topOpps.map(o => ({
+            id: o.id,
+            name: o.name,
+            revenue: o.expected_revenue || 0,
+            probability: o.probability || 0,
+            salesperson: getRelationName(o.user_id),
+            stage: getRelationName(o.stage_id)
+          }));
+        }
+
+        const output = formatPipelineAnalysis(analysis, params.group_by, params.response_format);
+
+        return {
+          content: [{ type: 'text', text: output }],
+          structuredContent: analysis
+        };
+
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return {
+          isError: true,
+          content: [{ type: 'text', text: `Error fetching pipeline analysis: ${message}` }]
         };
       }
     }

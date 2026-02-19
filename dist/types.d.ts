@@ -459,6 +459,105 @@ export interface ConversionFunnel {
     biggest_drop: string;
     total_leads_analyzed: number;
 }
+export interface PipelineAnalysisSummary {
+    [key: string]: unknown;
+    period: string;
+    total_active: number;
+    total_pipeline_revenue: number;
+    avg_deal_size: number;
+    avg_probability?: number;
+    by_salesperson?: Array<{
+        user_id: number;
+        user_name: string;
+        count: number;
+        percentage: number;
+        pipeline_revenue: number;
+        avg_deal: number;
+    }>;
+    by_team?: Array<{
+        team_id: number;
+        team_name: string;
+        count: number;
+        percentage: number;
+        pipeline_revenue: number;
+        avg_deal: number;
+    }>;
+    by_stage?: Array<{
+        stage_id: number;
+        stage_name: string;
+        count: number;
+        percentage: number;
+        pipeline_revenue: number;
+        avg_deal: number;
+    }>;
+    by_month?: Array<{
+        month: string;
+        count: number;
+        pipeline_revenue: number;
+    }>;
+    by_sector?: Array<{
+        sector: string;
+        count: number;
+        percentage: number;
+        pipeline_revenue: number;
+        avg_deal: number;
+    }>;
+    by_specification?: Array<{
+        specification_id: number;
+        specification_name: string;
+        count: number;
+        percentage: number;
+        pipeline_revenue: number;
+        avg_deal: number;
+    }>;
+    by_lead_source?: Array<{
+        lead_source_id: number;
+        lead_source_name: string;
+        count: number;
+        percentage: number;
+        pipeline_revenue: number;
+        avg_deal: number;
+    }>;
+    by_state?: Array<{
+        state_id: number;
+        state_name: string;
+        count: number;
+        percentage: number;
+        pipeline_revenue: number;
+        avg_deal: number;
+    }>;
+    by_city?: Array<{
+        city: string;
+        count: number;
+        percentage: number;
+        pipeline_revenue: number;
+        avg_deal: number;
+    }>;
+    by_architect?: Array<{
+        architect_id: number;
+        architect_name: string;
+        count: number;
+        percentage: number;
+        pipeline_revenue: number;
+        avg_deal: number;
+    }>;
+    by_building_owner?: Array<{
+        building_owner_id: number;
+        building_owner_name: string;
+        count: number;
+        percentage: number;
+        pipeline_revenue: number;
+        avg_deal: number;
+    }>;
+    top_opportunities?: Array<{
+        id: number;
+        name: string;
+        revenue: number;
+        probability: number;
+        salesperson: string;
+        stage: string;
+    }>;
+}
 export interface WonTrendsSummary {
     [key: string]: unknown;
     period: string;

@@ -547,6 +547,43 @@ export declare const WonAnalysisSchema: z.ZodObject<{
     include_top_won?: number | undefined;
     include_conversion_rates?: boolean | undefined;
 }>;
+export declare const PipelineAnalysisSchema: z.ZodObject<{
+    group_by: z.ZodDefault<z.ZodEnum<["salesperson", "team", "stage", "month", "sector", "specification", "lead_source", "state", "city", "architect", "building_owner"]>>;
+    date_from: z.ZodOptional<z.ZodString>;
+    date_to: z.ZodOptional<z.ZodString>;
+    user_id: z.ZodOptional<z.ZodNumber>;
+    team_id: z.ZodOptional<z.ZodNumber>;
+    stage_id: z.ZodOptional<z.ZodNumber>;
+    min_revenue: z.ZodOptional<z.ZodNumber>;
+    architect_id: z.ZodOptional<z.ZodNumber>;
+    building_owner_id: z.ZodOptional<z.ZodNumber>;
+    include_top_opportunities: z.ZodDefault<z.ZodNumber>;
+    response_format: z.ZodDefault<z.ZodNativeEnum<typeof ResponseFormat>>;
+}, "strict", z.ZodTypeAny, {
+    group_by: "sector" | "city" | "state" | "month" | "salesperson" | "team" | "stage" | "specification" | "lead_source" | "architect" | "building_owner";
+    response_format: ResponseFormat;
+    include_top_opportunities: number;
+    stage_id?: number | undefined;
+    user_id?: number | undefined;
+    team_id?: number | undefined;
+    architect_id?: number | undefined;
+    min_revenue?: number | undefined;
+    date_from?: string | undefined;
+    date_to?: string | undefined;
+    building_owner_id?: number | undefined;
+}, {
+    stage_id?: number | undefined;
+    user_id?: number | undefined;
+    team_id?: number | undefined;
+    architect_id?: number | undefined;
+    group_by?: "sector" | "city" | "state" | "month" | "salesperson" | "team" | "stage" | "specification" | "lead_source" | "architect" | "building_owner" | undefined;
+    response_format?: ResponseFormat | undefined;
+    min_revenue?: number | undefined;
+    date_from?: string | undefined;
+    date_to?: string | undefined;
+    building_owner_id?: number | undefined;
+    include_top_opportunities?: number | undefined;
+}>;
 export declare const WonTrendsSchema: z.ZodObject<{
     granularity: z.ZodDefault<z.ZodEnum<["week", "month", "quarter"]>>;
     date_from: z.ZodOptional<z.ZodString>;
@@ -960,6 +997,7 @@ export type LostOpportunitiesSearchInput = z.infer<typeof LostOpportunitiesSearc
 export type LostTrendsInput = z.infer<typeof LostTrendsSchema>;
 export type WonOpportunitiesSearchInput = z.infer<typeof WonOpportunitiesSearchSchema>;
 export type WonAnalysisInput = z.infer<typeof WonAnalysisSchema>;
+export type PipelineAnalysisInput = z.infer<typeof PipelineAnalysisSchema>;
 export type WonTrendsInput = z.infer<typeof WonTrendsSchema>;
 export type SalespeopleListInput = z.infer<typeof SalespeopleListSchema>;
 export type TeamsListInput = z.infer<typeof TeamsListSchema>;

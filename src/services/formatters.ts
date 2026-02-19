@@ -1,5 +1,5 @@
 import { CONTEXT_LIMITS, ResponseFormat, CRM_FIELDS, FIELD_PRESETS } from '../constants.js';
-import type { CrmLead, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, ResPartner, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, WeightedPipelineTotals, StateWithStats, StateComparison, ColorTrendsSummary, LeadWithColor, LeadWithEnhancedColor, RfqSearchResult } from '../types.js';
+import type { CrmLead, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, ResPartner, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, PipelineAnalysisSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, WeightedPipelineTotals, StateWithStats, StateComparison, ColorTrendsSummary, LeadWithColor, LeadWithEnhancedColor, RfqSearchResult } from '../types.js';
 import { stripHtml, getContactName } from '../utils/html-utils.js';
 import { formatLinkedName } from '../utils/odoo-urls.js';
 
@@ -743,6 +743,147 @@ export function formatWonAnalysis(analysis: WonAnalysisSummary, groupBy: string,
         output += ` (${opp.sales_cycle_days} days)`;
       }
       output += '\n';
+    }
+  }
+
+  return output;
+}
+
+// Format pipeline analysis (active opportunities)
+export function formatPipelineAnalysis(analysis: PipelineAnalysisSummary, groupBy: string, format: ResponseFormat): string {
+  if (format === ResponseFormat.JSON) {
+    return JSON.stringify(analysis, null, 2);
+  }
+
+  let output = `## Pipeline Analysis (Active Opportunities)\n\n`;
+
+  if (analysis.period) {
+    output += `**Period:** ${analysis.period}\n`;
+  }
+  output += `**Total Active:** ${analysis.total_active.toLocaleString()} opportunities | ${formatCurrency(analysis.total_pipeline_revenue)}\n`;
+  output += `**Average Deal Size:** ${formatCurrency(analysis.avg_deal_size)}\n`;
+  if (analysis.avg_probability !== undefined) {
+    output += `**Average Probability:** ${formatPercent(analysis.avg_probability)}\n`;
+  }
+  output += '\n';
+
+  // Grouped data based on group_by parameter
+  if (groupBy === 'salesperson' && analysis.by_salesperson && analysis.by_salesperson.length > 0) {
+    output += `### By Salesperson\n`;
+    output += '| Salesperson | Count | % of Total | Pipeline Revenue | Avg Deal |\n';
+    output += '|-------------|-------|------------|------------------|----------|\n';
+    for (const item of analysis.by_salesperson) {
+      output += `| ${item.user_name} | ${item.count.toLocaleString()} | ${formatPercent(item.percentage)} | ${formatCurrency(item.pipeline_revenue)} | ${formatCurrency(item.avg_deal)} |\n`;
+    }
+    output += '\n';
+  }
+
+  if (groupBy === 'team' && analysis.by_team && analysis.by_team.length > 0) {
+    output += `### By Team\n`;
+    output += '| Team | Count | % of Total | Pipeline Revenue | Avg Deal |\n';
+    output += '|------|-------|------------|------------------|----------|\n';
+    for (const item of analysis.by_team) {
+      output += `| ${item.team_name} | ${item.count.toLocaleString()} | ${formatPercent(item.percentage)} | ${formatCurrency(item.pipeline_revenue)} | ${formatCurrency(item.avg_deal)} |\n`;
+    }
+    output += '\n';
+  }
+
+  if (groupBy === 'stage' && analysis.by_stage && analysis.by_stage.length > 0) {
+    output += `### By Stage\n`;
+    output += '| Stage | Count | % of Total | Pipeline Revenue | Avg Deal |\n';
+    output += '|-------|-------|------------|------------------|----------|\n';
+    for (const item of analysis.by_stage) {
+      output += `| ${item.stage_name} | ${item.count.toLocaleString()} | ${formatPercent(item.percentage)} | ${formatCurrency(item.pipeline_revenue)} | ${formatCurrency(item.avg_deal)} |\n`;
+    }
+    output += '\n';
+  }
+
+  if (groupBy === 'month' && analysis.by_month && analysis.by_month.length > 0) {
+    output += `### By Month (Created)\n`;
+    output += '| Month | Count | Pipeline Revenue |\n';
+    output += '|-------|-------|------------------|\n';
+    for (const item of analysis.by_month) {
+      output += `| ${item.month} | ${item.count.toLocaleString()} | ${formatCurrency(item.pipeline_revenue)} |\n`;
+    }
+    output += '\n';
+  }
+
+  if (groupBy === 'sector' && analysis.by_sector && analysis.by_sector.length > 0) {
+    output += `### By Sector\n`;
+    output += '| Sector | Count | % of Total | Pipeline Revenue | Avg Deal |\n';
+    output += '|--------|-------|------------|------------------|----------|\n';
+    for (const item of analysis.by_sector) {
+      output += `| ${item.sector} | ${item.count.toLocaleString()} | ${formatPercent(item.percentage)} | ${formatCurrency(item.pipeline_revenue)} | ${formatCurrency(item.avg_deal)} |\n`;
+    }
+    output += '\n';
+  }
+
+  if (groupBy === 'specification' && analysis.by_specification && analysis.by_specification.length > 0) {
+    output += `### By Specification\n`;
+    output += '| Specification | Count | % of Total | Pipeline Revenue | Avg Deal |\n';
+    output += '|---------------|-------|------------|------------------|----------|\n';
+    for (const item of analysis.by_specification) {
+      output += `| ${item.specification_name} | ${item.count.toLocaleString()} | ${formatPercent(item.percentage)} | ${formatCurrency(item.pipeline_revenue)} | ${formatCurrency(item.avg_deal)} |\n`;
+    }
+    output += '\n';
+  }
+
+  if (groupBy === 'lead_source' && analysis.by_lead_source && analysis.by_lead_source.length > 0) {
+    output += `### By Lead Source\n`;
+    output += '| Lead Source | Count | % of Total | Pipeline Revenue | Avg Deal |\n';
+    output += '|-------------|-------|------------|------------------|----------|\n';
+    for (const item of analysis.by_lead_source) {
+      output += `| ${item.lead_source_name} | ${item.count.toLocaleString()} | ${formatPercent(item.percentage)} | ${formatCurrency(item.pipeline_revenue)} | ${formatCurrency(item.avg_deal)} |\n`;
+    }
+    output += '\n';
+  }
+
+  if (groupBy === 'state' && analysis.by_state && analysis.by_state.length > 0) {
+    output += `### By State/Territory\n`;
+    output += '| State | Count | % of Total | Pipeline Revenue | Avg Deal |\n';
+    output += '|-------|-------|------------|------------------|----------|\n';
+    for (const item of analysis.by_state) {
+      output += `| ${item.state_name} | ${item.count.toLocaleString()} | ${formatPercent(item.percentage)} | ${formatCurrency(item.pipeline_revenue)} | ${formatCurrency(item.avg_deal)} |\n`;
+    }
+    output += '\n';
+  }
+
+  if (groupBy === 'city' && analysis.by_city && analysis.by_city.length > 0) {
+    output += `### By City\n`;
+    output += '| City | Count | % of Total | Pipeline Revenue | Avg Deal |\n';
+    output += '|------|-------|------------|------------------|----------|\n';
+    for (const item of analysis.by_city) {
+      output += `| ${item.city} | ${item.count.toLocaleString()} | ${formatPercent(item.percentage)} | ${formatCurrency(item.pipeline_revenue)} | ${formatCurrency(item.avg_deal)} |\n`;
+    }
+    output += '\n';
+  }
+
+  if (groupBy === 'architect' && analysis.by_architect && analysis.by_architect.length > 0) {
+    output += `### By Architect\n`;
+    output += '| Architect | Count | % of Total | Pipeline Revenue | Avg Deal |\n';
+    output += '|-----------|-------|------------|------------------|----------|\n';
+    for (const item of analysis.by_architect) {
+      output += `| ${item.architect_name} | ${item.count.toLocaleString()} | ${formatPercent(item.percentage)} | ${formatCurrency(item.pipeline_revenue)} | ${formatCurrency(item.avg_deal)} |\n`;
+    }
+    output += '\n';
+  }
+
+  if (groupBy === 'building_owner' && analysis.by_building_owner && analysis.by_building_owner.length > 0) {
+    output += `### By Building Owner\n`;
+    output += '| Building Owner | Count | % of Total | Pipeline Revenue | Avg Deal |\n';
+    output += '|----------------|-------|------------|------------------|----------|\n';
+    for (const item of analysis.by_building_owner) {
+      output += `| ${item.building_owner_name} | ${item.count.toLocaleString()} | ${formatPercent(item.percentage)} | ${formatCurrency(item.pipeline_revenue)} | ${formatCurrency(item.avg_deal)} |\n`;
+    }
+    output += '\n';
+  }
+
+  // Top active opportunities
+  if (analysis.top_opportunities && analysis.top_opportunities.length > 0) {
+    output += `### Top ${analysis.top_opportunities.length} Largest Active Opportunities\n`;
+    for (let i = 0; i < analysis.top_opportunities.length; i++) {
+      const opp = analysis.top_opportunities[i];
+      output += `${i + 1}. **${formatLinkedName(opp.id, opp.name, 'crm.lead')}** - ${formatCurrency(opp.revenue)} (${formatPercent(opp.probability)}) - ${opp.salesperson || 'Unassigned'} - ${opp.stage}\n`;
     }
   }
 

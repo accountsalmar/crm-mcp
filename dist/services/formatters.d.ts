@@ -1,5 +1,5 @@
 import { ResponseFormat } from '../constants.js';
-import type { CrmLead, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, ResPartner, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, WeightedPipelineTotals, StateWithStats, StateComparison, ColorTrendsSummary, RfqSearchResult } from '../types.js';
+import type { CrmLead, PaginatedResponse, PipelineSummary, SalesAnalytics, ActivitySummary, ResPartner, LostReasonWithCount, LostAnalysisSummary, LostOpportunity, LostTrendsSummary, WonOpportunity, WonAnalysisSummary, WonTrendsSummary, PipelineAnalysisSummary, SalespersonWithStats, SalesTeamWithStats, PerformanceComparison, ActivityDetail, ExportResult, PipelineSummaryWithWeighted, WeightedPipelineTotals, StateWithStats, StateComparison, ColorTrendsSummary, RfqSearchResult } from '../types.js';
 export declare function formatCurrency(value: number | undefined | null): string;
 export declare function formatPercent(value: number | undefined | null): string;
 export declare function formatDate(dateStr: string | undefined | null): string;
@@ -22,6 +22,7 @@ export declare function formatLostOpportunitiesList(data: PaginatedResponse<Lost
 export declare function formatLostTrends(trends: LostTrendsSummary, format: ResponseFormat): string;
 export declare function formatWonOpportunitiesList(data: PaginatedResponse<WonOpportunity>, format: ResponseFormat): string;
 export declare function formatWonAnalysis(analysis: WonAnalysisSummary, groupBy: string, format: ResponseFormat): string;
+export declare function formatPipelineAnalysis(analysis: PipelineAnalysisSummary, groupBy: string, format: ResponseFormat): string;
 export declare function formatWonTrends(trends: WonTrendsSummary, format: ResponseFormat): string;
 export declare function formatSalespeopleList(salespeople: SalespersonWithStats[], format: ResponseFormat): string;
 export declare function formatTeamsList(teams: SalesTeamWithStats[], format: ResponseFormat): string;

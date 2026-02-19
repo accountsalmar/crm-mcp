@@ -666,6 +666,59 @@ export const WonAnalysisSchema = z.object({
     .describe("Output format: 'markdown' or 'json'")
 }).strict();
 
+// Pipeline Analysis schema (active opportunities analysis)
+export const PipelineAnalysisSchema = z.object({
+  group_by: z.enum(['salesperson', 'team', 'stage', 'month', 'sector', 'specification', 'lead_source', 'state', 'city', 'architect', 'building_owner'])
+    .default('stage')
+    .describe("Group results by: 'salesperson', 'team', 'stage', 'month', 'sector', 'specification', 'lead_source', 'state', 'city', 'architect', or 'building_owner'"),
+  date_from: z.string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional()
+    .describe('Filter by create date from (YYYY-MM-DD)'),
+  date_to: z.string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional()
+    .describe('Filter by create date to (YYYY-MM-DD)'),
+  user_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by salesperson user ID'),
+  team_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by sales team ID'),
+  stage_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by pipeline stage ID'),
+  min_revenue: z.number()
+    .min(0)
+    .optional()
+    .describe('Minimum revenue threshold'),
+  architect_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by architect ID'),
+  building_owner_id: z.number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Filter by building owner ID'),
+  include_top_opportunities: z.number()
+    .int()
+    .min(0)
+    .max(20)
+    .default(5)
+    .describe('Number of top active opportunities to include (0-20)'),
+  response_format: z.nativeEnum(ResponseFormat)
+    .default(ResponseFormat.MARKDOWN)
+    .describe("Output format: 'markdown' or 'json'")
+}).strict();
+
 // Won trends schema
 export const WonTrendsSchema = z.object({
   granularity: z.enum(['week', 'month', 'quarter'])
@@ -1081,6 +1134,7 @@ export type LostOpportunitiesSearchInput = z.infer<typeof LostOpportunitiesSearc
 export type LostTrendsInput = z.infer<typeof LostTrendsSchema>;
 export type WonOpportunitiesSearchInput = z.infer<typeof WonOpportunitiesSearchSchema>;
 export type WonAnalysisInput = z.infer<typeof WonAnalysisSchema>;
+export type PipelineAnalysisInput = z.infer<typeof PipelineAnalysisSchema>;
 export type WonTrendsInput = z.infer<typeof WonTrendsSchema>;
 export type SalespeopleListInput = z.infer<typeof SalespeopleListSchema>;
 export type TeamsListInput = z.infer<typeof TeamsListSchema>;
